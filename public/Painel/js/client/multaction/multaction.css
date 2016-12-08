@@ -1,0 +1,26 @@
+ul.multaction {
+    position: relative;
+    height: 31px;
+    width: 31px;
+    z-index: 1;
+}
+
+ul.multaction li {
+    float: left;
+    padding: 6px 7px;
+    border-radius: 50px;
+    margin-right: 10px;
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+ul.multaction li.flaticon-fountain-pen { background-color: #67c6ff; }
+ul.multaction li.flaticon-warning { background-color: #ffc353; }
+ul.multaction li.flaticon-rubbish-bin { background-color: #ff3259; }
+ul.multaction li.flaticon-checked { background-color: #cdff80; }
+ul.multaction li.flaticon-expand { background-color: #d297ff; }
+
+ul.multaction li[class*="flaticon-"]:before {
+  color: rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,22 @@
+.chosen-container-single .chosen-single {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 25px;
+    padding-left: 20px;
+    background: none !important;
+    border: none !important;
+    color: #a9a9a9 !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.chosen-container-multi .chosen-choices {
+    background-color: rgba(0,0,0,0);
+    background-image: none;
+    border: none !important;
+    box-shadow: none !important;
+}
