@@ -11,6 +11,11 @@ class IndexController extends \App\Http\Controllers\Controller {
      */
     public function index()
     {
-        return view('Painel.index');
+        $vars = [
+            'modulo' => 'PAINEL',
+            'pageDesc' => 'Home'
+        ];
+
+        return view('Painel.index', $vars);
     }
 }

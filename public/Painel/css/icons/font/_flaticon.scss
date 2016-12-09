@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 17/10/2016 18:29
+    Creation date: 08/12/2016 20:24
     */
 
     @font-face {
@@ -37,67 +37,69 @@
     }
 
     .flaticon-add:before { content: "\f100"; }
-.flaticon-arrows:before { content: "\f101"; }
-.flaticon-avatar:before { content: "\f102"; }
-.flaticon-checked:before { content: "\f103"; }
-.flaticon-city:before { content: "\f104"; }
-.flaticon-coins:before { content: "\f105"; }
-.flaticon-cross:before { content: "\f106"; }
-.flaticon-dark-eye:before { content: "\f107"; }
-.flaticon-expand:before { content: "\f108"; }
-.flaticon-feather-pen:before { content: "\f109"; }
-.flaticon-fountain-pen:before { content: "\f10a"; }
-.flaticon-interface:before { content: "\f10b"; }
-.flaticon-keyboard-right-arrow-button:before { content: "\f10c"; }
-.flaticon-magnifier-tool:before { content: "\f10d"; }
-.flaticon-nation:before { content: "\f10e"; }
-.flaticon-paper-plane:before { content: "\f10f"; }
-.flaticon-puzzle:before { content: "\f110"; }
-.flaticon-rubbish-bin:before { content: "\f111"; }
-.flaticon-settings:before { content: "\f112"; }
-.flaticon-share:before { content: "\f113"; }
-.flaticon-shop:before { content: "\f114"; }
-.flaticon-star:before { content: "\f115"; }
-.flaticon-star-black-fivepointed-shape:before { content: "\f116"; }
-.flaticon-sunglasses:before { content: "\f117"; }
-.flaticon-technology:before { content: "\f118"; }
-.flaticon-technology-1:before { content: "\f119"; }
-.flaticon-terminal:before { content: "\f11a"; }
-.flaticon-thumbs-up-hand-symbol:before { content: "\f11b"; }
-.flaticon-unlike:before { content: "\f11c"; }
-.flaticon-update-arrows:before { content: "\f11d"; }
-.flaticon-warning:before { content: "\f11e"; }
-.flaticon-windows:before { content: "\f11f"; }
+.flaticon-arrow:before { content: "\f101"; }
+.flaticon-arrows:before { content: "\f102"; }
+.flaticon-avatar:before { content: "\f103"; }
+.flaticon-checked:before { content: "\f104"; }
+.flaticon-city:before { content: "\f105"; }
+.flaticon-coins:before { content: "\f106"; }
+.flaticon-cross:before { content: "\f107"; }
+.flaticon-dark-eye:before { content: "\f108"; }
+.flaticon-expand:before { content: "\f109"; }
+.flaticon-feather-pen:before { content: "\f10a"; }
+.flaticon-fountain-pen:before { content: "\f10b"; }
+.flaticon-interface:before { content: "\f10c"; }
+.flaticon-keyboard-right-arrow-button:before { content: "\f10d"; }
+.flaticon-magnifier-tool:before { content: "\f10e"; }
+.flaticon-nation:before { content: "\f10f"; }
+.flaticon-paper-plane:before { content: "\f110"; }
+.flaticon-puzzle:before { content: "\f111"; }
+.flaticon-rubbish-bin:before { content: "\f112"; }
+.flaticon-settings:before { content: "\f113"; }
+.flaticon-share:before { content: "\f114"; }
+.flaticon-shop:before { content: "\f115"; }
+.flaticon-star:before { content: "\f116"; }
+.flaticon-star-black-fivepointed-shape:before { content: "\f117"; }
+.flaticon-sunglasses:before { content: "\f118"; }
+.flaticon-technology:before { content: "\f119"; }
+.flaticon-technology-1:before { content: "\f11a"; }
+.flaticon-terminal:before { content: "\f11b"; }
+.flaticon-thumbs-up-hand-symbol:before { content: "\f11c"; }
+.flaticon-unlike:before { content: "\f11d"; }
+.flaticon-update-arrows:before { content: "\f11e"; }
+.flaticon-warning:before { content: "\f11f"; }
+.flaticon-windows:before { content: "\f120"; }
     
     $font-Flaticon-add: "\f100";
-    $font-Flaticon-arrows: "\f101";
-    $font-Flaticon-avatar: "\f102";
-    $font-Flaticon-checked: "\f103";
-    $font-Flaticon-city: "\f104";
-    $font-Flaticon-coins: "\f105";
-    $font-Flaticon-cross: "\f106";
-    $font-Flaticon-dark-eye: "\f107";
-    $font-Flaticon-expand: "\f108";
-    $font-Flaticon-feather-pen: "\f109";
-    $font-Flaticon-fountain-pen: "\f10a";
-    $font-Flaticon-interface: "\f10b";
-    $font-Flaticon-keyboard-right-arrow-button: "\f10c";
-    $font-Flaticon-magnifier-tool: "\f10d";
-    $font-Flaticon-nation: "\f10e";
-    $font-Flaticon-paper-plane: "\f10f";
-    $font-Flaticon-puzzle: "\f110";
-    $font-Flaticon-rubbish-bin: "\f111";
-    $font-Flaticon-settings: "\f112";
-    $font-Flaticon-share: "\f113";
-    $font-Flaticon-shop: "\f114";
-    $font-Flaticon-star: "\f115";
-    $font-Flaticon-star-black-fivepointed-shape: "\f116";
-    $font-Flaticon-sunglasses: "\f117";
-    $font-Flaticon-technology: "\f118";
-    $font-Flaticon-technology-1: "\f119";
-    $font-Flaticon-terminal: "\f11a";
-    $font-Flaticon-thumbs-up-hand-symbol: "\f11b";
-    $font-Flaticon-unlike: "\f11c";
-    $font-Flaticon-update-arrows: "\f11d";
-    $font-Flaticon-warning: "\f11e";
-    $font-Flaticon-windows: "\f11f";
+    $font-Flaticon-arrow: "\f101";
+    $font-Flaticon-arrows: "\f102";
+    $font-Flaticon-avatar: "\f103";
+    $font-Flaticon-checked: "\f104";
+    $font-Flaticon-city: "\f105";
+    $font-Flaticon-coins: "\f106";
+    $font-Flaticon-cross: "\f107";
+    $font-Flaticon-dark-eye: "\f108";
+    $font-Flaticon-expand: "\f109";
+    $font-Flaticon-feather-pen: "\f10a";
+    $font-Flaticon-fountain-pen: "\f10b";
+    $font-Flaticon-interface: "\f10c";
+    $font-Flaticon-keyboard-right-arrow-button: "\f10d";
+    $font-Flaticon-magnifier-tool: "\f10e";
+    $font-Flaticon-nation: "\f10f";
+    $font-Flaticon-paper-plane: "\f110";
+    $font-Flaticon-puzzle: "\f111";
+    $font-Flaticon-rubbish-bin: "\f112";
+    $font-Flaticon-settings: "\f113";
+    $font-Flaticon-share: "\f114";
+    $font-Flaticon-shop: "\f115";
+    $font-Flaticon-star: "\f116";
+    $font-Flaticon-star-black-fivepointed-shape: "\f117";
+    $font-Flaticon-sunglasses: "\f118";
+    $font-Flaticon-technology: "\f119";
+    $font-Flaticon-technology-1: "\f11a";
+    $font-Flaticon-terminal: "\f11b";
+    $font-Flaticon-thumbs-up-hand-symbol: "\f11c";
+    $font-Flaticon-unlike: "\f11d";
+    $font-Flaticon-update-arrows: "\f11e";
+    $font-Flaticon-warning: "\f11f";
+    $font-Flaticon-windows: "\f120";

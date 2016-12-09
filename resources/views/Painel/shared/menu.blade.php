@@ -52,7 +52,7 @@
 
                 <li class="modulo">
                     <span>
-                        <span class="flaticon-shop"></span>
+                        <span class="flaticon-arrow"></span>
                         <a href="{{ url('/painel/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Sair
                         </a>

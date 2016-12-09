@@ -74,8 +74,8 @@
         <!-- Barra do topo -->
         <div id="top">
             <div class="title">
-                <span class="modulo">module name</span>
-                <span class="description">pageDescription</span>
+                <span class="modulo">@if( isset($modulo) ) {{$modulo}} @endif</span>
+                <span class="description">@if( isset($pageDesc) ) {{$pageDesc}} @endif</span>
             </div>
             <div id="top-actions">
                 <div class="actions">

@@ -88,3 +88,35 @@ label {
     text-align: center;
     display: block;
 }
+
+div.alert.alert-success{
+    margin: 0 auto;
+    width: 1024px;
+    text-align: center;
+    padding: 30px 0;
+    color: #57b8b9;
+}
+
+span.help-block {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    padding-top: 20px;
+    color: #b54444;
+}
+
+a.goback:hover{
+    background: #3f8692;
+}
+a.goback{
+    width: 95px;
+    margin: 0 auto;
+    display: block;
+    color: rgba(0, 0, 0, 0.51);
+    text-decoration: none;
+    background: #57ceda;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    transition: all 0.3s;
+}
