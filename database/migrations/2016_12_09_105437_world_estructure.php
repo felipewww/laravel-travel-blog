@@ -13,43 +13,58 @@ class WorldEstructure extends Migration
      */
     public function up()
     {
-        Schema::create('est_continent', function (Blueprint $table){
+        Schema::create('continents', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name', 45)->unique();
         });
 
-        Schema::create('est_country', function (Blueprint $table){
+        Schema::create('countries', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
             $table->integer('continent_id')->unsigned();
+            $table->text('content')->nullable();
+            $table->text('content_strip')->nullable();
+            $table->string('sigla_2', 2);
+            $table->string('sigla_3', 3);
 
             $table->unique('name');
-            $table->foreign('continent_id')->references('id')->on('est_continent')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('continent_id')->references('id')->on('continents')->onUpdate('restrict')->onDelete('restrict');
         });
 
-        Schema::create('est_estate', function (Blueprint $table){
+        Schema::create('estates', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
+            $table->string('uf',45);
             $table->integer('country_id')->unsigned();
 
             $table->unique('name');
-            $table->foreign('country_id')->references('id')->on('est_country')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
         });
 
-        Schema::create('est_city', function (Blueprint $table){
+        Schema::create('cities', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
-            $table->text('content');
-            $table->text('content_strip');
+            $table->text('content')->nullable();
+            $table->text('content_strip')->nullable();
+            $table->boolean('status')->default(false);
             $table->integer('estate_id')->unsigned();
+            $table->integer('views')->default(0);
 
             $table->unique('name');
-            $table->foreign('estate_id')->references('id')->on('est_estate')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('estate_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
         });
 
-        Schema::create('est_city_photos', function (Blueprint $table){
+        Schema::create('city_photos', function (Blueprint $table){
             $table->increments('id')->unsigned();
-            $table->string('path')->unsigned();
+            $table->string('path');
+            $table->integer('city_id')->unsigned();
+
+            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+        });
+
+        Schema::table('cities', function (Blueprint $table){
+            $table->integer('est_city_photos_id')->unsigned()->nullable();
+            $table->foreign('est_city_photos_id')->references('id')->on('city_photos')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 
@@ -60,9 +75,12 @@ class WorldEstructure extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('est_city');
-        Schema::dropIfExists('est_estate');
-        Schema::dropIfExists('est_country');
-        Schema::dropIfExists('est_continent');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('cities');
+        Schema::dropIfExists('estates');
+        Schema::dropIfExists('countries');
+        Schema::dropIfExists('continents');
+        Schema::dropIfExists('city_photos');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
