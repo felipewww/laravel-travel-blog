@@ -43,6 +43,9 @@ Route::group(['middleware' => 'guest'], function (){
  * */
 Route::group(['middleware' => 'auth'], function (){
     Route::group(['prefix' => 'painel'], function (){
+        Route::get('/mundo/pais', 'Painel\World\CountryController@display');
+        Route::post('/mundo/pais', 'Painel\World\CountryController@displayPost');
+
         Route::get('', 'Painel\IndexController@index');
 
         Route::any('logout', 'Auth\LoginController@logout');

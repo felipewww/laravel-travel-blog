@@ -18,6 +18,14 @@ class Posts extends Migration
             $table->string('name');
         });
 
+        Schema::create('authors', function (Blueprint $table){
+            $table->increments('id')->unsigned();
+            $table->text('description');
+
+            $table->integer('users_id')->unsigned();
+            $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
+        });
+
         Schema::create('posts', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('title');
@@ -28,8 +36,21 @@ class Posts extends Migration
 
             $table->morphs('polimorph_from');
 
-            $table->integer('post_type_id')->unsigned();
-            $table->foreign('post_type_id')->references('id')->on('post_types')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('authors_id')->unsigned();
+            $table->foreign('authors_id')->references('id')->on('authors')->onUpdate('cascade')->onDelete('restrict');
+
+            $table->integer('post_types_id')->unsigned();
+            $table->foreign('post_types_id')->references('id')->on('post_types')->onUpdate('cascade')->onDelete('restrict');
+        });
+
+        Schema::create('posts_headlines', function (Blueprint $table){
+            $table->text('title');
+            $table->text('content');
+            $table->enum('media_type',['photo','video','gallery']);
+            $table->string('path');
+
+            $table->integer('posts_id')->unsigned();
+            $table->foreign('posts_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('post_photos', function (Blueprint $table){
@@ -37,8 +58,8 @@ class Posts extends Migration
             $table->string('path');
             $table->string('description');
 
-            $table->integer('post_id')->unsigned();
-            $table->foreign('post_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('posts_id')->unsigned();
+            $table->foreign('posts_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
         });
 
     }
@@ -50,8 +71,13 @@ class Posts extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('post_photos');
+        Schema::dropIfExists('post_headlines');
         Schema::dropIfExists('posts');
+        Schema::dropIfExists('posts_headlines');
+        Schema::dropIfExists('authors');
         Schema::dropIfExists('post_types');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

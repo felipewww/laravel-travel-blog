@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Painel;
+namespace Painel\Interests;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Interests extends Model
+class Interest extends Model
 {
     //
 }

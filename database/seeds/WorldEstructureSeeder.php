@@ -25,19 +25,23 @@ class WorldEstructureSeeder extends Seeder
         DB::table('continents')->insert($continents);
 
         $countries = array(
-            ['name' => 'Brasil', 'continent_id' => '3', 'sigla_2' => 'BR', 'sigla_3' => 'BRA']
+            ['name' => 'Brasil', 'continents_id' => '3', 'sigla_2' => 'BR', 'sigla_3' => 'BRA']
         );
 
         DB::table('countries')->insert($countries);
 
         $estates = array(
-            ['name' => 'São Paulo', 'uf' => 'SP', 'country_id' => 1]
+            ['name' => 'São Paulo', 'uf' => 'SP', 'countries_id' => 1],
+            ['name' => 'Bahia', 'uf' => 'SP', 'countries_id' => 1],
+            ['name' => 'Santa Catarina', 'uf' => 'SP', 'countries_id' => 1]
         );
 
         DB::table('estates')->insert($estates);
 
         $cities = array(
-            ['name' => 'São Paulo', 'estate_id' => 1]
+            ['name' => 'São Paulo', 'estates_id' => 1],
+            ['name' => 'Salvador', 'estates_id' => 2],
+            ['name' => 'Florianópolis', 'estates_id' => 3],
         );
 
         DB::table('cities')->insert($cities);

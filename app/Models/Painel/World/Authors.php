@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Painel;
+namespace Painel\World;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Estate extends Model
+class Authors extends Model
 {
     //
 }

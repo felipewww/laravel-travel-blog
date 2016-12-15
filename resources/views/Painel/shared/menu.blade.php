@@ -7,6 +7,13 @@
         <div class="menu">
             <ul>
                 <li class="modulo">
+                    <span>
+                        <span class="flaticon-arrow"></span>
+                        <a href="/painel">Home</a>
+                    </span>
+                </li>
+
+                <li class="modulo">
                     <span class="has-submenu"><span class="flaticon-terminal"></span>Sistema</span>
                     <ul>
                         <li><a href="#"><span class="flaticon-avatar"></span>Usuarios</a></li>
@@ -29,6 +36,7 @@
                 <li class="modulo">
                     <span class="has-submenu"><span class="flaticon-puzzle"></span>Estrutura</span>
                     <ul>
+                        <li><a href="/painel/mundo/pais"><span class="flaticon-city"></span>Países</a></li>
                         <li><a href="/painel/estrutura/Cidades"><span class="flaticon-city"></span>Cidades</a></li>
                         <li><a href="/painel/estrutura/interesses"><span class="flaticon-star"></span>Interesses</a></li>
                     </ul>

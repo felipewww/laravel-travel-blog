@@ -5,7 +5,7 @@
         <div class="content">
             <div class="logo"><img src="/Site/media/images/praviajar-logo.png"></div>
             <form role="form" method="POST" action="{{ url('auth/login') }}">
-                {{ csrf_field() }}
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <input placeholder="Seu Login" id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                 <input placeholder="Sua Senha" id="password" type="password" class="form-control" name="password" required>
