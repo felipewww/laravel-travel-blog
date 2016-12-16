@@ -9,6 +9,7 @@ class Country extends Model
 {
     public $timestamps = false;
     public $fillable = ['name', 'sigla_2', 'sigla_3'];
+    public $sigla_2 = null;
 
     public function Post()
     {
@@ -24,6 +25,19 @@ class Country extends Model
     {
 //        return $this->hasOne(\Painel\World\Continent::class, 'id', 'continents_id');
         return $this->belongsTo(\Painel\World\Continent::class, 'continents_id');
+    }
+
+    public function testCreate($post)
+    {
+        $c          = new Continent();
+        $continent  = $c->find((int)$post['continents_id']);
+
+        if ($continent){
+            $continent->country()->create($post);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

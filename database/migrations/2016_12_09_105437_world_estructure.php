@@ -24,6 +24,8 @@ class WorldEstructure extends Migration
             $table->string('sigla_2', 2);
             $table->string('sigla_3', 3);
             $table->unique('name');
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('long', 10, 7)->nullable();
 
             $table->integer('continents_id')->unsigned();
             $table->foreign('continents_id')->references('id')->on('continents')->onUpdate('restrict')->onDelete('restrict');
@@ -33,6 +35,8 @@ class WorldEstructure extends Migration
             $table->increments('id')->unsigned();
             $table->string('name')->unique();
             $table->string('uf',45);
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('long', 10, 7)->nullable();
 
             $table->integer('countries_id')->unsigned();
             $table->foreign('countries_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
@@ -44,6 +48,8 @@ class WorldEstructure extends Migration
             $table->boolean('status')->default(false);
             $table->integer('estates_id')->unsigned();
             $table->integer('views')->default(0);
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('long', 10, 7)->nullable();
 
             $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
         });

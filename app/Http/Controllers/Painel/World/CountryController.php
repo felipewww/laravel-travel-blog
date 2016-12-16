@@ -10,25 +10,27 @@ use \Painel\World\Country as Country;
 class CountryController extends Controller
 {
     private $post;
+    public $continents;
 
     public function __construct(Country $post)
     {
         $this->post = $post;
+        $this->continents = \Painel\World\Continent::orderBy('name')->get();
     }
 
     function display()
     {
-        $continents = \Painel\World\Continent::orderBy('name')->get();
-
-        return view('Painel.world.country', ['continents' => $continents]);
+        return view('Painel.world.country', ['continents' => $this->continents, 'status' => 'none']);
     }
 
     function displayPost(Request $request)
     {
-//        print_r($request->all());
+        //print_r($request->all());
 //        echo $request->name;
-        dd($this->post->create($request->all()));
+//        dd($this->post->create($request->all()));
+        $status = $this->post->testCreate($request->all());
 
-        return view('Painel.world.country');
+        //if ($status){}
+        return view('Painel.world.country', ['continents' => $this->continents, 'status' => $status]);
     }
 }

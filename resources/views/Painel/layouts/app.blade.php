@@ -35,7 +35,8 @@
         <!-- materialize/waves -->
 
         <!-- choosen -->
-        <script type="text/javascript" src="/Painel/js/lib/jquery/chosen/chosen.jquery.js"></script>
+        {{--<script type="text/javascript" src="/Painel/js/lib/jquery/chosen/chosen.jquery.js"></script>--}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
         <link rel="stylesheet" href="/Painel/js/lib/jquery/chosen/chosen.css">
         <link rel="stylesheet" href="/Painel/js/lib/jquery/chosen/praviajar-ajustes.css">
         <!-- choosen -->

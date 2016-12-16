@@ -8,8 +8,49 @@ _Forms = {
         this.cfgBlocks();
         this.checkboxes();
         this.setupOrderBy();
+        this.cfgSubmitter();
     },
 
+    cfgSubmitter: function ()
+    {
+        var submitters = $('.submitter');
+        $(submitters).each(function () {
+            $(this).click(function () {
+                // alert('click');
+                var form_name = $(this).attr('data-submitter');
+
+                $form = $('form[name="'+form_name+'"]');
+
+                if($form[0].checkValidity()) {
+                    //f.submit();
+                    $form.submit();
+                } else {
+                    // alert(document.getElementById('example').validationMessage);
+                    // alert('NOT VALID');
+                    // console.log($form[0].checkValidity());
+                    _Forms.cfgInvalid($form);
+                }
+
+            })
+        })
+    },
+
+    cfgInvalid: function ($form)
+    {
+        var inputs = $form.find('input[required="required"], select[required="required"]');
+        console.log(inputs);
+        inputs.each(function () {
+            $this = $(this);
+
+            if ($this.val() == '') {
+                var label = $this.closest('label');
+                label.css('border-color','#ff843b');
+                $this.on('focus', function () {
+                    label.css('border-color', '');
+                })
+            }
+        })
+    },
 
     cfgSize:function ()
     {
@@ -52,7 +93,24 @@ _Forms = {
             input.style.width = inputsize + 'px';
 
             if (input.localName == 'select') {
-                $(input).chosen();
+                $(input).chosen().change(function () {
+                    $(input).val(2);
+                    $(input).trigger("chosen:updated");
+                    // console.log($(this));
+                });
+
+                // $(input).bind('choosen:selected');
+                // $(input).trigger('choosen:selected', function () {
+                //    alert("here");
+                // });
+
+                // console.log(x);
+                // var theform = x[0].parentNode.parentNode.parentNode;
+                // console.log(theform);
+                // theform.onsubmit = function (e) {
+                //     e.preventDefault();
+                //     alert("sub");
+                // }
             }
         }
     },
