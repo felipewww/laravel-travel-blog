@@ -1,7 +1,6 @@
 @extends('Painel.layouts.app')
 
 @section('content')
-    {{ $status }}
     <section class="block">
         <header>
             <div class="title">
@@ -13,6 +12,17 @@
             <div class="cleaner"></div>
         </header>
 
+        {{-- registro criado --}}
+        @if( @isset($status) && $status )
+            <div class="success">
+            Legal, registro criado com sucesso!
+            </div>
+        @endif
+
+        {{-- If has PDOExceptions --}}
+        {{--@if($errors->any())--}}
+            {{--<div class="error">{{$errors->first()}}</div>--}}
+        {{--@endif--}}
 
         <section class="content">
             <form method="post" name="pais">

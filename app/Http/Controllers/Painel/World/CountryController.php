@@ -18,19 +18,24 @@ class CountryController extends Controller
         $this->continents = \Painel\World\Continent::orderBy('name')->get();
     }
 
-    function display()
+    function display($x = false)
     {
-        return view('Painel.world.country', ['continents' => $this->continents, 'status' => 'none']);
+        if ($x){
+            echo 'from exceptions';
+        }
+        return view('Painel.world.country', ['continents' => $this->continents]);
     }
 
-    function displayPost(Request $request)
+    function store(Request $request)
     {
-        //print_r($request->all());
-//        echo $request->name;
-//        dd($this->post->create($request->all()));
-        $status = $this->post->testCreate($request->all());
+        $this->post->store( $request->all() );
 
-        //if ($status){}
-        return view('Painel.world.country', ['continents' => $this->continents, 'status' => $status]);
+        return view('Painel.world.country',
+            [
+                'continents' => $this->continents,
+                'status' => 'success'
+            ]
+        );
+
     }
 }

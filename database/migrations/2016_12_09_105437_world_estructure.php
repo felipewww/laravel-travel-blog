@@ -94,4 +94,20 @@ class WorldEstructure extends Migration
         Schema::dropIfExists('cities_has_interests');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
+
+    public function countries()
+    {
+        $array = json_decode( file_get_contents(base_path().'/database/seeds/countries.txt') , true )['geonames'];
+
+        $i = 0;
+        while ($i < count($array))
+//        while ($i < 5)
+        {
+            //print_r($array[$i]);
+            if ($array[$i]['capital'] == 'Brasília'){
+                print_r($array[$i]);
+            }
+            $i++;
+        }
+    }
 }

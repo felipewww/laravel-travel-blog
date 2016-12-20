@@ -4,6 +4,8 @@
 namespace Painel\World;
 
 use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Support\Facades\App as App;
+use Illuminate\Database\QueryException;
 
 class Country extends Model
 {
@@ -23,11 +25,15 @@ class Country extends Model
 
     public function continent()
     {
-//        return $this->hasOne(\Painel\World\Continent::class, 'id', 'continents_id');
         return $this->belongsTo(\Painel\World\Continent::class, 'continents_id');
     }
 
-    public function testCreate($post)
+    /**
+     * @see App/Exceptions/PDO [If ->create() returns PDOException]
+     * @param array $post [Request $_POST from controller]
+     * @return boolean
+     */
+    public function store($post)
     {
         $c          = new Continent();
         $continent  = $c->find((int)$post['continents_id']);
@@ -39,29 +45,4 @@ class Country extends Model
             return false;
         }
     }
-
-    /**
-     * Sobreposição de método
-     * */
-//    public static function create()
-//    {
-//
-//        $c          = new Continent();
-//        $continent  = $c->find($id);
-//
-//        if ($continent){
-//            $continent->country()->create();
-//        }
-//    }
 }
-
-//function(){
-//    $cont = new \Painel\World\Continent();
-//    $c = $cont->find(1);
-//
-//    $country = new \Painel\World\Country();
-//
-//    $cy = ['name'=>'Test', 'sigla_2' => 'TS', 'sigla_3' => 'TES'];
-//
-//    $country->continent(1)->create($cy);
-//}
