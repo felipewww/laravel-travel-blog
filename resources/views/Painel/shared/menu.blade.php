@@ -4,7 +4,7 @@
             <div class="info">Bem vindo, <a href="#">{{ Auth::user()->name }}</a></div>
         </div>
 
-        <div class="menu">
+        <div class="menu scrollbar-inner">
             <ul>
                 <li class="modulo">
                     <span>

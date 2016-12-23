@@ -16,16 +16,27 @@ class WorldEstructure extends Migration
         Schema::create('continents', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name', 45)->unique();
+            $table->string('initials', 2)->unique();
         });
 
         Schema::create('countries', function (Blueprint $table){
-            $table->increments('id')->unsigned();
+            //$table->increments('id')->unsigned();
+            $table->integer('id')->primary()->unsigned()->unique();
             $table->string('name');
-            $table->string('sigla_2', 2);
-            $table->string('sigla_3', 3);
-            $table->unique('name');
+            $table->string('iso_2', 2);
+            $table->string('iso_3', 3);
+            $table->string('iso_numeric', 10);
+            $table->string('currency_code', 3);
+            $table->string('language');
+            $table->string('capital');
+
+            $table->decimal('ll_north', 10, 7)->nullable();
+            $table->decimal('ll_south', 10, 7)->nullable();
+            $table->decimal('ll_east', 10, 7)->nullable();
+            $table->decimal('ll_west', 10, 7)->nullable();
+
             $table->decimal('lat', 10, 7)->nullable();
-            $table->decimal('long', 10, 7)->nullable();
+            $table->decimal('lng', 10, 7)->nullable();
 
             $table->integer('continents_id')->unsigned();
             $table->foreign('continents_id')->references('id')->on('continents')->onUpdate('restrict')->onDelete('restrict');
@@ -33,7 +44,7 @@ class WorldEstructure extends Migration
 
         Schema::create('estates', function (Blueprint $table){
             $table->increments('id')->unsigned();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('uf',45);
             $table->decimal('lat', 10, 7)->nullable();
             $table->decimal('long', 10, 7)->nullable();
@@ -44,7 +55,7 @@ class WorldEstructure extends Migration
 
         Schema::create('cities', function (Blueprint $table){
             $table->increments('id')->unsigned();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->boolean('status')->default(false);
             $table->integer('estates_id')->unsigned();
             $table->integer('views')->default(0);
@@ -101,10 +112,9 @@ class WorldEstructure extends Migration
 
         $i = 0;
         while ($i < count($array))
-//        while ($i < 5)
         {
-            //print_r($array[$i]);
-            if ($array[$i]['capital'] == 'Brasília'){
+            if ($array[$i]['capital'] == 'Brasília')
+            {
                 print_r($array[$i]);
             }
             $i++;

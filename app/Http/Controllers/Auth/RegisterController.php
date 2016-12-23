@@ -41,12 +41,11 @@ class RegisterController extends Controller
     }
 
     public function view(Request $request){
+
         if ( $request->isMethod('post') ){
             $e =  $this->validator($request->input());
             print_r($e->errors());
-            //$this->create($request->input());
-        }else{
-            echo 'não';
+            $this->create($request->input());
         }
 
         return view('auth.register');

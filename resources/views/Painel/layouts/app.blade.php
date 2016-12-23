@@ -10,8 +10,7 @@
 
     <title>{{ config('app.name', 'Pra Viajar') }}</title>
 
-    <!-- Styles -->
-    {{--<link href="/Painel/css/app.css" rel="stylesheet">--}}
+    <!-- Main Styles - DO NOT MOVE IT!!! -->
     <link rel="stylesheet" type="text/css" href="/Painel/css/default.css">
     <link rel="stylesheet" type="text/css" href="/Painel/css/icons/font/flaticon.css">
 
@@ -22,7 +21,24 @@
         <script type="text/javascript" src="/Painel/js/lib/jquery/jquery.easing.1.3.js"></script>
         <script type="text/javascript" src="/Painel/js/lib/jquery/jquery-mask/jquery.mask.min.js"></script>
         <script type="text/javascript" src="/Painel/js/lib/jquery/jquery.maskMoney.min.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/jquery-scrollbar/jquery.scrollbar.min.js"></script>
         <!-- JQuery -->
+
+        <!-- JQuery DATATABLES -->
+        {{--<link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/DataTables-1.10.13/css/jquery.dataTables.css"/>--}}
+        <link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/AutoFill-2.1.3/css/autoFill.dataTables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/Buttons-1.2.4/css/buttons.dataTables.css"/>
+        <link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/KeyTable-2.2.0/css/keyTable.dataTables.css"/>
+        <link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/RowReorder-1.2.0/css/rowReorder.dataTables.css"/>
+        <link rel="stylesheet" type="text/css" href="/Painel/js/lib/jquery/datatables/Select-1.2.0/css/select.dataTables.css"/>
+
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/DataTables-1.10.13/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/AutoFill-2.1.3/js/dataTables.autoFill.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/Buttons-1.2.4/js/dataTables.buttons.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/KeyTable-2.2.0/js/dataTables.keyTable.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/RowReorder-1.2.0/js/dataTables.rowReorder.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/datatables/Select-1.2.0/js/dataTables.select.js"></script>
+        <!-- JQuery DATATABLES -->
 
         <!-- sweet alert -->
         <link rel="stylesheet" href="/Painel/js/lib/sweetalert-master/dist/sweetalert.css">
@@ -60,6 +76,8 @@
     <script>
         window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>
     </script>
+
+    @yield('header')
 </head>
 <body>
     <!-- JS tootlip -->

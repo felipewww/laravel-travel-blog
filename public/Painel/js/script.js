@@ -28,6 +28,80 @@ Script = {
 
         //Plugins
         Client.init();
+
+        this.dataTablesSetup();
+
+        //Scrollbar menu
+        jQuery(document).ready(function(){
+            jQuery('.scrollbar-inner').scrollbar();
+        });
+    },
+
+    dataTablesSetup: function ()
+    {
+        var tables = $('.setDataTables');
+        tables.each(function (){
+            var paramns = {};
+            paramns.columnDefs = [];
+
+            var table = $(this);
+            var data = table.find('td.info')[0];
+            var columns = table.find('td.columns');
+
+            //Setar conteudo vindo do HTML, ex: botões de ação
+            var actions = table.find('.html');
+            if (actions.length) {
+                actions.each(function () {
+                    var leng = paramns.columnDefs.length;
+                    paramns.columnDefs[leng] = { data: null, targets: parseInt($(this).attr('data-target')), defaultContent: $(this).html() };
+                });
+            }
+
+            //Criar tabela
+            Script.dataTablesExec(
+                table,
+                JSON.parse(data.innerHTML),
+                JSON.parse(columns.html()),
+                paramns
+            );
+        });
+
+    },
+
+    dataTablesExec: function (table, data, cols, paramns)
+    {
+        ( paramns == undefined ) ? paramns = {} : null ;
+        ( paramns.columnDefs == undefined ) ? paramns.columnDefs = '' : 'null';
+
+        $(table).DataTable({
+            data: data,
+            columnDefs: paramns.columnDefs,
+            columns: cols,
+            // rowReorder: true,
+            keys: true,
+            select: true,
+            language: Script.dataTablesLanguage(),
+            dom: 'lfip'
+        });
+    },
+
+    dataTablesLanguage: function ()
+    {
+        return {
+            info: "Exibindo de _START_ até _END_ de _TOTAL_ registros",
+            paginate: {
+                previous: "anterior",
+                next: "próxima",
+            },
+            infoFiltered: " - Filtro no total de _MAX_ registros",
+            search: 'Pesquisar:',
+            lengthMenu: 'Exibir <select>'+
+            '<option value="10">15</option>'+
+            '<option value="25">30</option>'+
+            '<option value="50">50</option>'+
+            '<option value="-1">Todos</option>'+
+            '</select> por página'
+        }
     },
 
     setMasks: function()

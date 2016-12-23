@@ -1,6 +1,7 @@
 @extends('Painel.layouts.app')
 
 @section('content')
+    {{ $modulo }}
     <section class="block">
         <header>
             <div class="title">

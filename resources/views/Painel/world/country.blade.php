@@ -1,6 +1,39 @@
 @extends('Painel.layouts.app')
 
+@section('header')
+    <script type="text/javascript" src="{!! asset('Painel/js/pages/estrutura/country.js') !!}"></script>
+@endsection
+
 @section('content')
+    <section class="block">
+        <header>
+            <div class="title">
+                <span>Listagem Países</span>
+            </div>
+            <div class="actions">
+                <a href="#" class="button purple waves-effect submitter">deletar</a>
+                <a href="#" class="button purple waves-effect submitter">editar</a>
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            <table class="setDataTables" id="countries">
+                <tbody>
+                    <tr>
+                        <td class="info">{!! $countries !!}</td>
+                        <td class="columns">{!! $dataTables_columns !!}</td>
+                        <td class="html" data-target="3">
+                            <span onclick="country.hello()">act1</span>
+                            <span>act2</span>
+                            <span>act3</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+
     <section class="block">
         <header>
             <div class="title">

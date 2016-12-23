@@ -64,7 +64,7 @@ div#loading span, div#loadingPage span {  display: block;  margin-bottom: 10px; 
 
 /*novo painel*/
 * { padding: 0; margin: 0; }
-body{ margin: 0; padding: 0; background-color: #3C4452; font-family: 'Montserrat', sans-serif; font-size: 13px; color: #fff; }
+body{ margin: 0; padding: 0; background-color: #3C4452; font-family: 'ubuntu', sans-serif; font-size: 13px; color: #fff; }
 ul { list-style: none; }
 a { text-decoration: none; color: #fff; font-weight: normal; transition: all 0.3s; }
 *:hover { transition: all 0.3s; }
@@ -162,7 +162,7 @@ section#menu-sidebar .user-info .foto {
 }
 
 section#menu-sidebar .user-info .info a {  color: #5B9EE8;  }
-section#menu-sidebar .menu {  margin-top: 30px;  height: 78%;  overflow: hidden;  width: 90%;  }
+section#menu-sidebar .menu { height: 70%; width: 90%;  }
 section#menu-sidebar .menu li { padding: 10px 0;  }
 section#menu-sidebar .menu > ul > li {  border-bottom: 1px solid rgba(0, 0, 0, 0.13);  }
 section#menu-sidebar .menu a:hover, section#menu-sidebar .menu span:hover {  color:#9AC947; cursor: pointer  }
@@ -256,22 +256,44 @@ div.menu .flaticon-keyboard-right-arrow-button {
     }
     /*Page Content*/
 
+table {
+    padding-top: 25px;
+}
 table th {
     text-align: left;
     font-size: 11px;
     font-weight: normal;
     text-transform: uppercase;
-    color: #ADE07C;
+    color: #e07cb2;
     padding-bottom: 15px;
 }
+table thead tr th {
+    text-align: center;
+    line-height: 30px;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.12);
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-bottom: none;
+    border-left: none;
+}
 table {
-    width: 100%;
+    width: 100% !important;
     border-spacing: 0;
 }
 
-table tbody tr td{
-    padding: 15px 5px;
+table tbody tr:first-child td {
+    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+table tbody tr td:last-child {
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+table tbody tr td {
+    padding: 5px 5px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-left: 1px dotted rgba(0, 0, 0, 0.35);
+    padding-left: 15px;
 }
 table tbody tr {
     font-size: 12px;
@@ -283,13 +305,13 @@ table tbody tr:hover {
     background: rgba(0, 0, 0, 0.2);
 }
 
-table.selectable tbody tr{
-    cursor: pointer;
-}
+/*table.selectable tbody tr{*/
+    /*cursor: pointer;*/
+/*}*/
 
-table.selectable tr[data-selected="true"] {
-    background-color: rgba(108, 227, 255, 0.2);
-}
+/*table.selectable tr[data-selected="true"] {*/
+    /*background-color: rgba(108, 227, 255, 0.2);*/
+/*}*/
 
 table tbody tr td a {
     color: #44c2d3;
@@ -300,14 +322,22 @@ table span.undefined {
     color: #fbb62f;
 }
 
-.pagination button:hover {
+div.dataTables_wrapper .dataTables_filter {
+    float: right;
+}
+div.dataTables_wrapper .dataTables_length {
+    width: 220px;
+    float: left;
+}
+
+.paginate_button:hover {
     color: #f9a0fd;
 }
 
-.pagination button[data-selected="true"] {
+.paginate_button.current {
     color: #e8cb26;
 }
-.pagination button {
+.paginate_button {
     padding: 5px 10px;
     color: #44c2d3;
     background: none;
@@ -315,9 +345,21 @@ table span.undefined {
     cursor: pointer;
     outline: none;
 }
-.pagination {
+.dataTables_paginate {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 15px;
+}
+div.dataTables_info {
+    text-align: center;
+    font-size: 10px;
+    margin-top: 15px;
+}
+table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+    background-color: rgba(88, 116, 171, 0.33) !important;
+}
+table.dataTable th.focus, table.dataTable td.focus {
+    outline: 1px solid #56a4bb !important;
+    outline-offset: -1px !important;
 }
 form.pagination select {
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -392,3 +434,140 @@ span[class*="statusflagtable_"] {
 }
 span.statusflagtable_1 { background-color: #a9fe42; }
 span.statusflagtable_0 { background-color: #ff54c4; }
+
+/*************** SCROLLBAR BASE CSS ***************/
+.scroll-wrapper {
+    /*overflow: hidden !important;*/
+    padding: 0 !important;
+    position: relative;
+}
+
+.scroll-wrapper > .scroll-content {
+    border: none !important;
+    box-sizing: content-box !important;
+    height: auto;
+    left: 0;
+    margin: 0;
+    max-height: none;
+    max-width: none !important;
+    overflow: scroll !important;
+    padding: 0;
+    position: relative !important;
+    top: 0;
+    width: auto !important;
+}
+
+.scroll-wrapper > .scroll-content::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+
+.scroll-element {
+    display: none;
+}
+.scroll-element, .scroll-element div {
+    box-sizing: content-box;
+}
+
+.scroll-element.scroll-x.scroll-scrollx_visible,
+.scroll-element.scroll-y.scroll-scrolly_visible {
+    display: block;
+}
+
+.scroll-element .scroll-bar,
+.scroll-element .scroll-arrow {
+    cursor: default;
+}
+
+.scroll-textarea {
+    border: 1px solid #cccccc;
+    border-top-color: #999999;
+}
+.scroll-textarea > .scroll-content {
+    overflow: hidden !important;
+}
+.scroll-textarea > .scroll-content > textarea {
+    border: none !important;
+    box-sizing: border-box;
+    height: 100% !important;
+    margin: 0;
+    max-height: none !important;
+    max-width: none !important;
+    overflow: scroll !important;
+    outline: none;
+    padding: 2px;
+    position: relative !important;
+    top: 0;
+    width: 100% !important;
+}
+.scroll-textarea > .scroll-content > textarea::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+
+/*************** SIMPLE INNER SCROLLBAR ***************/
+.scrollbar-inner > .scroll-element,
+.scrollbar-inner > .scroll-element div
+{
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.scrollbar-inner > .scroll-element div {
+    display: block;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.scrollbar-inner > .scroll-element.scroll-x {
+    bottom: 2px;
+    height: 8px;
+    left: 0;
+    width: 100%;
+}
+
+.scrollbar-inner > .scroll-element.scroll-y {
+    height: 100%;
+    right: -15px;
+    top: 0;
+    width: 8px;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_outer {
+    overflow: hidden;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_outer,
+.scrollbar-inner > .scroll-element .scroll-element_track,
+.scrollbar-inner > .scroll-element .scroll-bar {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_track,
+.scrollbar-inner > .scroll-element .scroll-bar {
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    opacity: 0.4;
+}
+
+.scrollbar-inner > .scroll-element .scroll-element_track { background-color: rgba(0, 0, 0, 0.4); }
+.scrollbar-inner > .scroll-element .scroll-bar { background-color: rgb(91, 158, 232); }
+.scrollbar-inner > .scroll-element:hover .scroll-bar { background-color: rgb(85, 174, 255); }
+.scrollbar-inner > .scroll-element.scroll-draggable .scroll-bar { background-color: #919191; }
+
+
+/* update scrollbar offset if both scrolls are visible */
+
+.scrollbar-inner > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_track { left: -12px; }
+.scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track { top: -12px; }
+
+
+.scrollbar-inner > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { left: -12px; }
+.scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -12px; }
