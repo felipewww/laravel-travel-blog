@@ -51,30 +51,25 @@
         <!-- materialize/waves -->
 
         <!-- choosen -->
-        {{--<script type="text/javascript" src="/Painel/js/lib/jquery/chosen/chosen.jquery.js"></script>--}}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+        <script type="text/javascript" src="/Painel/js/lib/jquery/chosen/chosen.jquery.js"></script>
+    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>--}}
         <link rel="stylesheet" href="/Painel/js/lib/jquery/chosen/chosen.css">
         <link rel="stylesheet" href="/Painel/js/lib/jquery/chosen/praviajar-ajustes.css">
         <!-- choosen -->
     <!-- ./DefaultLibs -->
 
-    <!-- Client/Multaction -->
-    <link rel="stylesheet" href="/Painel/js/client/multaction/multaction.css">
-    <script type="text/javascript" src="/Painel/js/client/multaction/Multaction.js"></script>
+    <!-- Client -->
+    <link rel="stylesheet" href="/Painel/js/client/multaction.css">
+    <script type="text/javascript" src="/Painel/js/client/Multaction.js"></script>
 
-    <!-- SelecTables -->
-    <script type="text/javascript" src="/Painel/js/Selectable.js"></script>
-
-    {{--<script type="text/javascript" src="/Painel/js/sysmsg.js"></script>--}}
-    <script type="text/javascript" src="/Painel/js/Tooltip.js"></script>
-
-
-    <script type="text/javascript" src="/Painel/js/script.js"></script>
+    <script type="text/javascript" src="/Painel/js/client/Tooltip.js"></script>
     <script type="text/javascript" src="/Painel/js/client/_Menu.js"></script>
     <script type="text/javascript" src="/Painel/js/client/_Forms.js"></script>
+    <script type="text/javascript" src="/Painel/js/client/DataTablesExtensions.js"></script>
     <script type="text/javascript" src="/Painel/js/client/client.js"></script>
+    <script type="text/javascript" src="/Painel/js/script.js"></script>
     <script>
-        window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>
+        window.Laravel = '<?php echo json_encode(['csrfToken' => csrf_token()]); ?>';
     </script>
 
     @yield('header')

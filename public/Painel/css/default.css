@@ -313,9 +313,18 @@ table tbody tr:hover {
     /*background-color: rgba(108, 227, 255, 0.2);*/
 /*}*/
 
-table tbody tr td a {
+table tbody tr td a:hover {
     color: #44c2d3;
-    text-decoration: underline;
+}
+
+table tbody tr td a {
+    color: #d0ffbd;
+    margin-right: 5px;
+    background-color: rgba(0, 0, 0, 0.19);
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
 }
 
 table span.undefined {

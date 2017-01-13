@@ -20,14 +20,10 @@
         <section class="content">
             <table class="setDataTables" id="countries">
                 <tbody>
+                    {{--The HTML into this TR represents the setup info where JS get and configure this datatables.--}}
                     <tr>
-                        <td class="info">{!! $countries !!}</td>
                         <td class="columns">{!! $dataTables_columns !!}</td>
-                        <td class="html" data-target="3">
-                            <span onclick="country.hello()">act1</span>
-                            <span>act2</span>
-                            <span>act3</span>
-                        </td>
+                        <td class="info">{!! $dataTables_info !!}</td>
                     </tr>
                 </tbody>
             </table>
@@ -52,19 +48,13 @@
             </div>
         @endif
 
-        {{-- If has PDOExceptions --}}
-        {{--@if($errors->any())--}}
-            {{--<div class="error">{{$errors->first()}}</div>--}}
-        {{--@endif--}}
-
         <section class="content">
             <form method="post" name="pais">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                <div class="w-30">
+                <div class="w-50">
                     <label>
                         <span>continente:</span>
-                        <select name="continents_id" required="required" data-placeholder="teste">
+                        <select name="continents_id" data-placeholder="teste">
                             @foreach($continents as $cont)
                                 <option value="{{ $cont->id }}">{{ $cont->name }}</option>
                             @endforeach
@@ -72,30 +62,22 @@
                     </label>
                 </div>
 
-                <div class="w-30">
+                <div class="w-50">
                     <label>
-                        <span>Test Input:</span>
-                        <input required="required" type="text" name="name" placeholder="Nome do País">
+                        <span>Teste:</span>
+                        <input name="teste" type="text">
                     </label>
                 </div>
 
-                <div class="w-20">
-                    <label>
-                        <span>Sigla do País:</span>
-                        <input required="required" maxlength="2" type="text" name="sigla_2" placeholder="2 dígitos">
-                    </label>
-                </div>
-
-                <div class="w-20">
-                    <label>
-                        <span>Sigla do País:</span>
-                        <input required="required" maxlength="3" type="text" name="sigla_3" placeholder="3 dígitos">
-                    </label>
-                </div>
                 <div class="cleaner"></div>
 
-                {{--<button type="submit">salvar</button>--}}
+                <input type="hidden" name="action" value="store">
 
+            </form>
+
+            <form method="post" action="/painel/mundo/pais/info">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <button type="submit">send</button>
             </form>
         </section>
     </section>

@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Redirect;
 
 class PDOExceptions {
@@ -23,7 +25,8 @@ class PDOExceptions {
         }
         else
         {
-            return response()->view($view, self::defaultResponse($code));
+            //return response()->view($view, self::defaultResponse($e->getCode()));
+            return trigger_error('DevOps! '.$e->getMessage());
         }
     }
 

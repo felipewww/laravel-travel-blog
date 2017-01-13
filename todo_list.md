@@ -1,5 +1,9 @@
 ##### Todo List | Pra Viajar
 
+###### Coisas para confirmar quando subir o sistema para produção
+
+-[ ] Verificar se tem permissão total para ler as pastas /public/geonames/* (onde estão todos os dados de WrodlEstructure)
+
 ###### Propostas
 
 -[ ] É possível fazer uma leitura de qualquer cidade do mundo pela [API do google](https://developers.google.com/places/web-service/) caso
@@ -7,6 +11,7 @@ não tenhamos nenhum post sobre determinado local. Ou seja, podemos trzer fotos,
 
 ###### Backend
 
+-[ ] Criar um seeder com nomes dos paises que deseja inserir... dessa forma, o sistema tentar ler todos os arquivos de estados e cidades daquele pais e ja registra no banco. Esse seeder pode inclusive ser outro arquivo TXT dos paises com posts ja criados em produção. penser nisso.
 -[ ] Criar tags para pesquisa e SEO (ex: Nova Iorque = new iorque, new york...)
 -[ ] Será necessário criar um submitall() para enviar todos os forms da tela via AJAX. Atualmente cada botões submit pertence a um bloco
 -[ ] Criar validação de forms no backend, inclusive para requisições ajax

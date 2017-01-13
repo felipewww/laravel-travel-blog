@@ -6,6 +6,8 @@ namespace Painel\World;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Support\Facades\App as App;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use League\Flysystem\Exception;
 
 class Country extends Model
 {
@@ -13,7 +15,7 @@ class Country extends Model
     public $fillable = ['name', 'sigla_2', 'sigla_3'];
     public $sigla_2 = null;
 
-    public function Post()
+    public function polimorph_from()
     {
         return $this->morphMany(Post::class, 'polimorph_from');
     }

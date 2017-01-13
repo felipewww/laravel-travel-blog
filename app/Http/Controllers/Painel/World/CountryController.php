@@ -2,45 +2,67 @@
 
 namespace App\Http\Controllers\Painel\World;
 
+use App\Library\DataTablesInterface;
 use Illuminate\Http\Request;
 use \App\Http\Controllers\Controller;
 use \Painel\World\Country as Country;
 
-class CountryController extends Controller
-{
-    private $post;
-    public $continents;
-    public $countries;
+class CountryController extends Controller implements DataTablesInterface {
 
-    protected $countries_json;
-    protected $datatables_columns;
+    use \App\Library\Jobs, \App\Library\DataTablesExtensions;
 
-    public function __construct(Country $post)
+    private     $model;
+    public      $continents;
+    public      $countries;
+
+    protected   $countries_json;
+    protected   $datatables_columns;
+
+    protected   $vars = [];
+
+    public function __construct(Country $model)
     {
-        $this->post = $post;
+        $this->model = $model;
         $this->continents = \Painel\World\Continent::orderBy('name')->get();
         $this->countries = Country::all();
-        $this->dataTablesSetup();
+
+        $this->dataTablesInit();
+
+        $this->vars['continents'] = $this->continents;
     }
 
-    function dataTablesSetup()
+    /*
+     * @rowButtons - Botões de ação que são inseridos na última coluna de uma tabela. Ações específicas do registro.
+     * */
+    function dataTablesConfig()
     {
         $data = [];
         $i = 1;
+
+        //Criar objeto json para entendimento da função Script.createElement();
+        $this->add
+        ([
+            'html' => 'edit',
+            'attributes' => ['class' => 'sendPost', 'action' => 'painel/mundo/pais/info']
+        ]);
+
         foreach ($this->countries as $country)
         {
             $cInfo = [
                 $i,
                 $country->id,
                 $country->name,
-                null
+                [
+                    'rowButtons' => $this->tableButtons
+                ]
             ];
             array_push($data,$cInfo);
             $i++;
         }
 
-        $this->countries_json = $data;
-        $this->datatables_columns = [
+        $this->data_info = $data;
+
+        $this->data_cols = [
             ['title' => 'n', 'width' => '10px'],
             ['title' => 'id', 'width' => '70px'],
             ['title' => 'nome'],
@@ -48,37 +70,15 @@ class CountryController extends Controller
         ];
     }
 
-    function dataTablesActionButtons()
-    {
-        $act = '<span>act 1</span>';
-        //$act .= '<span>act 2</span>';
-        //$act .= '<span>act 3</span>';
-        $act  = "test";
-        return $act;
-    }
-
     function display()
     {
-        return view('Painel.world.country',
-            [
-                'continents' => $this->continents,
-                'countries' => json_encode($this->countries_json),
-                'dataTables_columns' => json_encode($this->datatables_columns)
-            ]
-        );
+        return view('Painel.world.country', $this->vars);
     }
 
     function store(Request $request)
     {
-        $this->post->store( $request->all() );
-
-        return view('Painel.world.country',
-            [
-                'continents' => $this->continents,
-                'status' => 'success',
-                'countries' => $this->countries
-            ]
-        );
-
+        $this->model->store( $request->all() );
+        $this->vars['status'] = 'success';
+        return view('Painel.world.country', $this->vars);
     }
 }

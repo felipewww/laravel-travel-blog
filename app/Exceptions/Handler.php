@@ -2,10 +2,12 @@
 
 namespace App\Exceptions;
 
-use CustomExceptions\PDO;
+//use CustomExceptions\PDO;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class Handler extends ExceptionHandler
 {
