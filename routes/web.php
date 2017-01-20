@@ -18,10 +18,12 @@ Route::get('/', 'Site\IndexController@index');
 /*
  * Rotas apenas se não estiver logado
 */
-//Route::group(['prefix' => ''], function (){
-//
-//});
-Route::get('cidade/{nome_cidade}/{id}', ['uses' => 'Site\IndexController@cidade']);
+Route::get('pais/{nome}/{id}', ['uses' => 'Site\World\CountryController@index']);
+Route::get('estado/{nome}/{id}', ['uses' => 'Site\World\EstateController@index']);
+Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@index3']);
+
+Route::post('upload-image', 'Site\IndexController@uploadImage');
+Route::post('insert-image', 'Site\IndexController@insertImage');
 
 Route::group(['prefix' => 'auth'], function (){
     Route::get('login', 'Auth\LoginController@view');
@@ -48,19 +50,39 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('/{action}', ['uses' => 'Dev\IndexController@index']);
     });
 
+    Route::group(['prefix' => 'blog'], function (){
+        Route::post('cidade', 'Site\World\CityController@index2');
+        Route::get('cidade/{id}', ['uses' => 'Site\World\CityController@index3']);
+    });
+
     Route::group(['prefix' => 'painel'], function (){
 
         Route::group(['middleware' => 'api'], function (){
-            Route::get('/api/mundo/pais/{action}', ['uses' => 'Painel\World\CountryInfoController@apiAction']);
+            Route::get('/api/mundo/pais/{action}', ['uses' => 'Painel\World\CountryController@apiAction']);
+        });
+
+        Route::group(['prefix' => 'mundo'], function (){
+
+            Route::get('paises', 'Painel\World\CountriesController@display');
+
+            Route::group(['prefix' => 'pais'], function(){
+//                Route::get('', 'Painel\World\CountryController@display');
+                Route::get('{id}', ['uses' => 'Painel\World\CountryController@display']);
+
+            });
+
+            Route::group(['prefix' => 'cidade'], function(){
+//                Route::get('{id}', 'Painel\World\CityController@display');
+                Route::get('{id}', function ($id){
+//                    dd($id);
+                    $city = new \App\Http\Controllers\Painel\World\CityController($id);
+                    return $city->display();
+                });
+            });
+
         });
 
         Route::get('', 'Painel\IndexController@index');
-
-        Route::get('/mundo/pais', 'Painel\World\CountryController@display');
-        Route::post('/mundo/pais', 'Painel\World\CountryController@postAction');
-        Route::post('/mundo/pais/info', 'Painel\World\CountryInfoController@postAction');
-        Route::get('/mundo/pais/{id}', ['uses' => 'Painel\World\CountryInfoController@display']);
-
         Route::any('logout', 'Auth\LoginController@logout');
 
         Route::get('register', 'Auth\RegisterController@view');

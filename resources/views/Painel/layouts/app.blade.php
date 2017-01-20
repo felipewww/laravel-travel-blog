@@ -68,11 +68,14 @@
     <script type="text/javascript" src="/Painel/js/client/DataTablesExtensions.js"></script>
     <script type="text/javascript" src="/Painel/js/client/client.js"></script>
     <script type="text/javascript" src="/Painel/js/script.js"></script>
+    <script type="text/javascript" src="{!! asset('/js/Admin.js')  !!}"></script>
     <script>
-        window.Laravel = '<?php echo json_encode(['csrfToken' => csrf_token()]); ?>';
+        window.Laravel = JSON.parse('<?php echo json_encode(['csrfToken' => csrf_token()]); ?>');
     </script>
 
     @yield('header')
+
+    @if( isset($json_meta) ) <meta name="screen-json" content="{{ $json_meta }}">@endif
 </head>
 <body>
     <!-- JS tootlip -->
@@ -93,8 +96,8 @@
             </div>
             <div id="top-actions">
                 <div class="actions">
-                    <span class="button light-red"><a href="#">cancelar</a></span>
-                    <span class="button light-blue"><a href="#">editar</a></span>
+                    {{--<span class="button light-red"><a href="#">cancelar</a></span>--}}
+                    {{--<span class="button light-blue"><a href="#">editar</a></span>--}}
                 </div>
             </div>
         </div>

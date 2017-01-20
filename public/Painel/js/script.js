@@ -16,16 +16,65 @@ Script = {
     submitValidator: false,
     clickToEnable: {},
 
+    //Iniciar funções em comum entre "painel" e "site"
 	init: function () {
-        this.responseajax   = document.getElementById("responseajax");
-        this.loading        = document.getElementById("loading");
+        // this.responseajax   = document.getElementById("responseajax");
+        // this.loading        = document.getElementById("loading");
 
         this.todayDate();
-        this.actionMessage();
-        this.setMasks();
+        // this.actionMessage();
+        // this.setMasks();
+        this.getScreenJson();
 
-        //Código criado por ARDUO para extensões ou plugins
+        //Código criado por ARDUO para extensões ou plugins do PAINEL.
         Client.init();
+    },
+
+    sendPost: function (elements, paramns)
+    {
+        console.log(elements);
+        // exit()
+        var form = this.createElement('form', paramns);
+        elements['_token'] = window.Laravel.csrfToken;
+
+        /*
+        * es: Objeto javascript { name: value }
+        * prefix: Se es.value = Object, cairá em RECURSIVIDADE até encontrar um VALUE que seja STRING, então neste caso, NAME
+        * será o prefixo para evitar sobreposição de INPUT NAME, caso vários objetos tenham o mesmo name
+        * */
+        (function createInput(es, prefix) {
+            for(var attr in es)
+            {
+                if(typeof es[attr] != 'object'){
+                    var input = document.createElement('input');
+                    var value = es[attr];
+                    input.type = 'text';
+                    input.name = (prefix == undefined) ? attr : prefix+'['+attr+']';
+                    input.value = value;
+                    form.appendChild(input);
+                }else{
+                    var obj = es[attr];
+                    if (prefix != undefined) {
+                        //attr = prefix+"_"+attr;
+                        attr = prefix+"["+attr+"]";
+                    }
+                    createInput(obj, attr);
+                }
+            }
+        })(elements);
+
+        form.submit();
+    },
+
+    /*
+    * Objeto json da tela renderizada para comunicação via BACK e FRONT
+    * */
+    getScreenJson: function () {
+        var meta = $('meta[name="screen-json"]');
+
+        if ( meta[0] != undefined ) {
+            this.screenJson = JSON.parse(meta[0].getAttribute('content'));
+        }
     },
 
     setMasks: function()
@@ -253,6 +302,11 @@ Script = {
 
     createElement: function (element, innerHTML, attrs)
     {
+        if (typeof innerHTML == 'object') {
+            attrs = innerHTML;
+            innerHTML = '';
+        }
+
         if (typeof attrs != 'object') { attrs = {} }
 
         var e = document.createElement(element);
@@ -266,7 +320,8 @@ Script = {
         return e;
     },
 
-    Random: function (end, start) {
+    Random: function (end, start)
+    {
         if ( start == undefined ) { start = 1; }
         if ( end == undefined ) { end = 100; }
 

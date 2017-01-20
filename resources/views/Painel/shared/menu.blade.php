@@ -9,24 +9,22 @@
                 <li class="modulo">
                     <span>
                         <span class="flaticon-arrow"></span>
-                        <a href="/painel">Home</a>
+                        <a class="menu-item-text" href="/painel">Home</a>
                     </span>
                 </li>
 
                 <li class="modulo">
-                    <span class="has-submenu"><span class="flaticon-terminal"></span>Sistema</span>
+                    <span class="has-submenu">
+                        <span class="flaticon-terminal"></span>
+                        <span class="menu-item-text">Sistema</span>
+                    </span>
                     <ul>
                         <li><a href="#"><span class="flaticon-avatar"></span>Usuarios</a></li>
                         <li>
-                            <span class="has-submenu"><span class="flaticon-technology-1"></span>Robots</span>
+                            <span class="has-submenu"><span class="flaticon-technology-1"></span>Developer</span>
                             <ul>
-                                <li>
-                                    <span><span class="flaticon-paper-plane"></span>Disparo de e-mails</span>
-                                    <ul>
-                                        <li><a href="#">E-mail de Cadastro</a></li>
-                                        <li><a href="#">E-mail de Cobrança</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="#">Documentação</a></li>
+                                <li><a href="#">Disparo de e-mails</a></li>
                                 <li><a href="#">Sistema em Manutenção</a></li>
                             </ul>
                         </li>
@@ -34,27 +32,40 @@
                 </li>
 
                 <li class="modulo">
-                    <span class="has-submenu"><span class="flaticon-puzzle"></span>Estrutura</span>
-                    <ul>
-                        <li><a href="/painel/mundo/pais"><span class="flaticon-city"></span>Países</a></li>
-                        <li><a href="/painel/estrutura/Cidades"><span class="flaticon-city"></span>Cidades</a></li>
-                        <li><a href="/painel/estrutura/interesses"><span class="flaticon-star"></span>Interesses</a></li>
-                    </ul>
+                    <span>
+                        <span class="flaticon-puzzle"></span>
+                        <span class="menu-item-text"><a href="/painel/mundo/paises">Estrutura</a></span>
+                    </span>
                 </li>
 
                 <li class="modulo">
-                    <span class="has-submenu"><span class="flaticon-interface"></span>Blog</span>
+                    <span class="has-submenu"><span class="flaticon-interface"></span>
+                        <span class="menu-item-text">Blog</span>
+                    </span>
                     <ul>
-                        <li><a href="/painel/blog/posts"><span class="flaticon-feather-pen"></span>Posts</a></li>
                         <li><a href="/painel/blog/post"><span class="flaticon-feather-pen"></span>Novo Post</a></li>
+                        <li><a href="/painel/blog/posts"><span class="flaticon-feather-pen"></span>Posts</a></li>
+                        <li><a href="/painel/blog/posts"><span class="flaticon-feather-pen"></span>Autores</a></li>
                     </ul>
                 </li>
 
                 <li class="modulo">
-                    <span class="has-submenu"><span class="flaticon-shop"></span>Serviços</span>
+                    <span class="has-submenu"><span class="flaticon-shop"></span>
+                        <span class="menu-item-text">Serviços</span>
+                    </span>
                     <ul>
+                        <li><a href="/painel/servicos/servico"><span class="flaticon-shop"></span>Novo Serviço</a></li>
                         <li><a href="/painel/servicos"><span class="flaticon-shop"></span>Serviços</a></li>
-                        <li><a href="/painel/servicos/servico"><span class="flaticon-shop"></span>Novo Serviços</a></li>
+                    </ul>
+                </li>
+
+                <li class="modulo">
+                    <span class="has-submenu"><span class="flaticon-shop"></span>
+                        <span class="menu-item-text">Interesses</span>
+                    </span>
+                    <ul>
+                        <li><a href="/painel/servicos/servico"><span class="flaticon-shop"></span>Novo Interesse</a></li>
+                        <li><a href="/painel/servicos"><span class="flaticon-shop"></span>Interesses</a></li>
                     </ul>
                 </li>
 

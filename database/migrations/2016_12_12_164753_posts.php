@@ -31,6 +31,7 @@ class Posts extends Migration
             $table->string('title');
             $table->text('content');
             $table->text('content_strip');
+            $table->string('seo_tags')->nullable();
 
             $table->timestamps();
 

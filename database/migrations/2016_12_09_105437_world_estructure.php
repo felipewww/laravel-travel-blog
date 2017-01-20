@@ -40,6 +40,15 @@ class WorldEstructure extends Migration
 
             $table->integer('continents_id')->unsigned();
             $table->foreign('continents_id')->references('id')->on('continents')->onUpdate('restrict')->onDelete('restrict');
+
+            /*
+             * Existem paises que tem observações específicas, ex: Reino unido foi cadastrado
+             * posteriormente no banco sendo dividido entre os 4 paises que o mantém com este nome
+             *
+             * Essas observações vem aqui em formato JSON para futura pesquisa ou até exibição na tela
+             * */
+            $table->text('comments')->nullable();
+            $table->text('search_tags')->nullable();
         });
 
         Schema::create('estates', function (Blueprint $table){
@@ -57,12 +66,15 @@ class WorldEstructure extends Migration
 
             $table->integer('countries_id')->unsigned();
             $table->foreign('countries_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
+
+            $table->text('comments')->nullable();
+            $table->text('search_tags')->nullable();
         });
 
         Schema::create('cities', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
-            $table->boolean('status')->default(false);
+            //$table->boolean('status')->default(false);
             $table->integer('estates_id')->unsigned();
             //$table->integer('views')->default(0);
 
@@ -75,6 +87,9 @@ class WorldEstructure extends Migration
             $table->decimal('lng', 10, 7)->nullable();
 
             $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
+
+            $table->text('comments')->nullable();
+            $table->text('search_tags')->nullable();
         });
 
         Schema::create('cities_photos', function (Blueprint $table){

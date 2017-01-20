@@ -16,13 +16,9 @@ class CreatePlacesTable extends Migration
         Schema::create('places_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-        });
+            $table->string('icon');
 
-        Schema::create('places_subcategories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-
-            $table->integer('places_categories_id')->unsigned();
+            $table->integer('places_categories_id')->unsigned()->nullable();
             $table->foreign('places_categories_id')->references('id')->on('places_categories')->onUpdate('cascade')->onDelete('restrict');
         });
 
@@ -35,8 +31,8 @@ class CreatePlacesTable extends Migration
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->integer('places_subcategories_id')->unsigned();
-            $table->foreign('places_subcategories_id')->references('id')->on('places_subcategories')->onUpdate('cascade')->onDelete('restrict');
+//            $table->integer('places_subcategories_id')->unsigned();
+//            $table->foreign('places_subcategories_id')->references('id')->on('places_subcategories')->onUpdate('cascade')->onDelete('restrict');
         });
 
         Schema::create('places_photos', function (Blueprint $table) {

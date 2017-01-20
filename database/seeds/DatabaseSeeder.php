@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PostsTypes::class);
         $this->call(Authors::class);
         $this->call(Places::class);
+        $this->call(UnitedKingdomSeeder::class);
     }
 }

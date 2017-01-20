@@ -126,16 +126,18 @@ section.block header {  padding-right: 10px;  } /*Seguir o mexmo padding para al
     float: left;
     margin-right: 10px;
     border-radius: 4px;
-    text-transform: uppercase;
+    text-transform: lowercase;
     font-size: 11px;
+    font-family: 'montserrat', sans-serif;
     background: rgba(0, 0, 0, 0.2);
 }
 
-.button.light-red      { background-color: #FF4060; }
-.button.light-blue     { background-color: #44C2D3; }
-.button.light-orange   { background-color: #FFDA3E; }
-.button.green          { background-color: #9AC947; }
-.button.purple         { background-color: #8F40FF; }
+.button.light-red      { background-color: #FF4060; font-size: 10px; }
+.button.light-blue     { background-color: #44C2D3; font-size: 10px; }
+.button.light-orange   { background-color: #FFDA3E; font-size: 10px; }
+.button.green          { background-color: #9AC947; font-size: 10px; }
+.button.purple         { background-color: #8F40FF; font-size: 10px; }
+.button.font-black     { color: rgba(0,0,0,0.6); }
 /*button*/
 
 /*menu*/
@@ -170,24 +172,37 @@ section#menu-sidebar .menu a:hover, section#menu-sidebar .menu span:hover {  col
 section#menu-sidebar .menu ul li.modulo {
     padding-left: 15px;
     text-transform: uppercase;
-    font-weight: 700;
-    font-size: 13px;
 }
-section#menu-sidebar .menu ul li.modulo > span{ color: #5B9EE8; }
+section#menu-sidebar .menu ul li.modulo > span {
+    color: #66819e;
+    line-height: 2px;
+}
+
+section#menu-sidebar .menu ul li.modulo > span a{
+    color: inherit;
+    font-size: inherit;
+}
+.menu-item-text {
+    font-size: 11px !important;
+    font-weight: normal !important;
+}
 
 section#menu-sidebar .menu ul li.modulo ul {
     padding-left: 15px;
-    border-left: 4px solid rgb(69, 150, 232);
+    border-left: 1px solid rgb(69, 150, 232);
     margin: 10px 0;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 10px;
     display: none;
 }
 
 div.menu li.modulo > span > span[class*="flaticon-"]:before {  font-size: 20px;  }
 div.menu span[class*="flaticon-"]:before {  font-size: 19px; font-weight: 100 !important;  }
 div.menu span[class*="flaticon-"] {  margin-right: 10px; font-weight: 100 !important;}
-
+span.flaticon-keyboard-right-arrow-button {
+    margin-right: 0;
+    padding: 0;
+}
 
 div.menu span.flaticon-keyboard-right-arrow-button:before {
     font-size: 10px !important;
@@ -253,6 +268,7 @@ div.menu .flaticon-keyboard-right-arrow-button {
         display: inline-block;
         font-size: 10px;
         margin-left: 15px;
+        line-height: 21px;
     }
     /*Page Content*/
 
@@ -325,6 +341,10 @@ table tbody tr td a {
     border-radius: 3px;
     font-size: 11px;
     cursor: pointer;
+}
+
+table tbody tr td a.editPost {
+    color: #8dbaff;
 }
 
 table span.undefined {

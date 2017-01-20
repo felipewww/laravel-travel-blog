@@ -16,6 +16,7 @@ class Interest extends Migration
         Schema::create('interests', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->string('name');
+            $table->string('color');
         });
     }
 

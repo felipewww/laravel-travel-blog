@@ -294,13 +294,11 @@ class ContentTools.ImageDialog extends ContentTools.DialogUI
             # Clear the file inputs value so that the same file can be uploaded
             # again if the user cancels the upload or clears it and starts then
             # changes their mind.
-
-            #Edited
-            #ev.target.value = ''
-            #if ev.target.value
+            ev.target.value = ''
+            if ev.target.value
                 # Hack for clearing the file field value in IE
-                #ev.target.type = 'text'
-                #ev.target.type = 'file'
+                ev.target.type = 'text'
+                ev.target.type = 'file'
 
             @dispatchEvent(
                 @createEvent('imageuploader.fileready', {file: file})

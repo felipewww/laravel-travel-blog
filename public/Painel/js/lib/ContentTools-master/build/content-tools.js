@@ -6969,27 +6969,20 @@
 
     ImageDialog.prototype._addDOMEventListeners = function() {
       ImageDialog.__super__._addDOMEventListeners.call(this);
-      // console.log(this._domInput);
       this._domInput.addEventListener('change', (function(_this) {
-        // console.log(_this);
         return function(ev) {
           var file;
           file = ev.target.files[0];
-          console.log({e:ev.target});
-          // ev.target.value = '';
-        // console.log('this original');
-        // console.log(ev);
-        //   exit()
+          ev.target.value = '';
           if (ev.target.value) {
-            // ev.target.type = 'text';
-            // ev.target.type = 'file';
+            ev.target.type = 'text';
+            ev.target.type = 'file';
           }
           return _this.dispatchEvent(_this.createEvent('imageuploader.fileready', {
             file: file
           }));
         };
       })(this));
-
       this._domCancelUpload.addEventListener('click', (function(_this) {
         return function(ev) {
           return _this.dispatchEvent(_this.createEvent('imageuploader.cancelupload'));

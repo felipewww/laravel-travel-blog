@@ -22,7 +22,6 @@ DataTablesExtensions = {
     },
 
     __dataTablesExec: function (table, data, cols, paramns) {
-        console.log(data);
         ( paramns == undefined ) ? paramns = {} : null;
         ( paramns.columnDefs == undefined ) ? paramns.columnDefs = '' : 'null';
 
