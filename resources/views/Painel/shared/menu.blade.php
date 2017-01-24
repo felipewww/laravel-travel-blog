@@ -60,13 +60,10 @@
                 </li>
 
                 <li class="modulo">
-                    <span class="has-submenu"><span class="flaticon-shop"></span>
-                        <span class="menu-item-text">Interesses</span>
+                    <span>
+                        <span class="flaticon-puzzle"></span>
+                        <span class="menu-item-text"><a href="/painel/interesses">Interesses</a></span>
                     </span>
-                    <ul>
-                        <li><a href="/painel/servicos/servico"><span class="flaticon-shop"></span>Novo Interesse</a></li>
-                        <li><a href="/painel/servicos"><span class="flaticon-shop"></span>Interesses</a></li>
-                    </ul>
                 </li>
 
                 <li class="modulo">

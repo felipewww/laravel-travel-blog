@@ -11,20 +11,17 @@
     <title>{{ config('app.name', 'Pra Viajar') }}</title>
 
     <!-- Scripts -->
-    <script>
-        window.Laravel = { csrf_token: '<?= csrf_token() ?>' };
-    </script>
     <script type="text/javascript" src="{!! asset('/Painel/js/lib/jquery/jquery-2.1.1.min.js')  !!}"></script>
     <script type="text/javascript" src="{!! asset('/Site/js/Client.js')  !!}"></script>
     <script type="text/javascript" src="{!! asset('/Painel/js/script.js')  !!}"></script>
     @if(\Illuminate\Support\Facades\Auth::check())
         <script type="text/javascript" src="{!! asset('/js/Admin.js')  !!}"></script>
     @endif
-    <link rel="stylesheet" type="text/css" href="{!! asset('/Site/css/default_single.css') !!}">
     @if( isset($json_meta) )
         <meta name="screen-json" content="{{ $json_meta }}">
     @endif
     @yield('adminScript')
+    @yield('header')
 </head>
 <body>
     <nav id="menu">

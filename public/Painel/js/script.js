@@ -12,6 +12,18 @@ $(document).ready(function() {
 
 var T;
 
+function AjaxExceptions(data){
+    var msg = 'Erro de Requisição ajax';
+
+    if (data.responseJSON == undefined) {
+        msg = 'Requisição não retornou um JSON. Verifique o backend.';
+    }
+
+    this.message    = msg;
+    this.name       = 'AjaxExceptions';
+    this.response   = data;
+}
+
 Script = {
     submitValidator: false,
     clickToEnable: {},
@@ -32,7 +44,7 @@ Script = {
 
     sendPost: function (elements, paramns)
     {
-        console.log(elements);
+        //console.log(elements);
         // exit()
         var form = this.createElement('form', paramns);
         elements['_token'] = window.Laravel.csrfToken;
@@ -64,6 +76,45 @@ Script = {
         })(elements);
 
         form.submit();
+    },
+
+    AjaxForm: function (nameOrId, action, callback) {
+        var form = document.forms[nameOrId];
+        if (form == undefined) {
+            form = document.getElementById(nameOrId);
+            if (form == undefined) {
+                throw 'O ID informado não pertence a nenhua formulário da tela.';
+            }
+        }
+
+        var url     = form.getAttribute('action');
+        var method  = form.getAttribute('method');
+
+        var status;
+
+        $.ajax({
+            url: url,
+            method: ( method == undefined ) ? 'get' : method,
+            data: $(form).serialize()+'&action='+action,
+            dataType: 'json',
+            success: function (data) {
+                status = true;
+            },
+            error: function (error) {
+                status = false;
+                throw new AjaxExceptions(error);
+                //throw('Erro ao enviar form via ajax.');
+                //console.log(error);
+            },
+            complete: function (data) {
+                if (typeof callback == 'function') {
+                    if (status) { data = data.responseJSON; }
+                    callback(status, data);
+                }else{
+                    //console.log(data);
+                }
+            }
+        });
     },
 
     /*

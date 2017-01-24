@@ -44,6 +44,7 @@ class WorldEstructureSeeder extends Seeder
             'south'         => Faker\Provider\en_US\Address::longitude(),
             'east'          => Faker\Provider\en_US\Address::latitude(),
             'west'          => Faker\Provider\en_US\Address::latitude(),
+            'content'       => Faker\Provider\Lorem::text(500),
             'comments'      => json_encode([['message' => 'Apenas um Faker de teste']])
         ];
 
@@ -57,7 +58,6 @@ class WorldEstructureSeeder extends Seeder
         $fake = [
             'id'            => 1120112600,
             'name'          => 'Estado [teste]',
-
             'uf'            => 'SP',
             'll_north'      => Faker\Provider\en_US\Address::latitude(),
             'll_south'      => Faker\Provider\en_US\Address::longitude(),
@@ -85,6 +85,7 @@ class WorldEstructureSeeder extends Seeder
             'll_west'       => Faker\Provider\en_US\Address::longitude(),
             'lat'           => Faker\Provider\en_US\Address::latitude(),
             'lng'           => Faker\Provider\en_US\Address::longitude(),
+            'content'       => Faker\Provider\Lorem::text(500),
             'comments'      => json_encode([['message' => 'Apenas um Faker de teste']])
         ];
 

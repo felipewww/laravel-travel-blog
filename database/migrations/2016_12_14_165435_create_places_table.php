@@ -30,9 +30,6 @@ class CreatePlacesTable extends Migration
 
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
-
-//            $table->integer('places_subcategories_id')->unsigned();
-//            $table->foreign('places_subcategories_id')->references('id')->on('places_subcategories')->onUpdate('cascade')->onDelete('restrict');
         });
 
         Schema::create('places_photos', function (Blueprint $table) {
@@ -41,16 +38,6 @@ class CreatePlacesTable extends Migration
 
             $table->integer('places_id')->unsigned();
             $table->foreign('places_id')->references('id')->on('places')->onUpdate('cascade')->onDelete('cascade');
-        });
-
-        Schema::create('places_has_interests', function (Blueprint $table) {
-            $table->integer('places_id')->unsigned();
-            $table->integer('interests_id')->unsigned();
-
-            $table->primary(['places_id', 'interests_id']);
-
-            $table->foreign('places_id')->references('id')->on('places')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('interests_id')->references('id')->on('interests')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -66,7 +53,6 @@ class CreatePlacesTable extends Migration
         Schema::dropIfExists('places_subcategories');
         Schema::dropIfExists('places');
         Schema::dropIfExists('places_photos');
-        Schema::dropIfExists('places_has_interests');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

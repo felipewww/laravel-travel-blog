@@ -343,8 +343,12 @@ table tbody tr td a {
     cursor: pointer;
 }
 
-table tbody tr td a.editPost {
+table tbody tr td a.hasCityWithPost {
     color: #8dbaff;
+}
+
+table tbody tr td a.hasPost{
+    color: #eebbff;
 }
 
 table span.undefined {

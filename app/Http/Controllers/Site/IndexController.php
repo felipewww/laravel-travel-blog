@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 
-class IndexController extends \App\Http\Controllers\Controller {
+class IndexController extends Controller {
     function index(){
         return 'view(Site.index)';
         //return view('Site.index');
@@ -15,7 +14,6 @@ class IndexController extends \App\Http\Controllers\Controller {
     function hello($nome){
         $html = '<b>HTML</b>';
         return view('Site.index', ['nome' => $nome, 'html' => $html]);
-        //return view('auth.register');
     }
 
     public function pais(Request $request){

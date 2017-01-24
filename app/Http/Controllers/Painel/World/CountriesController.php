@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Painel\World;
 
+use App\Country;
+use App\Continent;
 use App\Library\DataTablesInterface;
 use \App\Http\Controllers\Controller;
-use \Painel\World\Country as Country;
+//use App\Country as Country;
 
 class CountriesController extends Controller implements DataTablesInterface {
 
@@ -17,17 +19,16 @@ class CountriesController extends Controller implements DataTablesInterface {
     protected   $countries_json;
     protected   $datatables_columns;
 
-    public function __construct(Country $model)
+    public function __construct()
     {
-        $this->model = $model;
-        $this->continents = \Painel\World\Continent::orderBy('name')->get();
-        $this->countries = Country::all();
+        $this->model = new Country();
+        $this->continents = Continent::orderBy('name')->get();
+        $this->countries = $this->model->all();
 
         $this->dataTablesInit();
 
         $this->vars['modulo'] = 'Pais';
         $this->vars['pageDesc'] = 'Listagem de Países';
-
         $this->vars['continents'] = $this->continents;
     }
 

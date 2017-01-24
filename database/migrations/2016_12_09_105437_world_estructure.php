@@ -49,12 +49,17 @@ class WorldEstructure extends Migration
              * */
             $table->text('comments')->nullable();
             $table->text('search_tags')->nullable();
+
+            $table->text('content')->nullable();
+            $table->boolean('status')->default(0);
+
+            $table->timestamps();
         });
 
         Schema::create('estates', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
-            $table->string('uf',45);
+            $table->string('uf',45)->nullable();
 
             $table->decimal('ll_north', 10, 7)->nullable();
             $table->decimal('ll_south', 10, 7)->nullable();
@@ -69,6 +74,8 @@ class WorldEstructure extends Migration
 
             $table->text('comments')->nullable();
             $table->text('search_tags')->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('cities', function (Blueprint $table){
@@ -88,8 +95,14 @@ class WorldEstructure extends Migration
 
             $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
 
+            $table->text('content');
+            $table->boolean('status')->default(0);
+
             $table->text('comments')->nullable();
             $table->text('search_tags')->nullable();
+            $table->text('seo_tags')->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('cities_photos', function (Blueprint $table){
@@ -98,16 +111,6 @@ class WorldEstructure extends Migration
 
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
-        });
-
-        Schema::create('cities_has_interests', function (Blueprint $table){
-            $table->integer('cities_id')->unsigned();
-            $table->integer('interests_id')->unsigned();
-
-            $table->primary(['cities_id', 'interests_id']);
-
-            $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('interests_id')->references('id')->on('interests')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::table('cities', function (Blueprint $table){
@@ -129,7 +132,6 @@ class WorldEstructure extends Migration
         Schema::dropIfExists('countries');
         Schema::dropIfExists('continents');
         Schema::dropIfExists('cities_photos');
-        Schema::dropIfExists('cities_has_interests');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

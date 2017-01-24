@@ -1,14 +1,16 @@
 _Forms = {
     init: function ()
     {
-        this.labels = document.getElementsByTagName('label');
+        this.labels = $('label').not('[data-notconfigure="true"]');//document.getElementsByTagName('label');
+        //this.labels = document.getElementsByTagName('label');
+        console.log(this.labels);
         this.blocks = document.getElementsByClassName('block');
 
         this.cfgSize();
         this.cfgBlocks();
-        this.checkboxes();
+        //this.checkboxes();
         this.setupOrderBy();
-        this.cfgSubmitter();
+        //this.cfgSubmitter(); //reconfigurar essa função para mandar forms via AJAX...
     },
 
     cfgSubmitter: function ()
@@ -18,7 +20,6 @@ _Forms = {
             $(this).click(function () {
                 // alert('click');
                 var form_name = $(this).attr('data-submitter');
-
                 $form = $('form[name="'+form_name+'"]');
 
                 if($form[0].checkValidity()) {
@@ -58,6 +59,7 @@ _Forms = {
         while (i < this.labels.length)
         {
             var label = this.labels[i];
+            console.log(label);
             cfg(label);
             i++;
         }

@@ -1,13 +1,18 @@
 <?php
 
-namespace Painel\World;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Faker;
+//use Faker;
 
 class Post extends Model
 {
     protected $fillable = ['title','content','content_strip','post_type_id'];
+
+    public function Headline()
+    {
+        return $this->morphMany(Headline::class, 'polimorph_from');
+    }
 
     public function polimorph_from()
     {

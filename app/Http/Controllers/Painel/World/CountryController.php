@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Painel\World;
 use \App\Http\Controllers\Controller;
 use App\Library\DataTablesExtensions;
 use App\Library\DataTablesInterface;
+use App\Library\Jobs;
 use Illuminate\Http\Request;
 use Lib\Geonames;
-use Painel\World\City;
-use \Painel\World\Country as Country;
-use Painel\World\Estate;
-use Symfony\Component\Console\Input\InputAwareInterface;
+use App\City;
+use App\Country as Country;
+use App\Estate;
 
 class CountryController extends Controller implements DataTablesInterface{
 
-    use \App\Library\Jobs;
+    use Jobs;
     use DataTablesExtensions;
 
     protected   $model;
@@ -81,23 +81,13 @@ class CountryController extends Controller implements DataTablesInterface{
             $s = array_search($regId, $this->ids_db);
             if ($s !== false){
                 $postButton = [
-                    'html' => 'edit post',
-                    'attributes' =>
-                        [
-                            'class' => 'editPost',
-                            'href' => "/estado/$friendlyName/$regId",
-                            'target' => '_blank'
-                        ]
+                    'html' => '+ cidades',
+                    'attributes' => ['class' => 'hasCityWithPost', 'data-jslistener-click' => 'country.findCities']
                 ];
             }else{
                 $postButton = [
-                    'html' => 'criar post',
-                    'attributes' =>
-                        [
-                            'class' => 'createPost',
-                            'href' => "/estado/$friendlyName/$regId",
-                            'target' => '_blank'
-                        ]
+                    'html' => '+ cidades',
+                    'attributes' => ['data-jslistener-click' => 'country.findCities']
                 ];
             }
 
@@ -109,10 +99,10 @@ class CountryController extends Controller implements DataTablesInterface{
                     'rowButtons' =>
                     [
                         $postButton,
-                        [
-                            'html' => '+ cidades',
-                            'attributes' => ['data-jslistener-click' => 'country.findCities']
-                        ],
+//                        [
+//                            'html' => '+ cidades',
+//                            'attributes' => ['data-jslistener-click' => 'country.findCities']
+//                        ],
                         [
                             'html' => '+ config',
                             'attributes' => [
@@ -134,7 +124,7 @@ class CountryController extends Controller implements DataTablesInterface{
             ['title' => 'n', 'width' => '10px'],
             ['title' => 'id', 'width' => '70px'],
             ['title' => 'nome'],
-            ['title' => 'ações', 'width' => '200px'],
+            ['title' => 'ações', 'width' => '140px'],
         ];
     }
 
@@ -183,6 +173,7 @@ class CountryController extends Controller implements DataTablesInterface{
         //Cidades deste ESTADO que ja estão cadastradas no banco
         $cities_ids_db = [];
         $cities_db = City::where('estates_id', $request['id'])->get();
+
         foreach ($cities_db as $city)
         {
             array_push($cities_ids_db, $city->id);
@@ -200,8 +191,8 @@ class CountryController extends Controller implements DataTablesInterface{
                 $postButton = [
                     'html' => 'edit post',
                     'attributes' => [
-                        'class' => 'editPost',
-                        'href' => "/blog/cidade/$regId",
+                        'class' => 'hasPost',
+                        'href' => "/painel/blog/cidade/$regId",
                         'target' => '_blank'
                     ]
                 ];
@@ -227,7 +218,7 @@ class CountryController extends Controller implements DataTablesInterface{
                             [
                                 'html' => '+ config',
                                 'attributes' => [
-                                    'href' => '#'
+                                    'href' => '/painel/mundo/cidade/'.$regId
                                 ]
                             ]
                         ]

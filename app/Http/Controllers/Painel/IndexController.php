@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Painel;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class IndexController extends \App\Http\Controllers\Controller {
+class IndexController extends Controller  {
     /**
      * Show the application dashboard.
      *

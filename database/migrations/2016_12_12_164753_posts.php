@@ -21,6 +21,7 @@ class Posts extends Migration
         Schema::create('authors', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->text('description');
+            $table->text('photo');
 
             $table->integer('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');

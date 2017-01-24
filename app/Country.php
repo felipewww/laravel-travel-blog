@@ -1,13 +1,10 @@
 <?php
 
 //namespace app\Models\Painel;
-namespace Painel\World;
+//namespace Painel\World;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Support\Facades\App as App;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use League\Flysystem\Exception;
 
 class Country extends Model
 {
@@ -15,7 +12,12 @@ class Country extends Model
     public $fillable = ['name', 'sigla_2', 'sigla_3'];
     public $sigla_2 = null;
 
-    public function polimorph_from()
+    public function Headline()
+    {
+        return $this->morphMany(Headline::class, 'polimorph_from');
+    }
+
+    public function Post()
     {
         return $this->morphMany(Post::class, 'polimorph_from');
     }
@@ -27,7 +29,7 @@ class Country extends Model
 
     public function continent()
     {
-        return $this->belongsTo(\Painel\World\Continent::class, 'continents_id');
+        return $this->belongsTo(Continent::class, 'continents_id');
     }
 
     /**

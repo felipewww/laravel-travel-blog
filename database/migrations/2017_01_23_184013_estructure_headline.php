@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Interest extends Migration
+class EstructureHeadline extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class Interest extends Migration
      */
     public function up()
     {
-        Schema::create('interests', function (Blueprint $table) {
+        Schema::create('headlines', function (Blueprint $table){
             $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('color');
+            $table->string('title');
+            $table->text('content');
+            $table->text('media');
+
+            $table->timestamps();
+
+            $table->morphs('polimorph_from');
         });
     }
 
@@ -28,7 +33,7 @@ class Interest extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('interests');
+        Schema::dropIfExists('headlines');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

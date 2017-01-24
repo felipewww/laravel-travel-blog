@@ -4,25 +4,22 @@ namespace App\Http\Controllers\Site\World;
 
 use App\Http\Controllers\Controller;
 use App\Library\Jobs;
-//use Illuminate\Http\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Painel\World\City;
-use Painel\World\Continent;
-use Painel\World\Country;
-use Painel\World\Estate;
+use App\City;
+use App\Continent;
+use App\Country;
+use App\Estate;
 
 class CityController extends Controller {
     use Jobs;
 
-    function index(){
-        return view('Site.world.city', ['isAdmin' => Auth::check()]);
-    }
-
-    function index2(Request $request){
+    /*
+     * Read city from JSON
+     * */
+    function forCreate(Request $request){
         $this->json_meta($request->all());
-
-//        dd($request->all());
+        $this->json_meta(['contentToolsOnSave' => 'city.create']);
 
         $continent = Continent::where('id', $request['country']['continents_id'])->first();
 
@@ -37,9 +34,17 @@ class CityController extends Controller {
         return $this->blogView();
     }
 
-    function index3(Request $request){
+    /*
+     * Read City from DB
+     * */
+    function fromDB(Request $request){
+
+        $mw = $request->route()->middleware();
+        $mw = $mw[count($mw)-1];
+
         $this->vars['isNew'] = false;
-        $this->vars['isAdmin'] = Auth::check();
+        $this->vars['isAdmin'] = Auth::check() && $mw == 'auth';
+        $this->json_meta(['contentToolsOnSave' => 'city.update', 'city_id' => $request->id]);
 
         $city = City::where('id', $request->id)->first();
         $estate = Estate::where('id', $city->estates_id)->first();

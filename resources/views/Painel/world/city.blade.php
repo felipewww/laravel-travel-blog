@@ -1,10 +1,35 @@
 @extends('Painel.layouts.app')
 
 @section('header')
-    <script type="text/javascript" src="{{ asset('Painel/js/pages/estrutura/country.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('Painel/js/pages/estrutura/city.js') }}"></script>
 @endsection
 
 @section('content')
+    <style>
+        form[name="interests"] > div {
+            float: left;
+            width: 30%;
+            margin-bottom: 10px;
+            cursor: pointer;
+            margin-right: 3%;
+            box-sizing: border-box;
+            transition: all 0.4s;
+        }
+
+        form[name="interests"] > div:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        form[name="interests"] > div input {
+            float: right;
+        }
+        form[name="interests"] > div label {
+            float: left;
+            padding: 0;
+            width: 80%;
+            border: none;
+            border-radius: 0;
+        }
+    </style>
     <section class="block">
         <header>
             <div class="title">
@@ -19,7 +44,8 @@
 
         <section class="content">
             @foreach ($city as $key => $value)
-                <div>key: {{ $key  }} => {{ $value }} </div>
+                {{--<div>key: {{ $key  }} => {{ $value }} </div>--}}
+                <div>{{ $key  }} </div>
             @endforeach
         </section>
     </section>
@@ -27,26 +53,58 @@
     <section class="block" data-closed="true" id="cidades">
         <header>
             <div class="title">
-                <span>SEO e Pesquisa</span>
+                <span>Tags de Pesquisa</span>
+            </div>
+            <div class="actions">
+                <a href="javascript:city.painel.tags();" class="button light-blue font-black waves-effect">salvar</a>
             </div>
             <div class="cleaner"></div>
         </header>
 
-        <section class="content" id="dynamic_table">
-            Carregar Interesses
+        <section class="content">
+            <form>
+                <div class="w-50">
+                    <label>
+                        <span>Site</span>
+                        <input type="text" name="test" placeholder="Input de Teste">
+                    </label>
+                </div>
+
+                <div class="w-50">
+                    <label>
+                        <span>SEO</span>
+                        <input type="text" name="test" placeholder="Input de Teste">
+                    </label>
+                </div>
+                <div class="cleaner"></div>
+
+            </form>
         </section>
     </section>
 
-    <section class="block" data-closed="true" id="cidades">
+    <section class="block" id="cidades">
         <header>
             <div class="title">
                 <span>Interesses</span>
             </div>
+            <div class="actions">
+                <a href="javascript:city.painel.interest();" class="button light-blue font-black waves-effect">salvar</a>
+            </div>
             <div class="cleaner"></div>
         </header>
 
-        <section class="content" id="dynamic_table">
-            Carregar Interesses
+        <section class="content">
+            <form name="interests" method="post" action="/painel/api/mundo/cidade/{{$city['id']}}">
+                @foreach($allInterests as $int)
+                    <div>
+                        <label data-notconfigure="true" for="int_{{ $int->id }}" data-color="{{ $int->color }}">{{ $int->name }}
+                        </label>
+                        <input {{ $int->checked  }} id="int_{{ $int->id }}" type="checkbox" name="ints[]" value="{{ $int->id }}">
+                    </div>
+                @endforeach
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            </form>
+            <div class="cleaner"></div>
         </section>
     </section>
 
@@ -63,7 +121,7 @@
             <div class="cleaner"></div>
         </header>
 
-        <section class="content" id="dynamic_table">
+        <section class="content">
             <div id="map" style="height: 350px;"></div>
             <script>
                 function initMap() {

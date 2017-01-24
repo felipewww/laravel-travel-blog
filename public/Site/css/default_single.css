@@ -47,7 +47,6 @@ figcaption,
 figure,
 footer,
 header,
-hgroup,
 main,
 menu,
 nav,
@@ -561,3 +560,27 @@ video.align-right,
 
 .text-right {
     text-align: right; }
+
+/*Edições de CSS PraViajar*/
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.article {
+    float: left;
+    padding: 0;
+    margin: 0;
+    padding-right: 25px;
+}
+
+section.article__content {
+    width: 100%;
+}
+
+.sidebar-right {
+    float: left;
+}
+
+.no-margin{ margin: 0 !important; }

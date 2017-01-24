@@ -74,7 +74,7 @@ function imageUploader(dialog) {
         formData = new FormData();
 
         //formData = document.getElementById('_files');
-        formData.append('_token', window.Laravel.csrf_token);
+        formData.append('_token', window.Laravel.csrfToken);
         formData.append('image', file);
 
         // Make the request
@@ -101,21 +101,22 @@ ContentToolsExtensions = {
 
         /*Retorna qual div foi alterada. Talvez não seja tão importante assim.*/
         editor.addEventListener('saved', function(ev) {
-            // alert("SAVED");
-            var saved;
-            console.log(ev);
-            // console.log(ev.detail().regions);
-            if (Object.keys(ev.detail().regions).length === 0) {
-                return;
-            }
-            editor.busy(true);
-            saved = (function(_this) {
-                return function() {
-                    editor.busy(false);
-                    return new ContentTools.FlashUI('ok');
-                };
-            })(this);
-            return setTimeout(saved, 2000);
+            //alert("SAVED");
+            //var saved;
+            // console.log(ev);
+            // // console.log(ev.detail().regions);
+            // if (Object.keys(ev.detail().regions).length === 0) {
+            //     return;
+            // }
+            // editor.busy(true);
+            // saved = (function(_this) {
+            //     return function() {
+            //         editor.busy(false);
+            //         return new ContentTools.FlashUI('ok');
+            //     };
+            // })(this);
+            // return setTimeout(saved, 2000);
+            eval(Script.screenJson['contentToolsOnSave']+"(ev)");
         });
 
         /*Para elementos ditos como fixos*/

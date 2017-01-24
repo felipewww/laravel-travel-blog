@@ -143,8 +143,10 @@ DataTablesExtensions = {
             infoFiltered: " - Filtro no total de _MAX_ registros",
             search: 'Pesquisar:',
             lengthMenu: 'Exibir <select>'+
-            '<option value="10">15</option>'+
-            '<option value="25">30</option>'+
+            '<option value="10" selected>10</option>'+
+            '<option value="20">20</option>'+
+            '<option value="20">30</option>'+
+            '<option value="20">40</option>'+
             '<option value="50">50</option>'+
             '<option value="-1">Todos</option>'+
             '</select> por página'

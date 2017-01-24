@@ -1,6 +1,6 @@
 <?php
 
-namespace Painel\World;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -62,15 +62,9 @@ trait Jobs {
      * Converter string para URL Amigável
      * */
     function toAscii($str, $replace=array(), $delimiter='-') {
-        if( !empty($replace) ) {
-            $str = str_replace((array)$replace, ' ', $str);
-        }
-
-
-        //$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-        $str = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $str);
-        $str = strtolower(trim($str, '-'));
-        $str = preg_replace("/[\/_|+ -]+/", $delimiter, $str);
+        $str = preg_replace('/[`^~,\'"]/', null, iconv('UTF-8', 'ASCII//TRANSLIT', $str));
+        $str = preg_replace('/ /', '_', $str);
+        $str = strtolower($str);
 
         return $str;
     }

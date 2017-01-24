@@ -89,7 +89,7 @@ country = {
             POST,
             {
                 target: '_blank',
-                action: '/blog/cidade',
+                action: '/painel/blog/cidade',
                 method: 'post'
             }
         );
