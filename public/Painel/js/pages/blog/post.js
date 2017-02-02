@@ -27,6 +27,7 @@ post = {
     setDefaultNewPost: function () {
         $('[data-name="article_title"]').html(this.title_default);
         $('[data-name="article_content"]').html(this.content_default);
+        //
     },
 
     /*
