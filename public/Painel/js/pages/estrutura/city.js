@@ -19,11 +19,18 @@ city = {
                 console.log(data);
                 swal('','Interesses Atualizados!','success');
             });
+        },
+
+        tags: function () {
+            Script.AjaxForm('tags', 'updateTags', function (status, data) {
+                console.log(data);
+                swal('','Tags de pesquisa Atualizadas!','success');
+            });
         }
     },
 
     /*
-    * Funções executada no ONSAVE do ContentTools dinamicamente para salvar o post da cidade.
+    * Funções executada no ONSAVE do ContentTools dinamicamente para salvar a PÁGINA da cidade.
     * */
     create: function (ev)  { city.action('create'); },
     update: function (ev)  { city.action('update'); },

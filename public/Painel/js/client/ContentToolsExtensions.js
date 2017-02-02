@@ -1,6 +1,5 @@
-// window.ImageUploader = ImageUploader;
-
 $(document).ready(function () {
+    ContentTools.Event('beforeSave', {});
     ContentTools.StylePalette.add(
         [
             new ContentTools.Style('By-line', 'article__by-line'),
@@ -14,6 +13,9 @@ $(document).ready(function () {
     //     new ContentTools.Style('Author', 'author', ['p'])
     // ]);
     ContentToolsExtensions.init();
+
+    // Disable refresh message
+    window.removeEventListener('beforeunload', ContentToolsExtensions.editor._handleBeforeUnload);
 });
 
 function imageUploader(dialog) {
@@ -91,31 +93,25 @@ function imageUploader(dialog) {
 }
 
 ContentToolsExtensions = {
+    // status: 'offline',
+    //
+    // required: function (required) {
+    //     this.requiredFields = required;
+    //     // console.log(this.status);
+    //     console.log(this._domConfirm);
+    //     this._domConfirm.addEventListener('mouseover', function () {
+    //         console.log(ContentToolsExtensions.editor);
+    //     })
+    // },
+
     init: function () {
-        //ContentTools.IMAGE_UPLOADER = ImageUploader.createImageUploader;
         ContentTools.IMAGE_UPLOADER = imageUploader;
 
         //Configurar editor
-        editor = ContentTools.EditorApp.get();
-        editor.init('[data-editable], [data-fixture]', 'data-name');
+        this.editor = ContentTools.EditorApp.get();
+        this.editor.init('[data-editable], [data-fixture]', 'data-name');
 
-        /*Retorna qual div foi alterada. Talvez não seja tão importante assim.*/
-        editor.addEventListener('saved', function(ev) {
-            //alert("SAVED");
-            //var saved;
-            // console.log(ev);
-            // // console.log(ev.detail().regions);
-            // if (Object.keys(ev.detail().regions).length === 0) {
-            //     return;
-            // }
-            // editor.busy(true);
-            // saved = (function(_this) {
-            //     return function() {
-            //         editor.busy(false);
-            //         return new ContentTools.FlashUI('ok');
-            //     };
-            // })(this);
-            // return setTimeout(saved, 2000);
+        this.editor.addEventListener('saved', function(ev) {
             eval(Script.screenJson['contentToolsOnSave']+"(ev)");
         });
 
@@ -128,8 +124,8 @@ ContentToolsExtensions = {
             } else {
                 tools = ContentTools.DEFAULT_TOOLS;
             }
-            if (editor.toolbox().tools() !== tools) {
-                return editor.toolbox().tools(tools);
+            if (ContentToolsExtensions.editor.toolbox().tools() !== tools) {
+                return ContentToolsExtensions.editor.toolbox().tools(tools);
             }
         });
     }

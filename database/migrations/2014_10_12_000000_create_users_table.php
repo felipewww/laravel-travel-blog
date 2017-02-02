@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('photo')->nullable();
-            $table->enum('type',['system','site','admin'])->default('system');
+            $table->enum('type',['system','site','admin','author'])->default('system');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site\World;
 
 use App\Http\Controllers\Controller;
 use App\Library\Jobs;
+use App\Library\WorldEstructureJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\City;
@@ -13,29 +14,28 @@ use App\Estate;
 
 class CityController extends Controller {
     use Jobs;
+    use WorldEstructureJobs;
 
     /*
      * Read city from JSON
+     * Apenas quando esta criando cidade via painel administrativo
      * */
     function forCreate(Request $request){
         $this->json_meta($request->all());
         $this->json_meta(['contentToolsOnSave' => 'city.create']);
 
-        $continent = Continent::where('id', $request['country']['continents_id'])->first();
-
         $this->vars['isAdmin'] = Auth::check();
         $this->vars['isNew'] = true;
 
-        $this->vars['continent'] = $continent;
-        $this->vars['country'] = $request['country'];
-        $this->vars['estate'] = $request['estate'];
+        $this->getEstructureBreadcrumb('city', $request);
         $this->vars['city'] = $request['city'];
 
-        return $this->blogView();
+        return $this->cityPageView();
     }
 
     /*
      * Read City from DB
+     * Para edição da página de cidade via painel ou exibição do Site
      * */
     function fromDB(Request $request){
 
@@ -47,19 +47,12 @@ class CityController extends Controller {
         $this->json_meta(['contentToolsOnSave' => 'city.update', 'city_id' => $request->id]);
 
         $city = City::where('id', $request->id)->first();
-        $estate = Estate::where('id', $city->estates_id)->first();
-        $country = Country::where('id', $estate->countries_id)->first();
-        $continent = Continent::where('id',$country->continents_id)->first();
-
-        $this->vars['continent'] = $continent;
-        $this->vars['country'] = $country;
-        $this->vars['estate'] = $estate;
         $this->vars['city'] = $city;
 
-        return $this->blogView();
+        return $this->cityPageView();
     }
 
-    protected function blogView(){
+    protected function cityPageView(){
         return view('Site.world.city', $this->vars);
     }
 }

@@ -32,7 +32,7 @@
                         {{ $city['name'] }}
                     </h1>
 
-                    <p class="breadcrumb">{{  $continent['name'] }} > {{  $country['name'] }} > {{  $estate['name'] }} > {{  $city['name'] }}</p>
+                    <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }}</p>
 
                     <div data-editable data-name="article">
                         <p class="article__by-line">

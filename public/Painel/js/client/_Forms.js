@@ -3,7 +3,6 @@ _Forms = {
     {
         this.labels = $('label').not('[data-notconfigure="true"]');//document.getElementsByTagName('label');
         //this.labels = document.getElementsByTagName('label');
-        console.log(this.labels);
         this.blocks = document.getElementsByClassName('block');
 
         this.cfgSize();
@@ -59,7 +58,6 @@ _Forms = {
         while (i < this.labels.length)
         {
             var label = this.labels[i];
-            console.log(label);
             cfg(label);
             i++;
         }
@@ -96,23 +94,8 @@ _Forms = {
 
             if (input.localName == 'select') {
                 $(input).chosen().change(function () {
-                    $(input).val(2);
-                    $(input).trigger("chosen:updated");
-                    // console.log($(this));
+                    // $(input).val(2);
                 });
-
-                // $(input).bind('choosen:selected');
-                // $(input).trigger('choosen:selected', function () {
-                //    alert("here");
-                // });
-
-                // console.log(x);
-                // var theform = x[0].parentNode.parentNode.parentNode;
-                // console.log(theform);
-                // theform.onsubmit = function (e) {
-                //     e.preventDefault();
-                //     alert("sub");
-                // }
             }
         }
     },

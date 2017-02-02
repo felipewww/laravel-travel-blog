@@ -57,6 +57,11 @@ pode demorar um pouco
 talvez, redirecionar para a tela de criação de post ao clicar em +CONFIG ou enviar
 os dados da cidade via POST para a CityController poder exibir os dados. pensar nisso...
 
+###### Usuários
+
+- [ ] Criar método para caso inativar um AUTHOR, trnasferir a autoria para outro... ou não? Se não... fica sem autor? Ou põe autoria do praviajar?
+- [ ] 
+
 ###### Model
 
 -[x] <span style="color: green">Criar many-to-many de CityHasHeadline</span>

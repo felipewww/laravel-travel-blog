@@ -4,17 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 //use Painel\Interests\Interest;
+use App\Post;
+use App\Headline;
 
 class City extends Model
 {
     public function Post()
     {
-        return $this->morphMany(\Post::class, 'polimorph_from');
+        return $this->morphMany(Post::class, 'polimorph_from');
     }
 
     public function Headline()
     {
-        return $this->morphMany(\Headline::class, 'polimorph_from');
+        return $this->morphMany(Headline::class, 'polimorph_from');
     }
 
     public function interests()

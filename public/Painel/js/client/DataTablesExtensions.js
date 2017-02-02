@@ -114,14 +114,36 @@ DataTablesExtensions = {
 
             var func = attrs['data-jslistener-click'];
 
-            if( typeof eval(func) == 'undefined' ){
-                throw 'Erro! função '+func+"() não existe.";
+            try{
+                var e = typeof eval(func);
+            }catch (e){
+                throw new DevError('A função "'+func+'()" especificada em: Controller/DataTablesConfig não existe', e);
             }
 
             button.addEventListener('click', function (event) {
                 eval(func+"(event, this, attrs, dataTable, rowRegId, allRowData);");
             });
         }
+    },
+
+    __objcfg_image: function (tr, obj, idx, dataTable, rowRegId, allRowData)
+    {
+        var image = obj.image;
+        //var src = '/Site/media/images/autores/cortella.jpg';
+
+        //encontrar a TD e limpar o html
+        // console.log(image);
+        var e = $(tr).find('td')[idx];
+        $(e).html('');
+
+        // if (image.src != undefined) {
+        //     console.log('ler foto');
+        //     src = image.src;
+        // }
+
+        var imgTag = Script.createElement('div', '', { class: 'photo-table' }, { backgroundImage: 'url('+image.src+')' });
+        // var imgTag = Script.createElement('div', '', { class: 'photo' }, { backgroundImage: 'url("'+src+'");' });
+        $(e).html(imgTag);
     },
 
     /*

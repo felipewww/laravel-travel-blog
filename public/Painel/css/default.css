@@ -72,6 +72,14 @@ a { text-decoration: none; color: #fff; font-weight: normal; transition: all 0.3
 .cleaner { clear: both !important;  float: none !important; width: 0 !important; height: 0 !important; }
 
 /*FORM*/
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: rgba(250, 255, 189, 0);
+    background-image: none;
+    -webkit-text-fill-color: #b8ff9a !important;
+    -webkit-box-shadow: 0 0 0px 1000px #303642 inset;
+}
+
 input, textarea, select {
     background-color: rgba(0, 0, 0, 0);
     padding: 10px;
@@ -341,6 +349,10 @@ table tbody tr td a {
     border-radius: 3px;
     font-size: 11px;
     cursor: pointer;
+}
+
+table tbody tr td a.disabled {
+    color: #4e5a6d;
 }
 
 table tbody tr td a.hasCityWithPost {

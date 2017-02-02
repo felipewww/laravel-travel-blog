@@ -17,11 +17,11 @@ class EstructureHeadline extends Migration
             $table->increments('id')->unsigned();
             $table->string('title');
             $table->text('content');
-            $table->text('media');
+            $table->text('src');
 
             $table->timestamps();
 
-            $table->morphs('polimorph_from');
+            $table->morphs('headline_morph');
         });
     }
 

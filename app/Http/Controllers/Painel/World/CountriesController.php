@@ -6,8 +6,6 @@ use App\Country;
 use App\Continent;
 use App\Library\DataTablesInterface;
 use \App\Http\Controllers\Controller;
-//use App\Country as Country;
-
 class CountriesController extends Controller implements DataTablesInterface {
 
     use \App\Library\Jobs, \App\Library\DataTablesExtensions;

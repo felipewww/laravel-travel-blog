@@ -18,21 +18,20 @@ class Authors extends Seeder
             array
             (
                 [
-                    'users_id' => 1,
-                    'description' => $faker->paragraph
+                    'user_id' => 1,
+                    'description' => $faker->paragraph,
+                    'photo' => '/public/author.png'
                 ],
                 [
-                    'users_id' => 2,
-                    'description' => $faker->paragraph
+                    'user_id' => 2,
+                    'description' => $faker->paragraph,
+                    'photo' => '/public/author.png'
                 ],
                 [
-                    'users_id' => 3,
-                    'description' => $faker->paragraph
-                ],
-                [
-                    'users_id' => 4,
-                    'description' => $faker->paragraph
-                ],
+                    'user_id' => 3,
+                    'description' => $faker->paragraph,
+                    'photo' => '/public/author.png'
+                ]
             )
         );
     }

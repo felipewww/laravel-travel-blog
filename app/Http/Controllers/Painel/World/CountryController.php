@@ -28,7 +28,7 @@ class CountryController extends Controller implements DataTablesInterface{
         ['title' => 'n', 'width' => '10px'],
         ['title' => 'id', 'width' => '70px'],
         ['title' => 'nome'],
-        ['title' => 'ações', 'width' => '140px'],
+        ['title' => 'ações', 'width' => '200px'],
     ];
 
     public function __construct(Country $model, Request $request)
@@ -80,12 +80,12 @@ class CountryController extends Controller implements DataTablesInterface{
 
             $s = array_search($regId, $this->ids_db);
             if ($s !== false){
-                $postButton = [
+                $citiesButton = [
                     'html' => '+ cidades',
                     'attributes' => ['class' => 'hasCityWithPost', 'data-jslistener-click' => 'country.findCities']
                 ];
             }else{
-                $postButton = [
+                $citiesButton = [
                     'html' => '+ cidades',
                     'attributes' => ['data-jslistener-click' => 'country.findCities']
                 ];
@@ -98,17 +98,7 @@ class CountryController extends Controller implements DataTablesInterface{
                 [
                     'rowButtons' =>
                     [
-                        $postButton,
-//                        [
-//                            'html' => '+ cidades',
-//                            'attributes' => ['data-jslistener-click' => 'country.findCities']
-//                        ],
-                        [
-                            'html' => '+ config',
-                            'attributes' => [
-                                'href' => '#'
-                            ]
-                        ]
+                        $citiesButton,
                     ],
                     'anotherObject' => 'onlyTest'
                 ],
@@ -124,7 +114,7 @@ class CountryController extends Controller implements DataTablesInterface{
             ['title' => 'n', 'width' => '10px'],
             ['title' => 'id', 'width' => '70px'],
             ['title' => 'nome'],
-            ['title' => 'ações', 'width' => '140px'],
+            ['title' => 'ações', 'width' => '85px'],
         ];
     }
 
@@ -188,21 +178,54 @@ class CountryController extends Controller implements DataTablesInterface{
             $friendlyName = $this->toAscii($city['name']);
 
             if ( $s !== false ) {
-                $postButton = [
-                    'html' => 'edit post',
+                $pagePostButton = [
+                    'html' => 'editar página',
                     'attributes' => [
                         'class' => 'hasPost',
-                        'href' => "/painel/blog/cidade/$regId",
+                        'href' => "/painel/mundo/cidade/single/$regId",
                         'target' => '_blank'
+                    ]
+                ];
+
+                $blogPostButton = [
+                    'html' => '+ post',
+                    'attributes' => [
+                        'href' => '/blog/c/novo-post/'.$regId,
+                        'target' => '_blank'
+                    ]
+                ];
+
+                $configButton = [
+                    'html' => '+ config',
+                    'attributes' => [
+                        'href' => '/painel/mundo/cidade/'.$regId
                     ]
                 ];
             }else{
                 $jsonData = ['estate_id' => $request['id'], 'city' => $city];
-                $postButton = [
-                    'html' => 'criar post',
+                $pagePostButton = [
+                    'html' => 'criar página',
                     'attributes' => [
+                        'class' => 'createPage',
+                        'data-action' => '/painel/mundo/cidade/single/single',
                         'data-post' => json_encode($jsonData),
-                        'onclick' => 'country.createCityPost(this)',
+                        'onclick' => 'country.createCityPage(this)',
+                    ]
+                ];
+                $blogPostButton = [
+                    'html' => '+ post',
+                    'attributes' => [
+                        'data-action' => '/painel/blog/post/cidade',
+                        'data-post' => json_encode($jsonData),
+                        'onclick' => 'country.createCityPage(this)',
+                    ]
+                ];
+                $configButton = [
+                    'html' => '+ config',
+                    'attributes' => [
+                        'class' => 'disabled',
+                        'href' => 'javascript:;',
+                        'data-jslistener-click' => 'country.beforeConfig'
                     ]
                 ];
             }
@@ -214,13 +237,9 @@ class CountryController extends Controller implements DataTablesInterface{
                 [
                     'rowButtons' =>
                         [
-                            $postButton,
-                            [
-                                'html' => '+ config',
-                                'attributes' => [
-                                    'href' => '/painel/mundo/cidade/'.$regId
-                                ]
-                            ]
+                            $blogPostButton,
+                            $configButton,
+                            $pagePostButton
                         ]
                 ]
             ];

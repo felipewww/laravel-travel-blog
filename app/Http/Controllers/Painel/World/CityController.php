@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers\Painel\World;
 
+use App\Authors;
 use \App\Http\Controllers\Controller;
+use App\Http\Controllers\Painel\Blog\PostController;
 use App\Interest;
+use App\Library\BlogJobs;
+use App\Library\Jobs;
+use App\Library\WorldEstructureJobs;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use App\City;
 use App\Estate;
 
 class CityController extends Controller {
 
-    use \App\Library\Jobs;
+    use Jobs;
 
     protected $model;
     public $city;
     public $cityId;
     public $interests;
     public $allInterests;
+    public $cityModel;
 
     public function __construct($cityId)
     {
@@ -37,16 +44,35 @@ class CityController extends Controller {
 
         $this->model    = new City();
         $this->cityId   = $cityId;
-        $this->city     = $this->model->where('id', $cityId)->get($arr);
+        $this->city     = $this->model->select($arr)->where('id', $cityId)->get();
+        $this->cityModel = $this->model->find($cityId);
     }
 
-    function display()
+    protected function nullAuthor($post, $id)
+    {
+        //Manter tratamento default e add outras coisas
+        BlogJobs::author_id($post, $id);
+
+        //Aqui podem vir outros tratamentos além do default...
+    }
+
+    public function display()
     {
         if ( isset($this->city[0]) ) {
             $this->city = $this->city[0]->getAttributes();
         }else{
-            trigger_error('Esta cidade ainda não está cadastrada no banco. Favor gerar um Blog/Post para depois editar suas configurações', E_USER_ERROR);
+            trigger_error('Cidade não encontrada no Banco de dados. Favor gerar via Painel Administrativo um "Blog/Post" ou criar a "Página da Cidade" para depois editar suas configurações', E_USER_ERROR);
         }
+
+        $this->vars['posts'] =
+            PostController::manage(
+                $this->cityModel->Post,
+                [
+                    'author_id' => function($post, $author_id){
+                        $this->nullAuthor($post, $author_id);
+                    }
+                ]
+        );
 
         /*
          * Isso porque o CITY.JS é executado tanto no SITE para edição do post, quanto no painel para edição de
@@ -87,15 +113,14 @@ class CityController extends Controller {
         $this->vars['allInterests'] = $this->allInterests;
     }
 
-    function createAjaxAction($request)
+    /**
+     * @paramn $city Informações da cidade vindas de um json request
+     * @paramn $estate Informações do estado vindas de um json request
+     * @paramn $country Informações do país vindas de um json request
+     * @paramn $HTML Informações do país vindas de um json request
+     * */
+    public function create($city, $estate, $country, $html)
     {
-        $data = $request['screen_json'];
-        $html = $request['html'];
-
-        $country    = $data['country'];
-        $estate     = $data['estate'];
-        $city       = $data['city'];
-
         $hasEstate = Estate::where('id', $estate['geonameId'])->get()[0] ?? false;
         if ( !$hasEstate ) {
             $e = new Estate();
@@ -126,10 +151,17 @@ class CityController extends Controller {
 
         $this->model->save();
 
+        return true;
+    }
+
+    public function createAjaxAction($request)
+    {
+        $data = $request['screen_json'];
+        $this->create($data['city'], $data['estate'], $data['country'], $request['html']);
+
         $res = [
             'status' => true
         ];
-
         return json_encode($res);
     }
 
@@ -175,6 +207,15 @@ class CityController extends Controller {
                 ]
             );
         }
+
+        return json_encode(['status' => true]);
+    }
+
+    public function updateTagsAjaxAction($request)
+    {
+        $this->city[0]->search_tags    = $request->system;
+        $this->city[0]->seo_tags       = $request->seo;
+        $this->city[0]->save();
 
         return json_encode(['status' => true]);
     }

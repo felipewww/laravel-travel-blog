@@ -5874,6 +5874,12 @@
       }
     };
 
+    IgnitionUI.prototype.beforeSave = function() {
+      if (this.dispatchEvent(this.createEvent('beforeSave'))) {
+        return this.state('editing');
+      }
+    };
+
     IgnitionUI.prototype.mount = function() {
       IgnitionUI.__super__.mount.call(this);
       this._domElement = this.constructor.createDiv(['ct-widget', 'ct-ignition', 'ct-ignition--ready']);

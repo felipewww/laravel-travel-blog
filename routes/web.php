@@ -16,11 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'Site\IndexController@index');
 
 /*
- * Rotas apenas se não estiver logado
+ * Rotas para páginas do site
 */
 Route::get('pais/{nome}/{id}', ['uses' => 'Site\World\CountryController@index']);
 Route::get('estado/{nome}/{id}', ['uses' => 'Site\World\EstateController@index']);
 Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+
+Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
+    $c = new App\Http\Controllers\Site\Blog\PostController();
+    return $c->city($id);
+});
 
 Route::post('upload-image', 'Site\IndexController@uploadImage');
 Route::post('insert-image', 'Site\IndexController@insertImage');
@@ -60,16 +65,42 @@ Route::group(['middleware' => 'auth'], function (){
                 return $c->apiAction($request);
             });
 
+            Route::post('/api/blog/post/cidade', function (\Illuminate\Http\Request $request){
+                $id = $request->screen_json['post_id'] ?? 0;
+                $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
+                return $c->apiAction($request);
+            });
+
             Route::post('/api/mundo/cidade/{id}', function (\Illuminate\Http\Request $request, $cityId){
                 $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
                 return $c->apiAction($request);
             });
 
+            Route::post('/api/usuarios', function (\Illuminate\Http\Request $request){
+                $c = new \App\Http\Controllers\Painel\Blog\AuthorController();
+                return $c->apiAction($request);
+            });
         });
 
         Route::group(['prefix' => 'blog'], function (){
-            Route::post('cidade', 'Site\World\CityController@forCreate');
-            Route::get('cidade/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+            Route::post('post/cidade', function (\Illuminate\Http\Request $request){
+                $c = new \App\Http\Controllers\Site\Blog\PostController();
+                return $c->city($request);
+            });
+
+            Route::get('post/cidade/{id}', function ($id){
+                $c = new App\Http\Controllers\Site\Blog\PostController();
+                return $c->editPostCity($id);
+            });
+
+            Route::get('posts', ['uses' => 'Painel\Blog\PostsController@view']);
+            Route::get('post/{id}', function ($id){
+                $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
+                return $c->view();
+            });
+
+            Route::get('autores', ['uses' => 'Painel\Blog\AuthorController@view']);
+            Route::get('autor/{id}', ['uses' => 'Painel\Blog\AuthorController@viewAuthor']);
         });
 
         Route::group(['prefix' => 'mundo'], function (){
@@ -77,12 +108,13 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('paises', 'Painel\World\CountriesController@display');
 
             Route::group(['prefix' => 'pais'], function(){
-//                Route::get('', 'Painel\World\CountryController@display');
                 Route::get('{id}', ['uses' => 'Painel\World\CountryController@display']);
-
             });
 
             Route::group(['prefix' => 'cidade'], function(){
+                Route::post('single', 'Site\World\CityController@forCreate');
+                Route::get('single/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+
                 Route::get('{id}', function ($id){
                     $c = new \App\Http\Controllers\Painel\World\CityController($id);
                     return $c->display();
@@ -98,7 +130,11 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('', 'Painel\IndexController@index');
         Route::any('logout', 'Auth\LoginController@logout');
 
-        Route::get('register', 'Auth\RegisterController@view');
-        Route::post('register', 'Auth\RegisterController@register');
+//        Route::get('register', 'Auth\RegisterController@view');
+//        Route::post('register', 'Auth\RegisterController@register');
+
+        Route::get('usuarios', 'Painel\system\users\RegisterController@view');
+//        Route::post('usuarios/update', 'Painel\system\users\RegisterController@createorupdate');
+        Route::post('usuarios', 'Painel\system\users\RegisterController@view');
     });
 });

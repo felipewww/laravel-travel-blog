@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-//use Faker;
+use Faker;
 
 class Post extends Model
 {
-    protected $fillable = ['title','content','content_strip','post_type_id'];
+    protected $fillable = ['content_regions', 'status', 'post_type_id', 'author_id'];
 
     public function Headline()
     {
@@ -18,6 +18,15 @@ class Post extends Model
     {
         return $this->morphTo();
     }
+
+    public function author() { return $this->belongsTo('App\Authors'); }
+    public function post_type() { return $this->belongsTo('App\PostType'); }
+
+    /*Polimorphics*/
+//    public function polimorph_from(){
+//
+//    }
+    /*Polimorphics*/
 
     /*
      * examples:

@@ -2,6 +2,9 @@
 
 namespace App\Library;
 
+use App\Continent;
+use App\Country;
+use App\Estate;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
 

@@ -10,8 +10,6 @@ $(document).ready(function() {
     });
 });
 
-var T;
-
 function AjaxExceptions(data){
     var msg = 'Erro de Requisição ajax';
 
@@ -22,11 +20,23 @@ function AjaxExceptions(data){
     this.message    = msg;
     this.name       = 'AjaxExceptions';
     this.response   = data;
+
+    return this.message;
+}
+
+function DevError(msg, obj) {
+    //console.error(msg, obj);
+    this.message = msg;
+    this.e = obj;
+    return this;
 }
 
 Script = {
+    stored: {},
+    pageScript: [],
     submitValidator: false,
     clickToEnable: {},
+
 
     //Iniciar funções em comum entre "painel" e "site"
 	init: function () {
@@ -42,10 +52,31 @@ Script = {
         Client.init();
     },
 
+    store: function (obj, itemName)
+    {
+        if ( typeof obj[itemName] != 'object' ) {
+            console.error(itemName+' não existe para ser armazendo');
+            return false;
+        }
+
+        if ( this.stored[itemName] != undefined ) {
+            console.error(itemName+' já existe. Verifique se existe outro script que executa o store do mesmo nome.');
+            return false;
+        }
+
+        this.stored[itemName] = $.extend(true, {}, obj[itemName]);
+        return true;
+    },
+
+    restore: function (name)
+    {
+        console.log(this.stored[name]);
+        // return $.extend(true, {}, this.stored[name]);
+        return this.stored[name];
+    },
+
     sendPost: function (elements, paramns)
     {
-        //console.log(elements);
-        // exit()
         var form = this.createElement('form', paramns);
         elements['_token'] = window.Laravel.csrfToken;
 
@@ -125,6 +156,8 @@ Script = {
 
         if ( meta[0] != undefined ) {
             this.screenJson = JSON.parse(meta[0].getAttribute('content'));
+        }else{
+            this.screenJson = {};
         }
     },
 
@@ -351,14 +384,15 @@ Script = {
         }
     },
 
-    createElement: function (element, innerHTML, attrs)
+    createElement: function (element, innerHTML, attrs, styles)
     {
         if (typeof innerHTML == 'object') {
             attrs = innerHTML;
             innerHTML = '';
         }
 
-        if (typeof attrs != 'object') { attrs = {} }
+        if (typeof attrs    != 'object' ) { attrs = {} }
+        if (typeof styles   != 'object' ) { styles = {} }
 
         var e = document.createElement(element);
         e.innerHTML = innerHTML;
@@ -366,6 +400,11 @@ Script = {
         for(attr in attrs)
         {
             e.setAttribute(attr, attrs[attr]);
+        }
+
+        for(css in styles)
+        {
+            e.style[css] = styles[css];
         }
 
         return e;

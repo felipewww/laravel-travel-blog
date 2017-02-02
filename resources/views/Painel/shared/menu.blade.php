@@ -19,7 +19,7 @@
                         <span class="menu-item-text">Sistema</span>
                     </span>
                     <ul>
-                        <li><a href="#"><span class="flaticon-avatar"></span>Usuarios</a></li>
+                        <li><a href="/painel/usuarios"><span class="flaticon-avatar"></span>Usuarios</a></li>
                         <li>
                             <span class="has-submenu"><span class="flaticon-technology-1"></span>Developer</span>
                             <ul>
@@ -43,9 +43,9 @@
                         <span class="menu-item-text">Blog</span>
                     </span>
                     <ul>
-                        <li><a href="/painel/blog/post"><span class="flaticon-feather-pen"></span>Novo Post</a></li>
+                        {{--<li><a href="/painel/blog/post"><span class="flaticon-feather-pen"></span>Novo Post</a></li>--}}
                         <li><a href="/painel/blog/posts"><span class="flaticon-feather-pen"></span>Posts</a></li>
-                        <li><a href="/painel/blog/posts"><span class="flaticon-feather-pen"></span>Autores</a></li>
+                        <li><a href="/painel/blog/autores"><span class="flaticon-feather-pen"></span>Autores</a></li>
                     </ul>
                 </li>
 

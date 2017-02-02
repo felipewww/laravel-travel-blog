@@ -81,9 +81,8 @@ class WorldEstructure extends Migration
         Schema::create('cities', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
-            //$table->boolean('status')->default(false);
+
             $table->integer('estates_id')->unsigned();
-            //$table->integer('views')->default(0);
 
             $table->decimal('ll_north', 10, 7)->nullable();
             $table->decimal('ll_south', 10, 7)->nullable();

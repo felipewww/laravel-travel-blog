@@ -13,6 +13,9 @@ class Posts extends Migration
      */
     public function up()
     {
+        /*
+         * Post, lista, patrocinado...
+         * */
         Schema::create('post_types', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
@@ -23,26 +26,27 @@ class Posts extends Migration
             $table->text('description');
             $table->text('photo');
 
-            $table->integer('users_id')->unsigned();
-            $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
         });
 
         Schema::create('posts', function (Blueprint $table){
             $table->increments('id')->unsigned();
-            $table->string('title');
-            $table->text('content');
-            $table->text('content_strip');
+//            $table->string('title');
+            $table->text('content_regions');
+            $table->boolean('status')->default(false);
             $table->string('seo_tags')->nullable();
+            $table->string('search_tags')->nullable();
 
             $table->timestamps();
 
             $table->morphs('polimorph_from');
 
-            $table->integer('authors_id')->unsigned();
-            $table->foreign('authors_id')->references('id')->on('authors')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('author_id')->unsigned()->nullable(); //ao criar post, só é definido o autor posteriormente
+            $table->foreign('author_id')->references('id')->on('authors')->onUpdate('cascade')->onDelete('restrict');
 
-            $table->integer('post_types_id')->unsigned();
-            $table->foreign('post_types_id')->references('id')->on('post_types')->onUpdate('cascade')->onDelete('restrict');
+            $table->integer('post_type_id')->unsigned()->default(1);
+            $table->foreign('post_type_id')->references('id')->on('post_types')->onUpdate('cascade')->onDelete('restrict');
         });
 
         Schema::create('posts_headlines', function (Blueprint $table){
