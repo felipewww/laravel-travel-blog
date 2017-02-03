@@ -56,7 +56,8 @@ class CountriesController extends Controller implements DataTablesInterface {
                                 'html' => '+ post',
                                 'attributes' => [
                                     'class' => 'sendPost',
-                                    'href' => "/pais/$friendlyName/$country->id",
+//                                    'href' => "/pais/$friendlyName/$country->id",
+                                    'data-jslistener-click' => 'country.createCountryPage',
                                     'target' => '_blank'
                                 ]
                             ]

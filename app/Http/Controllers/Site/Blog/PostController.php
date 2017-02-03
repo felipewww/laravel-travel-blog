@@ -45,11 +45,13 @@ class PostController extends Controller {
         $this->json_meta(['contentToolsOnSave' => 'post.update']);
         $this->json_meta(['post_id' => $id]);
         $this->vars['isNew'] = false;
-        $post = $this->model->where('id',$id)->get();
+        $posts = $this->model->where('id',$id)->get();
 
-        $this->getEstructureBreadcrumb('city', $post[0]->polimorph_from_id);
+//        dd($post);
+//        $this->getEstructureBreadcrumb('city', $post[0]->polimorph_from_id);
+        $this->getEstructureBreadcrumb('city', $posts[0]->polimorph_from_id);
 
-        $this->vars['post'] = BlogJobs::manage($post)[0];
+        $this->vars['post'] = BlogJobs::manage($posts)[0];
         return view('Site.blog.post_city', $this->vars);
     }
 }

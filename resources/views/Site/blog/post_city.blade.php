@@ -33,7 +33,7 @@
         </div>
             <article class="article" id="the-article">
                 <section class="article__content"  >
-
+                    {{--{{ dd(get_defined_vars()) }}--}}
                     <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }}</p>
 
                     @if($isNew)
@@ -49,7 +49,9 @@
                             </p>
                         </div>
                     @else
-                        {!! $post->managed_regions['article_content']['content'] !!}
+                        <div data-editable data-name="article_content">
+                            {!! $post->managed_regions['article_content']['content'] !!}
+                        </div>
                     @endif
 
                 </section>

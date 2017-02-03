@@ -32,7 +32,7 @@ class Posts extends Migration
 
         Schema::create('posts', function (Blueprint $table){
             $table->increments('id')->unsigned();
-//            $table->string('title');
+
             $table->text('content_regions');
             $table->boolean('status')->default(false);
             $table->string('seo_tags')->nullable();
@@ -40,6 +40,7 @@ class Posts extends Migration
 
             $table->timestamps();
 
+            //City or Country
             $table->morphs('polimorph_from');
 
             $table->integer('author_id')->unsigned()->nullable(); //ao criar post, só é definido o autor posteriormente

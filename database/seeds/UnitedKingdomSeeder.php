@@ -34,7 +34,7 @@ class UnitedKingdomSeeder extends Seeder
 
         foreach ($array as &$country_of_uk)
         {
-            $country_of_uk['comments'] = json_encode($comments);
+            $country_of_uk['system_notes'] = json_encode($comments);
         }
 
         $fullData = WorldEstructureSeeder::makeData($array);

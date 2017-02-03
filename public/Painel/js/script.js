@@ -40,12 +40,8 @@ Script = {
 
     //Iniciar funções em comum entre "painel" e "site"
 	init: function () {
-        // this.responseajax   = document.getElementById("responseajax");
-        // this.loading        = document.getElementById("loading");
 
         this.todayDate();
-        // this.actionMessage();
-        // this.setMasks();
         this.getScreenJson();
 
         //Código criado por ARDUO para extensões ou plugins do PAINEL.
@@ -70,9 +66,8 @@ Script = {
 
     restore: function (name)
     {
-        console.log(this.stored[name]);
-        // return $.extend(true, {}, this.stored[name]);
-        return this.stored[name];
+        //return a new copy of copy withou alters
+        return $.extend(true, {}, this.stored[name]);
     },
 
     sendPost: function (elements, paramns)

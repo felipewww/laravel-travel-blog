@@ -66,7 +66,9 @@ Route::group(['middleware' => 'auth'], function (){
             });
 
             Route::post('/api/blog/post/cidade', function (\Illuminate\Http\Request $request){
+//                $id = $request->screen_json['post_id'] ?? $request->screen_json['request']['city']['geonameId'];
                 $id = $request->screen_json['post_id'] ?? 0;
+
                 $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
                 return $c->apiAction($request);
             });
@@ -113,7 +115,11 @@ Route::group(['middleware' => 'auth'], function (){
 
             Route::group(['prefix' => 'cidade'], function(){
                 Route::post('single', 'Site\World\CityController@forCreate');
-                Route::get('single/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+//                Route::get('single/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+                Route::get('single/{id}', function ($id, \Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Site\World\CityController();
+                    return $c->fromDB($id, $request);
+                });
 
                 Route::get('{id}', function ($id){
                     $c = new \App\Http\Controllers\Painel\World\CityController($id);

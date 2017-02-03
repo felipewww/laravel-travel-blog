@@ -47,11 +47,16 @@ class WorldEstructure extends Migration
              *
              * Essas observações vem aqui em formato JSON para futura pesquisa ou até exibição na tela
              * */
+            $table->text('system_notes')->nullable();
+
+            /*cofig página do país*/
+//            $def = json_encode(['nenhum conteúdo'], JSON_UNESCAPED_UNICODE);
+            $table->text('content_regions')->nullable();
+            $table->boolean('status')->default(0);
+
             $table->text('comments')->nullable();
             $table->text('search_tags')->nullable();
-
-            $table->text('content')->nullable();
-            $table->boolean('status')->default(0);
+            $table->text('seo_tags')->nullable();
 
             $table->timestamps();
         });
@@ -72,9 +77,6 @@ class WorldEstructure extends Migration
             $table->integer('countries_id')->unsigned();
             $table->foreign('countries_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
 
-            $table->text('comments')->nullable();
-            $table->text('search_tags')->nullable();
-
             $table->timestamps();
         });
 
@@ -94,7 +96,7 @@ class WorldEstructure extends Migration
 
             $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
 
-            $table->text('content');
+            $table->text('content_regions')->nullable();
             $table->boolean('status')->default(0);
 
             $table->text('comments')->nullable();

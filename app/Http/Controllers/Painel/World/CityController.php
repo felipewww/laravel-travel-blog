@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Painel\World;
 
-use App\Authors;
 use \App\Http\Controllers\Controller;
 use App\Http\Controllers\Painel\Blog\PostController;
 use App\Interest;
 use App\Library\BlogJobs;
 use App\Library\Jobs;
-use App\Library\WorldEstructureJobs;
-use App\User;
 use Illuminate\Support\Facades\DB;
 use App\City;
 use App\Estate;
@@ -18,7 +15,7 @@ class CityController extends Controller {
 
     use Jobs;
 
-    protected $model;
+    public $model;
     public $city;
     public $cityId;
     public $interests;
@@ -138,16 +135,16 @@ class CityController extends Controller {
             $e->save();
         }
 
-        $this->model->id            = $city['geonameId'];
-        $this->model->name          = $city['name'];
-        $this->model->estates_id    = $estate['geonameId'];
-        $this->model->ll_north      = $city['bbox']['north'];
-        $this->model->ll_south      = $city['bbox']['south'];
-        $this->model->ll_east       = $city['bbox']['east'];
-        $this->model->ll_west       = $city['bbox']['west'];
-        $this->model->lat           = ($city['bbox']['north']+$city['bbox']['south'])/2;
-        $this->model->lng           = ($city['bbox']['east']+$city['bbox']['west'])/2;
-        $this->model->content       = $html;
+        $this->model->id                = $city['geonameId'];
+        $this->model->name              = $city['name'];
+        $this->model->estates_id        = $estate['geonameId'];
+        $this->model->ll_north          = $city['bbox']['north'];
+        $this->model->ll_south          = $city['bbox']['south'];
+        $this->model->ll_east           = $city['bbox']['east'];
+        $this->model->ll_west           = $city['bbox']['west'];
+        $this->model->lat               = ($city['bbox']['north']+$city['bbox']['south'])/2;
+        $this->model->lng               = ($city['bbox']['east']+$city['bbox']['west'])/2;
+        $this->model->content_regions   = $html;
 
         $this->model->save();
 
@@ -157,7 +154,9 @@ class CityController extends Controller {
     public function createAjaxAction($request)
     {
         $data = $request['screen_json'];
-        $this->create($data['city'], $data['estate'], $data['country'], $request['html']);
+        $content = json_encode($request['content_regions'], JSON_UNESCAPED_UNICODE);
+
+        $this->create($data['city'], $data['estate'], $data['country'], $content);
 
         $res = [
             'status' => true
@@ -168,10 +167,24 @@ class CityController extends Controller {
     function updateAjaxAction($request)
     {
         $city = $this->model->find($request->screen_json['city_id']);
-        $city->content = $request['html'];
-        $city->save();
+        $currRegions = json_decode($city->content_regions, true);
+
+        $edited = false;
+        foreach($request->content_regions as $key => $region)
+        {
+            if ( isset($region['content']) ) {
+                $edited = true;
+                $currRegions[$key]['content'] = $region['content'];
+            }
+        };
+
+        if ($edited) {
+            $city->content_regions = json_encode($currRegions, JSON_UNESCAPED_UNICODE);
+            $city->save();
+        }
 
         $res = [
+            'edited' => $edited,
             'status' => true
         ];
 

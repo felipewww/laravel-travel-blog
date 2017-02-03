@@ -2,6 +2,7 @@
 
 namespace App\Library;
 
+use App\City;
 use App\Continent;
 use App\Country;
 use App\Estate;
@@ -21,12 +22,25 @@ trait WorldEstructureJobs {
         else
         {
             if ($from == 'city') {
-                $model = new \App\City();
-                $this->vars['breadcrumb']['city'] = $model->find($id)->getAttributes();
+//                dd($id);
+                if ($id instanceof City) {
+//                    dd('instancia');
+                $city = $id;
+                }else{
+//                    dd('id:');
+                $city = City::select('name','id','estates_id')->where('id',$id)->first();
+                }
+
+                $this->vars['breadcrumb']['city'] = $city;
 
                 $this->vars['breadcrumb']['estate'] =
                     \App\Estate::select('id', 'countries_id', 'name')
-                        ->where('id', $this->vars['breadcrumb']['city']['estates_id'])
+                        ->where('id', $city->estates_id)
+                        ->first()->getAttributes();
+
+                $this->vars['breadcrumb']['estate'] =
+                    \App\Estate::select('id', 'countries_id', 'name')
+                        ->where('id', $city->estates_id)
                         ->first()->getAttributes();
 
                 $this->vars['breadcrumb']['country'] =
@@ -38,28 +52,8 @@ trait WorldEstructureJobs {
                     \App\Continent::select('id', 'name')
                         ->where('id', $this->vars['breadcrumb']['country']['continents_id'])
                         ->first()->getAttributes();
-            } else if ($from == 'estate') {
-                $model = new \App\Estate();
-                $local = $model->find($id)->getAttributes();
-
-                $this->vars['breadcrumb']['country'] =
-                    \App\Country::select('id', 'continents_id', 'name')
-                        ->where('id', $local['countries_id'])
-                        ->first()->getAttributes();
-
-                $this->vars['breadcrumb']['continent'] =
-                    \App\Continent::select('id', 'name')
-                        ->where('id', $this->vars['breadcrumb']['country']['continents_id'])
-                        ->first()->getAttributes();
-            } else if ($from == 'country') {
-                $model = new \App\Country();
-                $local = $model->find($id)->getAttributes();
-
-                $this->vars['breadcrumb']['continent'] =
-                    \App\Continent::select('id', 'name')
-                        ->where('id', $local['continents_id'])
-                        ->first()->getAttributes();
             }
+            //todo $from 'country'
         }
     }
 

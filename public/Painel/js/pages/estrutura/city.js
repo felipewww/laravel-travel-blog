@@ -3,6 +3,10 @@ $(document).ready(function () {
 });
 
 city = {
+    regions: {
+        article_content: { required: true }
+    },
+
     init: function () {
         if (Script.screenJson.isPainel) {
             city.painel.init();
@@ -32,23 +36,32 @@ city = {
     /*
     * Funções executada no ONSAVE do ContentTools dinamicamente para salvar a PÁGINA da cidade.
     * */
-    create: function (ev)  { city.action('create'); },
-    update: function (ev)  { city.action('update'); },
+    create: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('create'); },
+    update: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('update'); },
 
     action: function (action)
     {
-        var html = document.getElementById('the-article').innerHTML;
+        var id;
+        if (action == 'create') {
+            id = Script.screenJson.city.geonameId;
+            if (!ContentToolsExtensions.validateRegions(city.regions)) {
+                return false;
+            }
+        }else{
+            id = Script.screenJson.city_id;
+        }
+
+        //var html = document.getElementById('the-article').innerHTML;
         $.ajax({
             method: 'post',
-            url: '/painel/api/blog/cidade/save/'+Script.screenJson.city.geonameId,
-            data: { html: html, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: action },
+            url: '/painel/api/blog/cidade/save/'+id,
+            data: { content_regions: city.regions, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: action },
             dataType: 'json',
             success: function (data) {
                 if (action == 'activate') { window.location.href = '/cidade/'+data.ascii_name+'/'+Script.screenJson.city.geonameId; }
                 city.confirm(action, data);
             },
             error: function (e) {
-                console.log('Error');
                 console.log(e);
                 city.confirm('error', e);
             }
@@ -75,13 +88,24 @@ city = {
                 break;
 
             case 'update':
-                obj = {
-                    title: 'Post da cidade alterado com sucesso',
-                    type: "success",
-                    confirmButtonColor: '#a5dc86',
-                    confirmButtonText: 'OK!',
-                    closeOnConfirm: true
-                };
+                if (data.edited) {
+                    obj = {
+                        title: 'Post da cidade alterado com sucesso',
+                        type: "success",
+                        confirmButtonColor: '#a5dc86',
+                        confirmButtonText: 'OK!',
+                        closeOnConfirm: true
+                    };
+                }else{
+                    obj = {
+                        title: '',
+                        text: 'Nenhum erro, nenhuma alteração.',
+                        type: "info",
+                        confirmButtonColor: '#a5dc86',
+                        confirmButtonText: 'OK!',
+                        closeOnConfirm: true
+                    };
+                }
                 break;
 
             case 'error':

@@ -207,7 +207,7 @@ class CountryController extends Controller implements DataTablesInterface{
                     'html' => 'criar página',
                     'attributes' => [
                         'class' => 'createPage',
-                        'data-action' => '/painel/mundo/cidade/single/single',
+                        'data-action' => '/painel/mundo/cidade/single',
                         'data-post' => json_encode($jsonData),
                         'onclick' => 'country.createCityPage(this)',
                     ]

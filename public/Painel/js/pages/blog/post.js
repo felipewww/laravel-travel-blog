@@ -27,7 +27,6 @@ post = {
     setDefaultNewPost: function () {
         $('[data-name="article_title"]').html(this.title_default);
         $('[data-name="article_content"]').html(this.content_default);
-        //
     },
 
     /*
@@ -35,19 +34,20 @@ post = {
      * */
     create: function (ev)
     {
-        this.mountRegions(ev.detail().regions);
+        ContentToolsExtensions.mountRegions(ev.detail().regions, post.regions);
+        //this.mountRegions(ev.detail().regions);
         post.action('create', ev);
     },
     update: function (ev)
     {
-        this.mountRegions(ev.detail().regions);
+        ContentToolsExtensions.mountRegions(ev.detail().regions, post.regions);
         post.action('update', ev);
     },
 
     action: function (action, ev)
     {
         if (action == 'create') {
-            if (!this.validateRegions()) {
+            if (!ContentToolsExtensions.validateRegions(post.regions)) {
                 return false;
             }
         }
@@ -70,47 +70,6 @@ post = {
         }
 
         this.regions = Script.restore('regions');
-    },
-
-    mountRegions: function (evregions)
-    {
-        //Pegar regioes alteradas, salvar no objeto final e validar se for required.
-        for (var regionName in evregions)
-        {
-            if (evregions.hasOwnProperty(regionName))
-            {
-                if (post.regions[regionName] == undefined) { post.regions[regionName] = {}; }
-                post.regions[regionName].content = evregions[regionName];
-                if (post.regions[regionName].required)
-                {
-                    post.regions[regionName].validated = true;
-                }
-            }
-        }
-    },
-
-    validateRegions: function () {
-        var hasError = false;
-
-        //Ler objeto final e validar as configurações
-        for(var region in post.regions)
-        {
-            if (post.regions.hasOwnProperty(region))
-            {
-                var cfg = post.regions[region];
-                if (cfg.required && !cfg.validated)
-                {
-                    hasError = true;
-                }
-            }
-        }
-
-        if (hasError) {
-            swal('Ops, Nada foi salvo!','Região '+region+' é obrigatório. Em caso de dúvidas, entre em contato com o administrador', 'error');
-            return false;
-        }
-
-        return true;
     },
 
     confirm: function (action, data)

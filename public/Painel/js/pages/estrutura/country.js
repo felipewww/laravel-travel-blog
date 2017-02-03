@@ -47,7 +47,7 @@ country = {
         (
             {
                 title: 'Ops! Cidade não cadastrada',
-                text: 'Esta cidade ainda não esta cadastrada no banco de dados. Para ver e editar suas configurações é necessário criar uma página da cidade ou post de blog. Por padrão, essa página não sera exibida no site até que você altere o status para "ATIVO"',
+                text: 'Esta cidade ainda não esta cadastrada no banco de dados. Para ver e editar suas configurações é necessário criar uma página da cidade ou post de blog.',
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: '#F8BE86',
@@ -65,6 +65,15 @@ country = {
             }
         );
 
+    },
+
+    createCountryPage: function ()
+    {
+        swal({
+            title: '',
+            text: 'Criação de páginas do pais indisponível.',
+            type: 'warning'
+        });
     },
 
     createCityPage: function (e, paramns)

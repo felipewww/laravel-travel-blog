@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Painel\Blog;
 
+use App\City;
 use App\Http\Controllers\Painel\World\CityController;
 use App\Library\BlogJobs;
 use Illuminate\Http\Request;
@@ -20,7 +21,6 @@ class PostController extends Controller
     public function __construct($id)
     {
         $this->model = new Post();
-
         $this->reg = $this->model->where('id', $id)->get();
         $this->reg = $this->reg[0] ?? [];
 
@@ -44,23 +44,25 @@ class PostController extends Controller
         $res = [];
         $from = $request->screen_json['from'];
 
+        $cityId = $request->screen_json['id'] ?? $request->screen_json['request']['city']['geonameId'];
+        $city = City::where('id', $cityId)->first();
+        if ( is_null($city) ){
+            $data = $request->screen_json['request'];
+            $cityId = $data['city']['geonameId'];
+            $cityController = new CityController(0);
+            $cityController->create($data['city'], $data['estate'], $data['country'], json_encode(['This city generated from PostController.']));
+//            $cityController->create($data['city'], $data['estate'], $data['country'], null);
+        }else{
+            /* 'id' é quando tentar criar post para uma cidade ja existente.
+             *  ['request']['city']['geonameId'] é quando criar + de 1 post cadastrando a cidade no primeiro.
+            */
+            $cityId = $request->screen_json['id'] ?? $request->screen_json['request']['city']['geonameId'];
+        }
+
+        $city = City::where('id', $cityId)->first();
+
         if ($from == 'city')
         {
-            //new from db
-            if ( isset($request->screen_json['id']) )
-            {
-                $id = $request->screen_json['id'];
-                $city = new CityController($id);
-            }
-            //before create post, register city.
-            else
-            {
-                $data = $request->screen_json['request'];
-                $city = new CityController(0);
-                $city->create($data['city'], $data['estate'], $data['country'], 'Lorem ipsum dolor sit amet.');
-                $city = new CityController($data['city']['geonameId']);
-            }
-
             if (empty($request->regions))
             {
                 //Cairá aqui apenas se falhar a validação do javascript das regions obrigatórias em caso de create.
@@ -70,11 +72,14 @@ class PostController extends Controller
             else
             {
                 //Criar post aqui!
-                $regions =
                 $post = [
                     'content_regions' => json_encode($request->regions, JSON_UNESCAPED_UNICODE),
                 ];
-                $city->cityModel->Post()->create($post);
+
+//                $city->Post($post)->create();
+                $city->Post()->create($post);
+//                $this->model->polimorph_from($city)->save();
+
 
                 $res['status'] = true;
                 $res['message'] = 'create';

@@ -24,37 +24,53 @@
 @section('content')
     {{--{{ dd($city) }}--}}
     <div class="container">
-    @if($isNew)
+    {{--@if($isNew)--}}
             <article class="article" id="the-article">
                 <section class="article__content"  >
 
-                    <h1 data-fixture data-name="article-title" class="no-margin">
-                        {{ $city['name'] }}
+                    <h1 data-fixture data-name="article_title" class="no-margin">
+                        @if($isNew)
+                            {{ $city['name'] }}
+                        @else
+                            @if( isset($city->content_regions['article_title']['content']) )
+                                {{$city->content_regions['article_title']['content']}}
+                            @else
+                                {{ $city['name'] }}
+                            @endif
+                        @endif
                     </h1>
 
-                    <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }}</p>
 
-                    <div data-editable data-name="article">
-                        <p class="article__by-line">
-                            por <b>Anthony Blackshaw</b> · 18th January 2015
-                        </p>
+                    @if($isNew)
+                        <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }} </p>
+                    @else
+                        <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $city->name }} </p>
+                    @endif
 
-                        <h2>Suspendisse quis diam facilisis, laoreet dolor vel</h2>
+                    @if($isNew)
+                        <div data-editable data-name="article_content">
 
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut nulla lorem. Etiam sit amet rutrum est. Pellentesque sed aliquet turpis. Etiam vitae quam urna. In quis accumsan sem. Mauris ultricies erat ipsum. Quisque efficitur sollicitudin felis a aliquet. Suspendisse sodales quis magna ut dapibus. Curabitur luctus eget arcu eget dictum. In hac habitasse platea dictumst. Nulla finibus vestibulum feugiat.
-                        </p>
-                    </div>
+                            <h2>Suspendisse quis diam facilisis, laoreet dolor vel</h2>
+
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut nulla lorem. Etiam sit amet rutrum est. Pellentesque sed aliquet turpis. Etiam vitae quam urna. In quis accumsan sem. Mauris ultricies erat ipsum. Quisque efficitur sollicitudin felis a aliquet. Suspendisse sodales quis magna ut dapibus. Curabitur luctus eget arcu eget dictum. In hac habitasse platea dictumst. Nulla finibus vestibulum feugiat.
+                            </p>
+                        </div>
+                    @else
+                        {{--{{dd($city)}}--}}
+                        <div data-editable data-name="article_content">
+                            @if( isset($city->content_regions['article_content']['content']) )
+                            {!! $city->content_regions['article_content']['content'] !!}
+                            @else
+                            Cidade sem conteúdo.
+                            @endif
+                        </div>
+                    @endif
 
                 </section>
             </article>
-        @else
-            <div class="article" id="the-article">
-                {!! $city['content'] !!}
-            </div>
-        @endif
         <div class="sidebar-right">
-
+            Sidebar
         </div>
     </div> <!-- ./container -->
 @endsection

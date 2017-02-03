@@ -1,20 +1,25 @@
 ##### Todo List | Pra Viajar
 
+Editado em 03/02 - Previsão - 13-02
 19/01
--[ ] Criar tela de config da cidade (headlines, tags)
+-[ ] Criar tela de config da cidade (headlines, tags). Permitir status ativo para página somente se houver region_content
+-[ ] Criar tela de config do POST (headlines, tags).
 -[ ] Criar JS para galeria de fotos junto com contentTools (na view)
 
 22/01 em diante
--[ ] Criar tela de cadastro do autor
--[ ] Criar tela de POST
--[ ] Criar tela de INTERESTS
--[ ] Criar tela de HOME (drag and drop)
--[ ] Criar tela de SERVIÇOS (PLACES) Dúvida!!! Como era mesmo
- o que a pri queria? O serviço pode ser um evento... ou seja, um serviço do serviço? era isso?
- (drag and drop)
--[ ] Setar mapa conforme LATLONG
--[ ] Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
-ainda não está no banco)
+-[x] <span style="color: green">Criar tela de cadastro do autor</span>
+-[x] <span style="color: green">Criar tela de POST</span>
+-[ ] Finalizar tela de INTERESTS. Ok, falta editar o interesse e o globo de cores.
+-[ ] Criar tela de HOME (drag and drop, 3 dias)
+-[ ] Criar CRUD de SERVIÇOS (PLACES) (2 dias)
+-[ ] Criar tela de exibição de cidades cadastradas
+-[ ] Finalizar tela de exibição dos posts cadastrados.
+-[ ] Copiar o upload e crecorte de imagem para os uploads
+-[ ] Confirmar ao criar POSt para cidade não cadastrada, avisando que possivelmente esse psot não será muito visualizado.
+-[ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
+-[x] <span style="color: green">Setar mapa conforme LATLONG</span>
+-[x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
+ainda não está no banco)</span>
 
 ###### Coisas para confirmar quando subir o sistema para produção
 
@@ -23,7 +28,7 @@ ainda não está no banco)
 ###### Propostas
 
 -[ ] É possível fazer uma leitura de qualquer cidade do mundo pela [API do google](https://developers.google.com/places/web-service/) caso
-não tenhamos nenhum post sobre determinado local. Ou seja, podemos trzer fotos, pontos turísticos e outras informações do google, além de Clime (temperatura, vento, humidade...), horário e informações sobre aeroportos
+não tenhamos nenhum post sobre determinado local. Ou seja, podemos trazer fotos, pontos turísticos e outras informações do google, além de Clime (temperatura, vento, humidade...), horário e informações sobre aeroportos
 
 ###### Backend
 
@@ -34,8 +39,9 @@ Iorque = new iorque, new york...)</span>
 -[ ] Será necessário criar um submitAll() para enviar todos os forms de cada bloco da tela via AJAX. Atualmente cada botão submit pertence apenas a seu bloco
 -[ ] Criar validação de forms no backend, inclusive para requisições ajax
 -[ ] [Criar estrutura multilanguage com app->locale](http://stackoverflow.com/questions/25082154/how-to-create-multilingual-translated-routes-in-laravel)
+- [ ] Criar uma tela de LOADING para ações via ajax. Principalmente GEONAMES que 
+pode demorar um pouco
 > [este artigo](http://stackoverflow.com/questions/19249159/best-practice-multi-language-website) é bem interessante sobre tradução, inclusive usando laravel. Na terceira resposta, alguem fala sobre Thomas Bley e criação de caches (arquivos PHP estáticos) para evitar consultas no banco e execução de funções a cada acesso
-
 ###### Frontend
 -[ ] Criar coloração diferente para validação de checkboxes...apenas input e select configurados em _Forms.js
 
@@ -51,16 +57,13 @@ estados que possuem CONDADOS. Ex: estados unidos, quando tentar ler as cidades d
 estado, ele traz os condados... o certo seria ler CHILDREN destes condados. 
 Acredito que inicialmente a melhor forma e fazer isso manual, colocando o ID do pais 
 que possui esta estrutra em um array e fazendo ifelse OK 18/01</span>
-- [ ] Criar uma tela de LOADING para ações via ajax. Principalmente GEONAMES que 
-pode demorar um pouco
-- [ ] Tratar erro ao tentar ler config de uma cidade que ainda não está no banco.
+- [x] <span style="color: green">Tratar erro ao tentar ler config de uma cidade que ainda não está no banco.
 talvez, redirecionar para a tela de criação de post ao clicar em +CONFIG ou enviar
-os dados da cidade via POST para a CityController poder exibir os dados. pensar nisso...
+os dados da cidade via POST para a CityController poder exibir os dados. pensar nisso...</span>
 
 ###### Usuários
 
-- [ ] Criar método para caso inativar um AUTHOR, trnasferir a autoria para outro... ou não? Se não... fica sem autor? Ou põe autoria do praviajar?
-- [ ] 
+- [ ] Criar método para caso inativar um AUTHOR, trnasferir a autoria para outro... ou não? Se não... fica sem autor? Ou põe autoria do praviajar? 
 
 ###### Model
 
