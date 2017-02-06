@@ -76,10 +76,7 @@ class PostController extends Controller
                     'content_regions' => json_encode($request->regions, JSON_UNESCAPED_UNICODE),
                 ];
 
-//                $city->Post($post)->create();
                 $city->Post()->create($post);
-//                $this->model->polimorph_from($city)->save();
-
 
                 $res['status'] = true;
                 $res['message'] = 'create';

@@ -43,9 +43,50 @@ Script = {
 
         this.todayDate();
         this.getScreenJson();
+        this.PostMessage();
 
         //Código criado por ARDUO para extensões ou plugins do PAINEL.
         Client.init();
+    },
+
+    PostMessage: function ()
+    {
+        if ( this.screenJson.PostMessage != undefined )
+        {
+            var text, title, type;
+            var msg = this.screenJson.PostMessage;
+
+            switch (msg.type)
+            {
+                case undefined:
+                    msg.type = 'error';
+                    title = 'Falta TYPE!';
+                    text = 'Dev. Coloque o status(TYPE) do PostMessage';
+                    break;
+
+                case 'info':
+                    title   = (msg.title == undefined) ? 'Info' : msg.title;
+                    text    = (msg.text == undefined) ? 'Parece que algo deu errado. Entre em contato com o administrador.' : msg.text;
+                    break;
+
+                case 'error':
+                    title   = (msg.title == undefined) ? 'Ops, houve um erro.' : msg.title;
+                    text    = (msg.text == undefined) ? 'Tente novamente. Se o erro persistir, entre em contato com o administrador do sistema.' : msg.text;
+                    break;
+
+                case 'success':
+                    type = 'success';
+                    title   = (msg.title == undefined) ? 'Ok!' : msg.title;
+                    text    = (msg.text == undefined) ? 'Ação executada com sucesso.' : msg.text;
+                    break;
+            }
+
+            swal({
+                text:   text,
+                title:  title,
+                type:   msg.type
+            });
+        }
     },
 
     store: function (obj, itemName)
@@ -394,7 +435,13 @@ Script = {
 
         for(attr in attrs)
         {
-            e.setAttribute(attr, attrs[attr]);
+            if (attr == 'onclick') {
+                e.addEventListener('click', function (ev) {
+                    return ev;
+                }(attrs[attr]))
+            }else{
+                e.setAttribute(attr, attrs[attr]);
+            }
         }
 
         for(css in styles)

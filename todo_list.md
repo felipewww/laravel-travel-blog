@@ -21,6 +21,10 @@ Editado em 03/02 - Previsão - 13-02
 -[x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
 ainda não está no banco)</span>
 
+DOCUMENTAÇÃO
+
+- [ ]2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente
+
 ###### Coisas para confirmar quando subir o sistema para produção
 
 -[ ] Verificar se tem permissão total para ler as pastas /public/geonames/* (onde estão todos os dados de WrodlEstructure)

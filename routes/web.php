@@ -121,9 +121,20 @@ Route::group(['middleware' => 'auth'], function (){
                     return $c->fromDB($id, $request);
                 });
 
-                Route::get('{id}', function ($id){
+                Route::get('{id}', function ($id, \Illuminate\Http\Request $request){
+//                    dd($request->all());
                     $c = new \App\Http\Controllers\Painel\World\CityController($id);
                     return $c->display();
+                });
+
+                Route::post('{id}', function ($id, \Illuminate\Http\Request $request){
+//                    dd($request->all());
+//                    dd($request->file('hl_img'));
+                    $c = new \App\Http\Controllers\Painel\World\CityController($id);
+
+                    if ( isset($request->createHeadlines) ) {
+                        return $c->createHeadline($request);
+                    }
                 });
             });
 

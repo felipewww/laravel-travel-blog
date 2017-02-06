@@ -7,6 +7,7 @@ use App\Http\Controllers\Painel\Blog\PostController;
 use App\Interest;
 use App\Library\BlogJobs;
 use App\Library\Jobs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\City;
 use App\Estate;
@@ -24,6 +25,7 @@ class CityController extends Controller {
 
     public function __construct($cityId)
     {
+        $this->json_meta(['city_id' => $cityId]);
         $arr = [
             'id',
             'name',
@@ -151,6 +153,32 @@ class CityController extends Controller {
         return true;
     }
 
+    public function createHeadline(Request $request){
+
+//        dd($request->all());
+        if ( isset($request->hl_new) ) {
+
+            foreach ($request->hl_new as $hl){
+//                dd($hl);
+                Jobs::_uploadImage($hl['img']);
+            }
+
+            $type = 'success';
+            $title  = 'Ok!';
+            $text   = 'Headlines criados com sucesso.';
+        }else{
+            $type   = 'info';
+            $title  = 'Nenhuma alteração.';
+            $text   = 'Nenhum erro, nem alteração!';
+        }
+
+        $this->json_meta([
+            'PostMessage' => ['type' => $type, 'title' => $title, 'text' => $text ]
+        ]);
+
+        return $this->display();
+    }
+
     public function createAjaxAction($request)
     {
         $data = $request['screen_json'];
@@ -164,7 +192,7 @@ class CityController extends Controller {
         return json_encode($res);
     }
 
-    function updateAjaxAction($request)
+    public function updateAjaxAction($request)
     {
         $city = $this->model->find($request->screen_json['city_id']);
         $currRegions = json_decode($city->content_regions, true);
@@ -191,7 +219,7 @@ class CityController extends Controller {
         return json_encode($res);
     }
 
-    function activateAjaxAction($request)
+    public function activateAjaxAction($request)
     {
         $city = $this->model->find($request['screen_json']['city']['geonameId']);
         $city->status = 1;
@@ -231,5 +259,15 @@ class CityController extends Controller {
         $this->city[0]->save();
 
         return json_encode(['status' => true]);
+    }
+
+    public function updateHeadlineAjaxAction($request){
+        dd($request->files());
+        dd($request->hasFile('hl_img'));
+        return json_encode([0=>'here']);
+    }
+
+    public function deleteHeadlineAjaxAction($request){
+        dd($request->id);
     }
 }

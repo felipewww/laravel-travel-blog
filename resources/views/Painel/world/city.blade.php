@@ -44,8 +44,8 @@
 
         <section class="content">
             @foreach ($city as $key => $value)
-                {{--<div>key: {{ $key  }} => {{ $value }} </div>--}}
-                <div>{{ $key  }} </div>
+                <div>key: {{ $key  }} => {{ $value }} </div>
+                {{--<div>{{ $key  }} </div>--}}
             @endforeach
         </section>
     </section>
@@ -151,6 +151,70 @@
                     </div>
                 @endforeach
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            </form>
+            <div class="cleaner"></div>
+        </section>
+    </section>
+
+    <section class="block" id="cidades">
+        <header>
+            <div class="title">
+                <span>Headlines</span>
+            </div>
+            <div class="actions">
+                <a href="javascript:city.painel.headlines();" class="button light-blue font-black waves-effect">salvar</a>
+                <a href="javascript:city.painel.addHeadLine();" class="button light-blue font-black waves-effect">novo</a>
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            {{--<form id="headlines" name="headlines" method="post" enctype="multipart/form-data" action="/painel/mundo/cidade/{{$city['id']}}">--}}
+            <form id="headlines" name="headlines" method="post" enctype="multipart/form-data">
+
+                <input type="hidden" name="createHeadlines">
+                <div id="headline_1" class="w-50">
+                    <div class="actions">
+                        <span onclick="city.painel.deleteHeadline('1')">excluir</span>
+                    </div>
+
+                    <label>
+                        <span>Headline 1 img</span>
+                        <input type="file" name="hl[1][img]">
+                    </label>
+                    <label>
+                        <span>Headline 2 Title</span>
+                        <input type="text" name="hl[1][title]">
+                    </label>
+                    <label>
+                        <span>Headline 1 text</span>
+                        <input type="text" name="hl[1][text]">
+                    </label>
+                </div>
+
+
+                <div id="headline_2" class="w-50">
+                    <div class="actions">
+                        <span onclick="city.painel.deleteHeadline('2')">excluir</span>
+                    </div>
+                    <label>
+                        <span>Headline 2 img</span>
+                        <input type="file" name="hl[2][img]">
+                    </label>
+                    <label>
+                        <span>Headline 2 Title</span>
+                        <input type="text" name="hl[2][title]">
+                    </label>
+                    <label>
+                        <span>Headline 2 text</span>
+                        <input type="text" name="hl[2][text]">
+                    </label>
+                </div>
+
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                {{--<input type="submit" value="enviar" style="display: none;">--}}
+                <input type="submit" value="enviar">
             </form>
             <div class="cleaner"></div>
         </section>

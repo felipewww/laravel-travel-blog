@@ -2,11 +2,12 @@
 
 namespace App\Library;
 
-use App\Continent;
-use App\Country;
-use App\Estate;
 use Illuminate\Http\Request;
-use League\Flysystem\Exception;
+use Illuminate\Support\Facades\Input;
+//use Intervention\Image\Image;
+//use Intervention\Image\ImageManager;
+//use Intervention\Image\Facades as IMG;
+use Intervention\Image;
 
 trait Jobs {
     public $json_meta = [];
@@ -59,6 +60,26 @@ trait Jobs {
         }else{
             trigger_error('Erro. $_FILES não existe', E_USER_ERROR);
         }
+    }
+
+    public static function _uploadImage($image)
+    {
+
+        $img = Image::make('foo.jpg')->resize(300, 200);
+        return $img->response('jpg');
+
+//        $image = Input::file('image');
+        $filename  = time() . '.' . $image->getClientOriginalExtension();
+//
+        $path = public_path('/Site/media/images/cidades/headlines/' . $filename);
+//
+//        IMG::make();
+        $img = new Image();
+        $img->make($image->getRealPath())->resize(200, 200)->save($path);
+//        Image::make($image->getRealPath())->resize(200, 200)->save($path);
+        dd('here');
+//        $user->image = $filename;
+//        $user->save();
     }
 
     /*
