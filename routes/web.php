@@ -58,6 +58,32 @@ Route::group(['middleware' => 'auth'], function (){
     Route::group(['prefix' => 'painel'], function (){
 
         Route::group(['middleware' => 'api'], function (){
+
+            Route::group(['prefix' => '/api/headline'], function (){
+//                Route::post('city/deleteHeadline', function (\Illuminate\Http\Request $request){
+//                    $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
+//                    $c->deleteHeadlineApi($request);
+//                });
+//
+//                Route::post('post/deleteHeadline', function (\Illuminate\Http\Request $request){
+//                    $c = new \App\Http\Controllers\Painel\World\PostController($cityId);
+//                    $c->deleteHeadlineApi($request);
+//                });
+
+                Route::post('deleteHeadline', function (\Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Painel\HeadlineController();
+                    return $c->deleteHeadline($request);
+                });
+            });
+
+            Route::post('/api/home/getHeadlines', function (\Illuminate\Http\Request $request){
+                return \App\Http\Controllers\Site\IndexController::getHeadlinesApi($request);
+            });
+
+            Route::post('/api/home/updateHeadlines', function (\Illuminate\Http\Request $request){
+                return \App\Http\Controllers\Site\IndexController::updateHeadlinesApi($request);
+            });
+
             Route::get('/api/mundo/pais/{action}', ['uses' => 'Painel\World\CountryController@apiAction']);
 
             Route::post('/api/blog/cidade/save/{id}', function (\Illuminate\Http\Request $request, $cityId){
@@ -133,7 +159,8 @@ Route::group(['middleware' => 'auth'], function (){
                     $c = new \App\Http\Controllers\Painel\World\CityController($id);
 
                     if ( isset($request->createHeadlines) ) {
-                        return $c->createHeadline($request);
+                        //return $c->createHeadline($request);
+                        return $c->createOrUpdateHeadline($request);
                     }
                 });
             });
@@ -142,6 +169,14 @@ Route::group(['middleware' => 'auth'], function (){
 
         Route::group(['prefix' => 'interesses'], function (){
             Route::get('', 'Painel\Interests\InterestController@display');
+        });
+
+        Route::group(['prefix' => 'paginas'], function (){
+            Route::get('home/{id}', function ($id){
+                $c = new \App\Http\Controllers\Painel\Pages\HomeController();
+                $c->getHome($id);
+                return $c->display();
+            });
         });
 
         Route::get('', 'Painel\IndexController@index');

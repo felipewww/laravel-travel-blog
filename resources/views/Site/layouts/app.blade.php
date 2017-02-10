@@ -10,8 +10,16 @@
 
     <title>{{ config('app.name', 'Pra Viajar') }}</title>
 
-    <!-- Scripts -->
+    <link rel="stylesheet" type="text/css" href="/Site/css/default.css">
     <script type="text/javascript" src="{!! asset('/Painel/js/lib/jquery/jquery-2.1.1.min.js')  !!}"></script>
+    @if($isAdmin)
+        <script type="text/javascript" src="/Painel/js/lib/jquery/jquery-ui/jquery-ui.min.js"></script>
+        <script>window.Laravel = JSON.parse('<?php echo json_encode(['csrfToken' => csrf_token()]); ?>');</script>
+        <link rel="stylesheet" type="text/css" href="/Painel/css/icons/font/flaticon.css">
+    @endif
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/Painel/js/lib/jquery/jquery.easing.1.3.js"></script>
     <script type="text/javascript" src="{!! asset('/Site/js/Client.js')  !!}"></script>
     <script type="text/javascript" src="{!! asset('/Painel/js/script.js')  !!}"></script>
     @if(\Illuminate\Support\Facades\Auth::check())

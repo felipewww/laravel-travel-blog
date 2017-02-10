@@ -32,6 +32,18 @@
                 </li>
 
                 <li class="modulo">
+                    <span class="has-submenu"><span class="flaticon-interface"></span>
+                        <span class="menu-item-text">Páginas</span>
+                    </span>
+                    <ul>
+                        {{--<li><a href="/painel/blog/post"><span class="flaticon-feather-pen"></span>Novo Post</a></li>--}}
+                        <li><a href="/painel/paginas/home/1"><span class="flaticon-feather-pen"></span>Home</a></li>
+                        <li><a href="#"><span class="flaticon-feather-pen"></span>Contato</a></li>
+                        <li><a href="#"><span class="flaticon-feather-pen"></span>Quem somos</a></li>
+                    </ul>
+                </li>
+
+                <li class="modulo">
                     <span>
                         <span class="flaticon-puzzle"></span>
                         <span class="menu-item-text"><a href="/painel/mundo/paises">Estrutura</a></span>

@@ -15,7 +15,7 @@ class PostsTypes extends Seeder
         (
             array(
                 ['name' => 'post'],
-                ['name' => 'lista'],
+                ['name' => 'lista'], //lista talvez saira daqui, tera uma tabela especifica de lista
                 ['name' => 'patrocinado']
             )
         );

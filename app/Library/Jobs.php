@@ -5,13 +5,31 @@ namespace App\Library;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 //use Intervention\Image\Image;
+
+//use Intervention\Image\Image;
+
+//use Intervention\Image\Image;
 //use Intervention\Image\ImageManager;
-//use Intervention\Image\Facades as IMG;
-use Intervention\Image;
+use Intervention\Image\Facades\Image;
+// use Intervention\Image;
 
 trait Jobs {
     public $json_meta = [];
-    public $vars;
+    public $vars = [];
+    public $model;
+    public $reg;
+//    use InterventionImageExtensions;
+
+    public function getReg($from, $id){
+        $this->model    = new $from();
+        $this->reg      = $this->model->find($id)->first();
+    }
+
+    public static function uploadImage($image, $path, $paramns = []){
+        $i = new InterventionImageExtensions();
+        return $i->uploadImage($image, $path, $paramns);
+//        InterventionImageExtensions::_uploadImage($image, $paramns);
+    }
 
     public function postAction(Request $request)
     {
@@ -37,55 +55,17 @@ trait Jobs {
     }
 
     /*
-     * upload de fotos para estruturas de blog (ContentTools)
-     * */
-    public function uploadImage(Request $request)
-    {
-        if ( $request->hasFile('image') ) {
-            $base_path = base_path() . '/public';
-            $path = '/Site/media/images/postContent/';
-
-            $file = $request->file('image');
-            $newName = time().'.'.$file->getClientOriginalExtension();
-
-            $file->move($base_path.$path, $newName);
-
-            $size = getimagesize($base_path.$path.$newName);
-//            dd($x);
-
-            echo json_encode([
-                'url' => $path.$newName,
-                'size' => [$size[0], $size[1]]
-            ]);
-        }else{
-            trigger_error('Erro. $_FILES não existe', E_USER_ERROR);
-        }
-    }
-
-    public static function _uploadImage($image)
-    {
-
-        $img = Image::make('foo.jpg')->resize(300, 200);
-        return $img->response('jpg');
-
-//        $image = Input::file('image');
-        $filename  = time() . '.' . $image->getClientOriginalExtension();
-//
-        $path = public_path('/Site/media/images/cidades/headlines/' . $filename);
-//
-//        IMG::make();
-        $img = new Image();
-        $img->make($image->getRealPath())->resize(200, 200)->save($path);
-//        Image::make($image->getRealPath())->resize(200, 200)->save($path);
-        dd('here');
-//        $user->image = $filename;
-//        $user->save();
-    }
-
-    /*
      * Converter string para URL Amigável
      * */
     function toAscii($str, $replace=array(), $delimiter='-') {
+        $str = preg_replace('/[`^~,\'"]/', null, iconv('UTF-8', 'ASCII//TRANSLIT', $str));
+        $str = preg_replace('/ /', '_', $str);
+        $str = strtolower($str);
+
+        return $str;
+    }
+
+    public static function _toAscii($str, $replace=array(), $delimiter='-') {
         $str = preg_replace('/[`^~,\'"]/', null, iconv('UTF-8', 'ASCII//TRANSLIT', $str));
         $str = preg_replace('/ /', '_', $str);
         $str = strtolower($str);

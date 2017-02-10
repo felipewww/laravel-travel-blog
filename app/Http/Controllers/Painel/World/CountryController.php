@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel\World;
 use \App\Http\Controllers\Controller;
 use App\Library\DataTablesExtensions;
 use App\Library\DataTablesInterface;
+use App\Library\Headlines;
 use App\Library\Jobs;
 use Illuminate\Http\Request;
 use Lib\Geonames;
@@ -16,9 +17,12 @@ class CountryController extends Controller implements DataTablesInterface{
 
     use Jobs;
     use DataTablesExtensions;
+    use Headlines{
+        Headlines::__construct as Headlines;
+    }
 
-    protected   $model;
-    public      $country;
+//    protected   $model;
+//    public      $country;
     public      $estates;
     public      $geonames;
     public      $estates_db;
@@ -39,13 +43,14 @@ class CountryController extends Controller implements DataTablesInterface{
 
     public function display($id)
     {
-        $this->country = $this->model->find($id)->getAttributes();
+        $this->Headlines(Country::class, $id);
+//        $this->reg = $this->model->find($id)->getAttributes();
 
         $this->vars['modulo'] = 'País';
-        $this->vars['pageDesc'] = 'Configurações do País: '.$this->country['name'];
+        $this->vars['pageDesc'] = 'Configurações do País: '.$this->reg['name'];
 
-        $this->vars['country'] = $this->country;
-        $this->json_meta(['country' => $this->country]);
+        $this->vars['country'] = $this->reg;
+        $this->json_meta(['country' => $this->reg]);
 
         /*
          * Pegar estados que ja estão cadastrados no banco e inserir o ID deles num array para comparação futura na hora de montar
@@ -61,7 +66,7 @@ class CountryController extends Controller implements DataTablesInterface{
         /*
          * Pegar estados do arquivo JSON
         */
-        $this->estates = $this->geonames->children('estates', $this->country['name'], $this->country['id'])['geonames'];
+        $this->estates = $this->geonames->children('estates', $this->reg['name'], $this->reg['id'])['geonames'];
         $this->json_meta(['estates' => $this->estates]);
 
         $this->dataTablesInit();

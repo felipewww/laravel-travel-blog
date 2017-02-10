@@ -20,7 +20,6 @@
 */
 
 require __DIR__.'/../bootstrap/autoload.php';
-
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
@@ -53,6 +52,7 @@ $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );
 
+// dd($response);
 $response->send();
 
 $kernel->terminate($request, $response);

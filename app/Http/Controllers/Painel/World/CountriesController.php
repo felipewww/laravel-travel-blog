@@ -10,7 +10,7 @@ class CountriesController extends Controller implements DataTablesInterface {
 
     use \App\Library\Jobs, \App\Library\DataTablesExtensions;
 
-    private     $model;
+//    private     $model;
     public      $continents;
     public      $countries;
 

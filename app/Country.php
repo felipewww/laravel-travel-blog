@@ -14,7 +14,7 @@ class Country extends Model
 
     public function Headline()
     {
-        return $this->morphMany(Headline::class, 'polimorph_from');
+        return $this->morphMany(Headline::class, 'headline_morph');
     }
 
     public function Post()

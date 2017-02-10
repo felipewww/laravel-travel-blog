@@ -142,6 +142,9 @@ Script = {
             }
         })(elements);
 
+        form.style.display="none";
+        document.body.appendChild(form);
+
         form.submit();
     },
 
@@ -283,6 +286,10 @@ Script = {
         bt.addEventListener('click', function () {
             element.click();
         });
+    },
+
+    _dynclick: function ($this, id) {
+        document.getElementById(id).click();
     },
 
     validateDate: false,
@@ -435,7 +442,7 @@ Script = {
 
         for(attr in attrs)
         {
-            if (attr == 'onclick') {
+            if (attr == 'onclick' && typeof attrs[attr] == 'function') {
                 e.addEventListener('click', function (ev) {
                     return ev;
                 }(attrs[attr]))

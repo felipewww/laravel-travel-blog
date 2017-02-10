@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel\Blog;
 use App\City;
 use App\Http\Controllers\Painel\World\CityController;
 use App\Library\BlogJobs;
+use App\Library\Headlines;
 use Illuminate\Http\Request;
 use \App\Http\Controllers\Controller;
 use App\Library\Jobs;
@@ -14,16 +15,28 @@ class PostController extends Controller
 {
     use Jobs;
     use BlogJobs;
+    use Headlines{
+        Headlines::__construct as Headlines;
+    }
 
-    protected $model;
-    public $reg;
+//    protected $model;
+//    public $reg;
 
     public function __construct($id)
     {
-        $this->model = new Post();
-        $this->reg = $this->model->where('id', $id)->get();
-        $this->reg = $this->reg[0] ?? [];
+//        $hl = new Headlines('model', $id);
 
+//dd(Request::capture());
+        if ($id) {
+            $this->getReg(Post::class, $id);
+            $this->Headlines(Post::class);
+        }
+//        $this->model = new Post();
+//        $this->reg = $this->model->where('id', $id)->get();
+//        $this->reg = $this->reg[0] ?? [];
+
+
+//        $this->vars['headlines'] = $this->reg->Headline;
         $this->vars['modulo'] = 'Blog';
         $this->vars['pageDesc'] = 'Informações do Post';
     }
@@ -34,6 +47,11 @@ class PostController extends Controller
 
     public function view(){
         return view('Painel.blog.post', $this->vars);
+    }
+
+    public function createHeadline()
+    {
+
     }
 
     /*
@@ -76,9 +94,10 @@ class PostController extends Controller
                     'content_regions' => json_encode($request->regions, JSON_UNESCAPED_UNICODE),
                 ];
 
-                $city->Post()->create($post);
+                $newPost = $city->Post()->create($post);
 
-                $res['status'] = true;
+                $res['status']  = true;
+                $res['post_id'] = $newPost->id;
                 $res['message'] = 'create';
             }
         }

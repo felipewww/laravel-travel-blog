@@ -9,9 +9,12 @@ class Post extends Model
 {
     protected $fillable = ['content_regions', 'status', 'post_type_id', 'author_id'];
 
+    /*
+     * criar headline do post
+     * */
     public function Headline()
     {
-        return $this->morphMany(Headline::class, 'polimorph_from');
+        return $this->morphMany(Headline::class, 'headline_morph');
     }
 
     public function polimorph_from()

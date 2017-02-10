@@ -16,7 +16,7 @@ class City extends Model
 
     public function Headline()
     {
-        return $this->morphMany(Headline::class, 'polimorph_from');
+        return $this->morphMany(Headline::class, 'headline_morph');
     }
 
     public function interests()
@@ -25,8 +25,8 @@ class City extends Model
 //        return $this->belongsToMany(City::class, 'city_has_interests', 'cities_id', 'interests_id');
     }
 
-    /*
-     * Ler posts da cidade
-     * Painel\City::with('Post')->get()
-     * */
+    public function estate()
+    {
+        return $this->belongsTo(Estate::class, 'estates_id');
+    }
 }

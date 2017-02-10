@@ -28,6 +28,7 @@ class PostController extends Controller {
     public function city($id)
     {
         if ($id instanceof Request) {
+//        dd($id);
             //Para cidades ainda não cadastradas no banco.
             $this->json_meta(['request' => $id->all()]);
         }else{

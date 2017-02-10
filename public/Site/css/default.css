@@ -1,0 +1,12 @@
+.cleaner{
+    clear: both;
+}
+
+.null-headline .img {
+    background-repeat: no-repeat;
+    background-size: 150%;
+}
+
+.null-headline {
+    background: #ffecd4;
+}

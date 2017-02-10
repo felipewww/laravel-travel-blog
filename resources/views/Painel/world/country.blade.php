@@ -5,10 +5,12 @@
 @endsection
 
 @section('content')
+{{--    {{dd($country)}}--}}
     <section class="block">
         <header>
             <div class="title">
-                <span>Informações do País: {{ $country['name'] }}</span>
+                {{--<span>Informações do País: {{ $country['name'] }}</span>--}}
+                <span>Informações do País: {{ $country->name }}</span>
             </div>
             <div class="actions">
                 {{--<a href="#" class="button purple waves-effect submitter">deletar</a>--}}
@@ -19,7 +21,9 @@
 
         <section class="content">
             @foreach ($country as $key => $value)
-                <div>key: {{ $key  }} => {{ $value }} </div>
+{{--                <div>key: {{ $key  }} => {{ $value }} </div>--}}
+{{--                <div>key: {{ $key }} => {{ $country->$$key  }} </div>--}}
+                <div>key: {{ $key }} =>  </div>
             @endforeach
         </section>
     </section>

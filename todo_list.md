@@ -20,10 +20,16 @@ Editado em 03/02 - Previsão - 13-02
 -[x] <span style="color: green">Setar mapa conforme LATLONG</span>
 -[x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
 ainda não está no banco)</span>
-
+- [ ] seed de post_Types e places esta identico
+- [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
+- [ ] Pensar nas listas. Lista não necessariaente é de cidade ou pais. mas tem que relacionar...
+- [ ] resolver a questão de enviar o POST para a mesma página do registro, se apertar F5, insere de novo.
 DOCUMENTAÇÃO
 
 - [ ]2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente
+
+- [ ]HOME - muitas coisas pensadas! Agendar exibição de determinada home, pode criar home com 
+diferentes layouts, para isso, é necessário sempre criar uma nova view. + observações na controller
 
 ###### Coisas para confirmar quando subir o sistema para produção
 

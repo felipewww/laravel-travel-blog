@@ -2,7 +2,7 @@ master =
 {
     functions: null,
     pathname: null,
-    explodepath: null,
+    explodepath: null,//
 
     init: function ()
     {

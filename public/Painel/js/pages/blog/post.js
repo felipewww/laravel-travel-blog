@@ -142,7 +142,7 @@ post = {
                 {
                     if (isConfirm)
                     {
-                        window.location.href='/painel/blog/post/'+Script.screenJson.id;
+                        window.location.href='/painel/blog/post/'+data.post_id;
                     }
                     else
                     {
