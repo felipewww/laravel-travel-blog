@@ -10,12 +10,17 @@
  * */
 namespace App\Http\Controllers\Site;
 use App\City;
+use App\Country;
 use App\Headline;
 use App\Home;
+use App\HomeFixeds;
 use App\Http\Controllers\Controller;
+use App\Library\BlogJobs;
 use App\Library\Jobs;
+use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller {
     use Jobs;
@@ -28,7 +33,7 @@ class IndexController extends Controller {
                 '2' => ['qtt' => 4],
                 '3' => ['qtt' => 2]
             ],
-
+            'total' => 10,
             'view' => 'Site.index'
         ]
     ];
@@ -42,10 +47,14 @@ class IndexController extends Controller {
         $home = $this->model->where('status',true)->first();
         $this->currLayout = $this->layouts[$home->layout];
 
+        $this->json_meta(['home_id' => $home->id]);
+        $this->json_meta(['home_layout' => $home->layout]);
+
         $headlines = $home->headline; //ok tbm
-//        $headlines = $home->headline()->with('city')->orderBy('position')->get(); //ok
-//        $this->manageHeadlines($headlines);
-//        dd($headlines);
+        $fixeds = HomeFixeds::where('home_id', $home->id)
+            ->with('headline')
+            ->orderBy('position','ASC')
+            ->get();
 
         /*
          * Este foreach funciona perfeitamente, mantido apenas para estuod de caso.
@@ -57,54 +66,134 @@ class IndexController extends Controller {
 //            $hl->headline_morph;
 //        }
 
-        $this->vars['cities'] = City::has('Headline')->get();
+//        $post = Post::find(2);
+//        dd(Post::has('Headline')->get());
+
+        $this->vars['cities'] = City::where('status',1)->has('Headline')->get();
+        $this->vars['countries'] = Country::where('status',1)->has('Headline')->get();
+
+        $t = Post::where('status',1)->has('Headline')->get();
+        $this->vars['posts']    = BlogJobs::manage($t, [
+            'title' => true
+        ]);
+
         $this->vars['isAdmin'] = Auth::check();
-        $this->makeRegions($headlines, $this->currLayout['regions']);
+        $this->makeRegions($fixeds, $this->currLayout['regions']);
 
         return view($this->currLayout['view'], $this->vars);
     }
 
-    protected function makeRegions($headlines, $regionsCfg){
-        $regions = [];
-        foreach ($regionsCfg as $idx => $cfg)
+    function createNull($i)
+    {
+        $notExists = new \stdClass();
+        $notExists->headline = new \stdClass();
+
+        $notExists->position = $i;
+        $notExists->headline->final_id = 'noid-regionPOSITION-'.$i.'-item-'.$i;
+        $notExists->headline->divClass = 'null-headline';
+        $notExists->headline->title = 'Item '.$i.' da RegiãoPOSITION '.$i.' sem Headline';
+        $notExists->headline->content = 'Enquanto houver espaços indefinidos, como este, não será possível exibir esta homepage no site!';
+        $notExists->headline->src = 'Site/media/images/cidades/headlines/null_headline.jpg';
+
+        return $notExists;
+    }
+
+    protected function makeRegions($fixeds, $regionsCfg){
+
+        $total = $this->currLayout['total'];
+        $itens = [];
+        $i = 0;
+
+        while ($i < $total)
         {
-            $qtt = $cfg['qtt'];
-            $regions[$idx] = [];
-            $i = 0;
-            while ($i < $qtt)
+            if ( isset($fixeds[$i]) )
             {
-                $notExists = new \stdClass();
+                $fixed = $fixeds[$i];
+                if ($fixed->position == $i)
+                {
+                    $this->manageHeadlineData($fixed->headline);
+                    $itens[$i] = $fixed->headline;
+                }
+                else
+                {
+                    /*
+                     * Só vai inserir elemento NULL se não houver nada la dentro. Afinal, algum elemento
+                     * ja pode ter sido inserido antes por ter posição diferente de $i;
+                     * */
+                    if ( empty($itens[$i]) )
+                    {
+                        $itens[$i] = $this->createNull($i)->headline;
+                    }
+//                    $itens[$fixed->position] = $fixed->headline;
+                    $this->manageHeadlineData($fixed->headline);
+                    $itens[$fixed->position] = $fixed->headline;
+                }
+            }
+            else
+            {
+                /*
+                 * Só vai inserir elemento NULL se não houver nada la dentro. Afinal, algum elemento
+                 * ja pode ter sido inserido antes por ter posição diferente de $i;
+                 * */
+                if ( empty($itens[$i]) )
+                {
+                    $itens[$i] = $this->createNull($i)->headline;
+                }
+            }
+            $i = $i+1;
+        }
 
-                //fazer isso para evitar bugs com duplicidade de ID no HTMl e JS
-                $notExists->final_id = 'noid-region-'.$idx.'-item-'.$i;
-                $notExists->divClass = 'null-headline';
-                $notExists->title = 'Item '.$i.' da Região '.$idx.' sem Headline';
-                $notExists->content = 'Enquanto houver espaços indefinidos, como este, não será possível exibir esta homepage no site!';
-                $notExists->src = 'Site/media/images/cidades/headlines/null_headline.jpg';
+        /*
+         * Separar os itens em sequencia por REGIONS
+         * */
+        $i = 0;
+        $regions = $this->currLayout['regions'];
+        $finalRegions = [];
+        foreach ($regions as $r_id => $region)
+        {
+            $finalRegions[$r_id] = [];
 
-                $data = $headlines[$i] ?? $notExists;
-                $this->manageHeadlineData($data);
-                array_push($regions[$idx], $data);
-                unset($headlines[$i]);
+            $qtt = $region['qtt'];
+            $totalForRegion = $i + $qtt;
+            while ($i < $totalForRegion)
+            {
+                array_push($finalRegions[$r_id], $itens[$i]);
                 $i++;
             }
         }
-//        dd($regions);
-        $this->vars['regions'] = $regions;
-//        dd($regions);
+
+        $this->vars['regions'] = $finalRegions;
     }
 
     protected function manageHeadlineData($data)
     {
-        if ( isset($data->headline_morph_type) )
-        {
+//        if ( isset($data->headline_morph_type) )
+//        {
             switch ($data->headline_morph_type)
             {
                 case City::class:
                     $data->final_id = 'inside_hl_cities_'.$data->id;
                     break;
+
+                case Country::class:
+                    $data->final_id = 'inside_hl_countries_'.$data->id;
+                    break;
+
+                case Post::class:
+                    $data->final_id = 'inside_hl_posts_'.$data->id;
+                    break;
+
+                /*TODO*/
+                case 'App\Lista':
+                    $data->final_id = 'inside_hl_lists_'.$data->id;
+                    break;
+
+                /*TODO*/
+                case 'App\Videos':
+                    $data->final_id = 'inside_hl_videos_'.$data->id;
+                    break;
             }
-        }
+//        }
     }
 
 //    function hello($nome){
@@ -161,36 +250,137 @@ class IndexController extends Controller {
         if ($request->from == 'cities') {
             $city = City::find($request->id);
             $hls = $city->Headline;
-            $hls_info = [];
-
-            foreach ($hls as $hl)
-            {
-                $info = [
-                    'id'        => $hl->id,
-                    'src'       => $hl->src,
-                    'title'     => $hl->title,
-                    'content'   => $hl->content,
-                ];
-
-                array_push($hls_info, $info);
-            }
-
             $res['status'] = true;
-            $res['hls'] = $hls_info;
 
-        }else if($request->from == 'countries')
-        {
-            $res['message'] = 'Pesquisa de headlines de países não está configurada';
         }
-        else{
+        else if($request->from == 'countries')
+        {
+            //$res['message'] = 'Pesquisa de headlines de países não está configurada';
+            $country = Country::find($request->id);
+            $hls = $country->Headline;
+            $res['status'] = true;
+        }
+        else if($request->from == 'posts')
+        {
+            $post = Post::find($request->id);
+            $hls = $post->Headline;
+            $res['status'] = true;
+        }
+        else
+        {
+            $hls = [];
             $res['message'] = 'Parametro $from inválido. Entre em contato com o administrador.';
         }
+
+        $hls_info = [];
+
+        foreach ($hls as $hl)
+        {
+            $info = [
+                'id'        => $hl->id,
+                'src'       => $hl->src,
+                'title'     => $hl->title,
+                'content'   => $hl->content,
+            ];
+
+            array_push($hls_info, $info);
+        }
+
+        $res['status'] = true;
+        $res['hls'] = $hls_info;
 
         return json_encode($res);
     }
 
-    public static function updateHeadlinesApi(Request $request)
+    public function updateHeadlinesApi(Request $request)
     {
-        dd($request->all());
+        $home_id    = $request->screenJson['home_id'];
+
+        $sended_hls = $request->ids;
+
+        $res = [];
+        $persist = false;
+        $hasNull = false;
+
+        foreach ($sended_hls as $position => $hl_info)
+        {
+            //Isso porque campos NULL não contém "_". somente TRAÇOS ( - )
+            $hl_info = explode('_', $hl_info);
+            $hl_id = $hl_info[3] ?? false;
+
+            if ($hl_id)
+            {
+                $currHl = HomeFixeds::where(
+                    ['position' => $position],
+                    ['home_id' => $request->home_id],
+                    ['headline_id' => $hl_id]
+                )->first();
+
+                if ( !empty($currHl) )
+                {
+                    if ($currHl->headline_id != $hl_id)
+                    {
+                        $persist = true;
+
+                        DB::table("homefixeds")
+                            ->where(
+                                [
+                                    'home_id'=> $home_id,
+                                    'headline_id' => $currHl->headline_id,
+                                ]
+                            )
+                            ->update(
+                                [
+                                    'headline_id' => $hl_id,
+                                    'updated_at' => date('Y-m-d H-i-s'),
+                                ]
+                            );
+//                        $currHl->save();
+                        $currHl = 'UPDATE no item alterado '.$position;
+                    }
+                    else
+                    {
+                        $currHl = "item ".$position.' não foi alterado';
+                    }
+                }
+                else
+                {
+                    /**
+                     * TODO
+                     * Aqui é o momento de verificar se ja existe um item cadastrado com as novas configurações,
+                     * que seria o caso de adicionar um ITEM em uma HOME ja existente. ou seja, se ja existir,
+                     * deletar e criar este novo... Será que é isso? Testar...
+                     * */
+
+                    $persist = true;
+                    $data = [
+                        'position' => $position,
+                        'home_id' => $home_id,
+                        'headline_id' => $hl_id
+                    ];
+                    HomeFixeds::create($data);
+                    $currHl = 'criar novo na posição '.$position;
+                }
+            }
+            else
+            {
+                $hasNull = true;
+                $currHl = null;
+            }
+            array_push($res, $currHl);
+        }
+
+        if ($persist) {
+            $msg = 'Houve alguma alteração no banco';
+            $status = true;
+        }else{
+            $msg = 'Não alterou nada!';
+            $status = false;
+        }
+        $res['status']  = $status;
+        $res['msg']     = $msg;
+        $res['hasNull'] = $hasNull;
+
+        return json_encode($res);
     }
 }

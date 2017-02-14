@@ -15,7 +15,7 @@ class CreateHomefixedsTable extends Migration
     {
         Schema::create('homefixeds', function (Blueprint $table) {
 //            $table->increments('id');
-            $table->integer('region');
+//            $table->integer('region');
             $table->integer('position');
 
             $table->integer('home_id')->unsigned();
@@ -25,6 +25,8 @@ class CreateHomefixedsTable extends Migration
             $table->foreign('headline_id')->references('id')->on('headlines')->onUpdate('cascade')->onDelete('restrict');
 
             $table->timestamps();
+
+            $table->primary(array('home_id', 'headline_id'));
         });
     }
 

@@ -20,6 +20,7 @@ post = {
         //Se não for edição. Definir conteudo defualt de RESET da tela
         if (Script.screenJson.post_id == undefined) {
             this.content_default = $('[data-name="article_content"]').html();
+            this.title_default = $('[data-name="article_title"]').html();
             this.setDefaultNewPost();
         }
     },

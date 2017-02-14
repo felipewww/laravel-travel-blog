@@ -24,19 +24,13 @@ class PostController extends Controller
 
     public function __construct($id)
     {
-//        $hl = new Headlines('model', $id);
-
-//dd(Request::capture());
         if ($id) {
             $this->getReg(Post::class, $id);
             $this->Headlines(Post::class);
         }
-//        $this->model = new Post();
-//        $this->reg = $this->model->where('id', $id)->get();
-//        $this->reg = $this->reg[0] ?? [];
 
 
-//        $this->vars['headlines'] = $this->reg->Headline;
+        $this->vars['headlines'] = $this->reg->Headline;
         $this->vars['modulo'] = 'Blog';
         $this->vars['pageDesc'] = 'Informações do Post';
     }
@@ -119,8 +113,10 @@ class PostController extends Controller
         }
 
         if ($edited) {
+//            dd($regions);
             $this->reg->content_regions = json_encode($regions, JSON_UNESCAPED_UNICODE);
-            $this->reg->save();
+//            dd($this->reg->content_regions);
+            $t = $this->reg->save();
         }
 
         $res['edited'] = $edited;

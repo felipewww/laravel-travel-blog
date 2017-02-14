@@ -23,9 +23,9 @@ class InterventionImageExtensions {
 
     public function uploadImage($image, $path, $paramns = [])
     {
-//        dd($image->getClientOriginalName());
+        //Colocar pregmatch pois o laravel retorna nome com a extensão
+        $name = Jobs::_toAscii( preg_replace('/\..+$/', '', $image->getClientOriginalName()) );
 
-        $name = Jobs::_toAscii($image->getClientOriginalName());
         $this->verifyPath($path);
 
         $maxWidth = $paramns['max-width'] ?? 600;
@@ -43,8 +43,8 @@ class InterventionImageExtensions {
         if ($this->image->width() > $maxWidth) { $this->image->widen($maxWidth); }
 
         //Save...
-        $filename  = $paramns['filename'] ?? '';
-        $filename .= $name.'_'.rand(1,100).'.'.$image->getClientOriginalExtension();
+        //$filename  = $paramns['filename'] ?? '';
+        $filename = $name.'_'.rand(1,100).'_'.time().'.'.$image->getClientOriginalExtension();
 
         $finalPath = public_path($path . $filename);
         $this->image->save($finalPath);

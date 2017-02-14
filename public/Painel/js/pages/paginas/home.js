@@ -132,7 +132,7 @@ admin = {
             draggable = (ifUsed()) ? 'used' : 'draggable';
             // alert(ifUsed());
             container = Script.createElement('div', { class: 'result '+draggable, id: elementId });
-            img = Script.createElement('div', '', { class: 'img' }, { backgroundImage: 'url('+hl.src+')' })
+            img = Script.createElement('div', '', { class: 'img' }, { backgroundImage: 'url("'+hl.src+'")' })
 
             textContainer = Script.createElement('div', { class: 'fullContent' });
             title = Script.createElement('div', hl.title, { class: 'title' });
@@ -190,26 +190,101 @@ admin = {
             regions = $('.region');
             $(regions).each(function (i) {
                 $this = $(this);
-                var id = $this.parent().attr('id');
-                console.log(id);
-                ids[i] = id;
+                // console.log(id);
+                ids[i] = $this.parent().attr('id');
                 // console.log($this);
             });
 
             $.ajax({
                 url: '/painel/api/home/updateHeadlines',
-                data: { ids: ids, _token: window.Laravel.csrfToken },
+                data: { ids: ids, _token: window.Laravel.csrfToken, screenJson: Script.screenJson },
                 dataType: 'json',
                 method: 'post',
                 success: function (data) {
-                    console.log('success');
+                    admin.showMessage(data);
                 },
                 error: function (error) {
-                    console.log('Error!');
-
+                    return false;
+                    swal({
+                        title: 'Ops!',
+                        text: 'Houve um erro. Tente novamente, se o erro persistir, entre em contato com o administrador.',
+                        type: "error",
+                        confirmButtonColor: '#a5dc86',
+                        confirmButtonText: 'Entendi',
+                        closeOnConfirm: false
+                    }, function () {
+                        // alert("Atualizar tela para recarregar JS");
+                        // window.location.reload();
+                    })
                 }
             })
 
         })
     },
+
+    showMessage: function (data)
+    {
+        var gotoCfg = false;
+        var stay = false;
+
+        if (data.status)
+        {
+            if (data.hasNull)
+            {
+                obj = {
+                    title: 'Feito!',
+                    text: 'Alterações efetuadas, porém, ainda existem regiões sem Chamada. Ainda não é possível disponibilizar esta Home para o site.',
+                    type: "warning",
+                    confirmButtonColor: '#a5dc86',
+                    confirmButtonText: 'Entendi',
+                    closeOnConfirm: false
+                }
+            }
+            else
+            {
+                gotoCfg = true;
+                obj = {
+                    title: 'Feito!',
+                    text: 'Tudo pronto! Esta homepage já esta pronta para ser exibida no site',
+                    type: "success",
+                    showCancelButton: true,
+                    confirmButtonColor: '#a5dc86',
+                    confirmButtonText: 'Ir para configurações',
+                    cancelButtonText: 'ok, entendi.',
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }
+            }
+        }
+        else
+        {
+            stay = true;
+            obj = {
+                title: 'Nada foi alterado',
+                text: 'Nenhum erro, nenhuma alteração',
+                type: "info",
+                confirmButtonColor: '#a5dc86',
+                confirmButtonText: 'Entendi',
+                closeOnConfirm: true
+            }
+        }
+
+        swal(obj, function (confirmed) {
+            if (gotoCfg) {
+                if (confirmed) {
+                    // alert('Redirecionar para configuração da home.');
+                    window.location.href="/painel/paginas/home/"+Script.screenJson.home_id;
+                }else{
+                    window.location.reload();
+                    // alert('Ok, home atualizada corretamente! apenas recarregar a tela para atualizar o JS');
+                }
+            }
+            else if(stay){
+                // alert('Nada foi alterado, pode ficar aqui mesmo!');
+            }else{
+                // alert('Recarregar a tela para atualizar o JS.');
+                window.location.reload();
+            }
+        })
+    }
 };

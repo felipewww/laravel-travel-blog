@@ -76,6 +76,11 @@
     @yield('header')
 
     @if( isset($json_meta) ) <meta name="screen-json" content="{{ $json_meta }}">@endif
+    @if (session('PostMessage'))
+        <div id="PostMessage">
+            {{ session('PostMessage') }}
+        </div>
+    @endif
 </head>
 <body>
     <!-- JS tootlip -->

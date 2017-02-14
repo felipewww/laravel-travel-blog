@@ -38,22 +38,35 @@ class CityController extends Controller {
      * Para edição da página de cidade via painel ou exibição do Site
      * */
     function fromDB($id, Request $request){
-        $city = City::where('id', $request->id)->first();
-//dd($city);
+        $isAdmin = Auth::check();
+        $this->vars['isAdmin'] = $isAdmin;
 
-        $mw = $request->route()->middleware();
-        $mw = $mw[count($mw)-1];
+        $city = City::where('id', $request->id)->first();
 
         $this->getEstructureBreadcrumb('city', $city);
 
         $this->vars['isNew'] = false;
-        $this->vars['isAdmin'] = Auth::check() && $mw == 'auth';
+
         $this->json_meta(['contentToolsOnSave' => 'city.update', 'city_id' => $request->id]);
         $city->content_regions = json_decode($city->content_regions, true);
-//        dd($city->content_regions);
+
         $this->vars['city'] = $city;
 
-        return $this->cityPageView();
+        if ( !isset($city->content_regions['article_content']) )
+        {
+            if ($isAdmin)
+            {
+                return $this->cityPageView();
+            }
+            else
+            {
+                return view('Site.404', $this->vars);
+            }
+        }
+        else
+        {
+                return $this->cityPageView();
+        }
     }
 
     protected function cityPageView(){

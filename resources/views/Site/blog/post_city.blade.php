@@ -23,9 +23,9 @@
     <div class="container">
     {{--@if($isNew)--}}
         <div id="topo">
-            <h1 data-fixture data-name="article_title" class="no-margin">
+            <h1 data-test="asd" data-fixture data-name="article_title" class="no-margin">
             @if($isNew)
-                O título do post!
+                O título do novo post....
             @else
                 {{ $post->managed_regions['article_title']['content'] }}
             @endif

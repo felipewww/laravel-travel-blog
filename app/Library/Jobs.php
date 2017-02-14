@@ -18,17 +18,15 @@ trait Jobs {
     public $vars = [];
     public $model;
     public $reg;
-//    use InterventionImageExtensions;
 
     public function getReg($from, $id){
         $this->model    = new $from();
-        $this->reg      = $this->model->find($id)->first();
+        $this->reg      = $this->model->where('id',$id)->first();
     }
 
     public static function uploadImage($image, $path, $paramns = []){
         $i = new InterventionImageExtensions();
         return $i->uploadImage($image, $path, $paramns);
-//        InterventionImageExtensions::_uploadImage($image, $paramns);
     }
 
     public function postAction(Request $request)
@@ -68,6 +66,7 @@ trait Jobs {
     public static function _toAscii($str, $replace=array(), $delimiter='-') {
         $str = preg_replace('/[`^~,\'"]/', null, iconv('UTF-8', 'ASCII//TRANSLIT', $str));
         $str = preg_replace('/ /', '_', $str);
+        $str = strtr($str, array('(' => '', ')' => ''));
         $str = strtolower($str);
 
         return $str;

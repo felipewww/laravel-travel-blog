@@ -30,17 +30,11 @@
             border: none;
             border-radius: 0;
         }
-        div.headline_img{
-            width: 150px;
-            height: 150px;
-            background-size: 100%;
-            background-position: 50%;
-        }
     </style>
     <section class="block">
         <header>
             <div class="title">
-                <span>Informações da Cidade: {{ $city['name'] }}</span>
+                <span>Informações da Cidade: {{ $reg['name'] }}</span>
             </div>
             <div class="actions">
                 <a href="#" class="button light-blue font-black waves-effect submitter">post</a>
@@ -50,7 +44,7 @@
         </header>
 
         <section class="content">
-            @foreach ($city as $key => $value)
+            @foreach ($reg as $key => $value)
                 <div>key: {{ $key  }} => {{ $value }} </div>
                 {{--<div>{{ $key  }} </div>--}}
             @endforeach
@@ -83,9 +77,9 @@
                                 </li>
 
                                 @if($post->status == 'ativo')
-                                    <li data-tooltip-str="Inativar" class="hasTooltip flaticon-warning" onclick="home.teste(137)"><!-- inactive --></li>
+                                    <li data-tooltip-str="Inativar" class="hasTooltip flaticon-warning" onclick="city.painel.inactivePost('{{$post->id}}')"><!-- inactive --></li>
                                 @else
-                                    <li data-tooltip-str="Ativar" class="hasTooltip flaticon-checked" onclick="city.verifyAuthorAndActive('{{$post->id}}', '{{$post->author_id}}')"><!-- active --></li>
+                                    <li data-tooltip-str="Ativar" class="hasTooltip flaticon-checked" onclick="city.painel.verifyAuthorAndActivePost('{{$post->id}}', '{{$post->author_id}}')"><!-- active --></li>
                                 @endif
                                 {{--<li data-tooltip-str="Excluir" class="hasTooltip flaticon-rubbish-bin"><!-- delete --></li>--}}
                                 <li data-tooltip-str="Configurações" class="hasTooltip flaticon-expand">
@@ -115,18 +109,18 @@
         </header>
 
         <section class="content">
-            <form name="tags" method="post" action="/painel/api/mundo/cidade/{{$city['id']}}">
+            <form name="tags" method="post" action="/painel/api/mundo/cidade/{{$reg['id']}}">
                 <div class="w-50">
                     <label>
                         <span>Site</span>
-                        <input maxlength="255" type="text" name="system" placeholder="Tags para pesquisa no site" value="{{ $city['search_tags']  }}">
+                        <input maxlength="255" type="text" name="system" placeholder="Tags para pesquisa no site" value="{{ $reg['search_tags']  }}">
                     </label>
                 </div>
 
                 <div class="w-50">
                     <label>
                         <span>SEO</span>
-                        <input maxlength="255" type="text" name="seo" placeholder="Tags para SEO" value="{{ $city['seo_tags']  }}">
+                        <input maxlength="255" type="text" name="seo" placeholder="Tags para SEO" value="{{ $reg['seo_tags']  }}">
                     </label>
                 </div>
                 <div class="cleaner"></div>
@@ -149,7 +143,7 @@
         </header>
 
         <section class="content">
-            <form name="interests" method="post" action="/painel/api/mundo/cidade/{{$city['id']}}">
+            <form name="interests" method="post" action="/painel/api/mundo/cidade/{{$reg['id']}}">
                 @foreach($allInterests as $int)
                     <div>
                         <label data-notconfigure="true" for="int_{{ $int->id }}" data-color="{{ $int->color }}">{{ $int->name }}
@@ -163,56 +157,7 @@
         </section>
     </section>
 
-    <section class="block" id="headlines_box">
-        <header>
-            <div class="title">
-                <span>Headlines</span>
-            </div>
-            <div class="actions">
-                <a onclick="Script._dynclick(this, 'submit_headlines')" class="button light-blue font-black waves-effect">salvar</a>
-                <a href="javascript:headlines.addHeadLine();" class="button light-blue font-black waves-effect">novo</a>
-            </div>
-            <div class="cleaner"></div>
-        </header>
-
-        <section class="content">
-            {{--<form id="headlines" name="headlines" method="post" enctype="multipart/form-data" action="/painel/mundo/cidade/{{$city['id']}}">--}}
-            <form id="headlines" name="headlines_form" method="post" enctype="multipart/form-data" action="#headlines_box">
-
-
-                <input type="hidden" name="createHeadlines">
-
-                @foreach($headlines as $hl)
-                    <div id="headline_{{$hl->id}}" class="w-50">
-                        <div class="actions">
-                            <span onclick="headlines.deleteHeadline(this, {{$hl->id}})">excluir</span>
-                        </div>
-
-                        <div class="headline_img" style="background-image: url(/{{$hl->src}});">
-                            {{--<img src="/{{$hl->src}}">--}}
-                        </div>
-                        <label>
-                            <span>Headline img</span>
-                            <input type="file" name="hl[{{$hl->id}}][img]">
-                        </label>
-                        <label>
-                            <span>Headline Title</span>
-                            <input type="text" name="hl[{{$hl->id}}][title]" placeholder="{{$hl->title}}">
-                        </label>
-                        <label>
-                            <span>Headline text</span>
-                            <input type="text" name="hl[{{$hl->id}}][text]" placeholder="{{$hl->content}}">
-                        </label>
-
-                    </div>
-                @endforeach
-
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input id="submit_headlines" type="submit" value="enviar">
-            </form>
-            <div class="cleaner"></div>
-        </section>
-    </section>
+    @include('Painel.shared.headline_form')
 
     <section class="block" id="cidades">
         <header>
@@ -231,7 +176,7 @@
             <div id="map" style="height: 350px;"></div>
             <script>
                 function initMap() {
-                    var myLatLng = {lat: {{ $city['lat'] }}, lng: {{ $city['lng'] }} };
+                    var myLatLng = {lat: {{ $reg['lat'] }}, lng: {{ $reg['lng'] }} };
 
                     // Create a map object and specify the DOM element for display.
                     var map = new google.maps.Map(document.getElementById('map'), {

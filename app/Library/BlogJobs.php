@@ -2,6 +2,8 @@
 
 namespace App\Library;
 
+use App\Post;
+
 trait BlogJobs {
 
     /*
@@ -18,6 +20,13 @@ trait BlogJobs {
      * */
     public static function manage(&$posts, $callbacks = [])
     {
+        $isInstance = false;
+        //Se for um post em especifico, não uma listagem de post...
+        if ($posts instanceof Post) {
+            $posts = [$posts];
+            $isInstance = true;
+        }
+//        dd($posts);
         /*
          * Manter callbacks default e adicionar os definidos do programador...
          * */
@@ -58,7 +67,13 @@ trait BlogJobs {
             $post['managed_regions'] = $postRegions;
         }
 
-        return $posts;
+        if ($isInstance) {
+            $posts = $posts[0];
+            //return $posts[0];
+        }else{
+//            return $posts;
+        }
+            return $posts;
     }
 
     public static function status($post, $status)
@@ -86,5 +101,17 @@ trait BlogJobs {
         }
 
         $post['author'] = $info;
+    }
+
+    /**
+     * função que pode ser chamada com callback = [title => true]
+     * */
+    public static function title($post){
+//        dd($post->content_regions);
+        $regions = json_decode($post->content_regions);
+//        $post->content_regions->article_title;
+//        dd($post->content_regions);
+//        dd();
+        $post->title = $regions->article_title->content;
     }
 }

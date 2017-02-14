@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Site\Blog;
 
+use App\City;
 use App\Http\Controllers\Controller;
 use App\Library\BlogJobs;
 use App\Library\Jobs;
@@ -27,32 +28,55 @@ class PostController extends Controller {
 
     public function city($id)
     {
-        if ($id instanceof Request) {
-//        dd($id);
-            //Para cidades ainda não cadastradas no banco.
-            $this->json_meta(['request' => $id->all()]);
-        }else{
-            //Para cidades já cadastradas.
-            $this->json_meta(['id' => $id]);
-        }
+        //Se q requisição for request, é criação de post para cidade ainda não existente no banco
+            $this->json_meta(['from' => 'city']);
 
-        $this->json_meta(['from' => 'city']);
-        $this->getEstructureBreadcrumb('city', $id);
+        //Para cidades ainda não cadastradas no banco.
+        if ($id instanceof Request)
+        {
+            $this->json_meta(['request' => $id->all()]);
+            $this->getEstructureBreadcrumb('city', $id);
+        }
+        //Para cidades já cadastradas.
+        else
+        {
+            $this->json_meta(['id' => $id]); //id da cidade
+
+            $city = City::where('id', $id)->first();
+            $this->getEstructureBreadcrumb('city', $city);
+        }
 
         return view('Site.blog.post_city', $this->vars);
     }
 
-    public function editPostCity($id){
+    public function readCityPost($post_id){
+        //Caso seja usuário autenticado visitante post no site, também será possível editar.
         $this->json_meta(['contentToolsOnSave' => 'post.update']);
-        $this->json_meta(['post_id' => $id]);
+        $this->json_meta(['from' => 'city']);
+        $this->json_meta(['post_id' => $post_id]);
+
+        //Ler post
+        $post = Post::where('id', $post_id)->first();
         $this->vars['isNew'] = false;
-        $posts = $this->model->where('id',$id)->get();
+        BlogJobs::manage($post);
+        $this->vars['post'] = $post;
+        $this->getEstructureBreadcrumb('city', $post->polimorph_from_id);
 
-//        dd($post);
-//        $this->getEstructureBreadcrumb('city', $post[0]->polimorph_from_id);
-        $this->getEstructureBreadcrumb('city', $posts[0]->polimorph_from_id);
-
-        $this->vars['post'] = BlogJobs::manage($posts)[0];
-        return view('Site.blog.post_city', $this->vars);
+//        $this->vars['isAdmin'] = false;
+        if ( $post->status != 'ativo' )
+        {
+            if ($this->vars['isAdmin'])
+            {
+                return view('Site.blog.post_city', $this->vars);
+            }
+            else
+            {
+                return view('Site.404', $this->vars);
+            }
+        }
+        else
+        {
+            return view('Site.blog.post_city', $this->vars);
+        }
     }
 }

@@ -35,9 +35,10 @@ class CountryController extends Controller implements DataTablesInterface{
         ['title' => 'ações', 'width' => '200px'],
     ];
 
-    public function __construct(Country $model, Request $request)
+    public function __construct($countryId = 0)
     {
-        $this->model = $model;
+        $this->model = new Country();
+        $this->reg = $this->model->where('id', $countryId)->first();
         $this->geonames = new Geonames();
     }
 
@@ -195,7 +196,7 @@ class CountryController extends Controller implements DataTablesInterface{
                 $blogPostButton = [
                     'html' => '+ post',
                     'attributes' => [
-                        'href' => '/blog/c/novo-post/'.$regId,
+                        'href' => '/painel/blog/novo-post/cidade/'.$regId,
                         'target' => '_blank'
                     ]
                 ];
@@ -242,9 +243,9 @@ class CountryController extends Controller implements DataTablesInterface{
                 [
                     'rowButtons' =>
                         [
-                            $blogPostButton,
                             $configButton,
-                            $pagePostButton
+                            $pagePostButton,
+                            $blogPostButton,
                         ]
                 ]
             ];

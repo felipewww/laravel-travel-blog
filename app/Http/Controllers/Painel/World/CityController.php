@@ -32,6 +32,7 @@ class CityController extends Controller {
     public function __construct($cityId)
     {
         $this->json_meta(['city_id' => $cityId]);
+
         $arr = [
             'id',
             'name',
@@ -92,7 +93,7 @@ class CityController extends Controller {
         $this->json_meta(['isPainel' => true]);
 
         $this->interests();
-        $this->vars['city'] = $this->reg->getAttributes();
+        $this->vars['reg'] = $this->reg->getAttributes();
         $this->vars['modulo'] = 'Cidade';
         $this->vars['pageDesc'] = 'Configurações da cidade: '.$this->reg->name;
 
@@ -138,13 +139,25 @@ class CityController extends Controller {
 
             $e->id              = $estate['geonameId'];
             $e->name            = $estate['name'];
-            $e->ll_north        = $estate['bbox']['north'];
-            $e->ll_south        = $estate['bbox']['south'];
-            $e->ll_east         = $estate['bbox']['east'];
-            $e->ll_west         = $estate['bbox']['west'];
-            $e->lat             = ($estate['bbox']['north']+$estate['bbox']['south'])/2;
-            $e->lng             = ($estate['bbox']['east']+$estate['bbox']['west'])/2;
             $e->countries_id    = $country['id'];
+
+            //geonames as vezes não traz bbox.
+            if ( isset($estate['bbox']) && !empty($estate['bbox']) )
+            {
+                $e->ll_north        = $estate['bbox']['north'];
+                $e->ll_south        = $estate['bbox']['south'];
+                $e->ll_east         = $estate['bbox']['east'];
+                $e->ll_west         = $estate['bbox']['west'];
+                $e->lat             = ($estate['bbox']['north']+$estate['bbox']['south'])/2;
+                $e->lng             = ($estate['bbox']['east']+$estate['bbox']['west'])/2;
+            }
+            else
+            {
+                if ( isset($estate['lat']) && isset($estate['lgn']) ) {
+                    $e->lat             = $estate['lat'];
+                    $e->lng             = $estate['lng'];
+                }
+            }
 
             $e->save();
         }
@@ -152,81 +165,91 @@ class CityController extends Controller {
         $this->model->id                = $city['geonameId'];
         $this->model->name              = $city['name'];
         $this->model->estates_id        = $estate['geonameId'];
-        $this->model->ll_north          = $city['bbox']['north'];
-        $this->model->ll_south          = $city['bbox']['south'];
-        $this->model->ll_east           = $city['bbox']['east'];
-        $this->model->ll_west           = $city['bbox']['west'];
-        $this->model->lat               = ($city['bbox']['north']+$city['bbox']['south'])/2;
-        $this->model->lng               = ($city['bbox']['east']+$city['bbox']['west'])/2;
         $this->model->content_regions   = $html;
 
-        $this->model->save();
-
-        return true;
-    }
-
-    public function createOrUpdateHeadline(Request $request){
-        $text = false;
-        if ( isset($request->hl_new) ) {
-            foreach ($request->hl_new as $hl){
-                $img = $this->uploadHeadlineImage($hl['img']);
-
-                echo $img->fullpath.'<br>';
-                $data = [
-                    'title' => $hl['title'],
-                    'content' => $hl['text'],
-                    'src' => $img->fullpath
-                ];
-
-                $this->reg->Headline()->create($data);
+        //geonames as vezes não traz bbox.
+        if ( isset($city['bbox']) && !empty($city['bbox']) )
+        {
+            $this->model->ll_north        = $city['bbox']['north'];
+            $this->model->ll_south        = $city['bbox']['south'];
+            $this->model->ll_east         = $city['bbox']['east'];
+            $this->model->ll_west         = $city['bbox']['west'];
+            $this->model->lat             = ($city['bbox']['north']+$city['bbox']['south'])/2;
+            $this->model->lng             = ($city['bbox']['east']+$city['bbox']['west'])/2;
+        }
+        else
+        {
+            if ( isset($city['lat']) && isset($city['lgn']) ) {
+                $this->model->lat             = $city['lat'];
+                $this->model->lng             = $city['lng'];
             }
-            $text   = 'Headlines criados com sucesso.';
         }
 
-        if ( isset($request->hl) ) {
-            foreach ($request->hl as $id => $hl){
-                $hl_reg = Headline::where('id', $id)->first();
-                $data = [];
-
-                if ( !empty($hl['title']) ) { $hl_reg->title = $hl['title']; }
-                if ( !empty($hl['text']) ) { $hl_reg->content = $hl['text']; }
-
-                //Deletar imagem antiga
-                if ( isset($hl['img']) ) {
-                    $imgToUnlink = public_path($hl_reg->src);
-                    unlink($imgToUnlink);
-
-                    $img = $this->uploadHeadlineImage($hl['img']);
-                    $hl_reg->src = $img->fullpath;
-                }
-
-                if ( !empty($data) ) {
-//                    dd('here');
-                    $this->reg->Headline()->create($data);
-                }
-                    $hl_reg->save();
-            }
-
-            $text = ( $text ) ? 'Headlines criados e alterados com sucesso.': 'Headlines alterados com sucesso.';
-        }
-
-        $type = 'success';
-        $title  = 'Feito!';
-//        elseif ( isset($request->hl) ){
-//            dd($request->hl);
-//        }
-//        else{
-//            $type   = 'info';
-//            $title  = 'Nenhuma alteração.';
-//            $text   = 'Nenhum erro, nem alteração!';
-//        }
-
-        $this->json_meta([
-            'PostMessage' => ['type' => $type, 'title' => $title, 'text' => $text ]
-        ]);
-
-        return $this->display();
+        return $this->model->save();
     }
+
+//    public function createOrUpdateHeadline(Request $request){
+//        $text = false;
+//        if ( isset($request->hl_new) ) {
+//            foreach ($request->hl_new as $hl){
+//                $img = $this->uploadHeadlineImage($hl['img']);
+//
+//                echo $img->fullpath.'<br>';
+//                $data = [
+//                    'title' => $hl['title'],
+//                    'content' => $hl['text'],
+//                    'src' => $img->fullpath
+//                ];
+//
+//                $this->reg->Headline()->create($data);
+//            }
+//            $text   = 'Headlines criados com sucesso.';
+//        }
+//
+//        if ( isset($request->hl) ) {
+//            foreach ($request->hl as $id => $hl){
+//                $hl_reg = Headline::where('id', $id)->first();
+//                $data = [];
+//
+//                if ( !empty($hl['title']) ) { $hl_reg->title = $hl['title']; }
+//                if ( !empty($hl['text']) ) { $hl_reg->content = $hl['text']; }
+//
+//                //Deletar imagem antiga
+//                if ( isset($hl['img']) ) {
+//                    $imgToUnlink = public_path($hl_reg->src);
+//                    unlink($imgToUnlink);
+//
+//                    $img = $this->uploadHeadlineImage($hl['img']);
+//                    $hl_reg->src = $img->fullpath;
+//                }
+//
+//                if ( !empty($data) ) {
+////                    dd('here');
+//                    $this->reg->Headline()->create($data);
+//                }
+//                    $hl_reg->save();
+//            }
+//
+//            $text = ( $text ) ? 'Headlines criados e alterados com sucesso.': 'Headlines alterados com sucesso.';
+//        }
+//
+//        $type = 'success';
+//        $title  = 'Feito!';
+////        elseif ( isset($request->hl) ){
+////            dd($request->hl);
+////        }
+////        else{
+////            $type   = 'info';
+////            $title  = 'Nenhuma alteração.';
+////            $text   = 'Nenhum erro, nem alteração!';
+////        }
+//
+//        $this->json_meta([
+//            'PostMessage' => ['type' => $type, 'title' => $title, 'text' => $text ]
+//        ]);
+//
+//        return $this->display();
+//    }
 
     protected function uploadHeadlineImage($img, $name = ''){
         return $img = Jobs::uploadImage($img, 'Site/media/images/cidades/headlines',

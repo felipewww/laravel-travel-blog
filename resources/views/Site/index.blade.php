@@ -27,15 +27,25 @@
             <div class="arrow closed flaticon-keyboard-right-arrow-button"></div>
             <form name="getheadlines">
 
-                {{--<div class="searchBox">--}}
-                    {{--<label for="countries">Países</label>--}}
-                    {{--<select id="countries" name="countries">--}}
-                        {{--<option value="1">Brasil</option>--}}
-                        {{--<option value="2">Ruanda</option>--}}
-                        {{--<option value="3">Canada</option>--}}
-                    {{--</select>--}}
-                    {{--<div class="searchBtn">filtrar</div>--}}
-                {{--</div>--}}
+                <div class="searchBox">
+                    <label for="posts">Posts</label>
+                    <select id="posts" name="posts">
+                        @foreach($posts as $post)
+                            <option value="{{$post->id}}">{{$post->title}}</option>
+                        @endforeach
+                    </select>
+                    <div class="searchBtn">filtrar</div>
+                </div>
+
+                <div class="searchBox">
+                    <label for="countries">Paises</label>
+                    <select id="countries" name="countries">
+                        @foreach($countries as $country)
+                            <option value="{{$country->id}}">{{$country->name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="searchBtn">filtrar</div>
+                </div>
 
                 <div class="searchBox">
                     <label for="cities">Cidades</label>
@@ -62,7 +72,7 @@
             @foreach($regions[1] as $hl)
             <div class="container-50 sortable {{ $hl->divClass ?: '' }}" id="{{ $hl->final_id }}">
                 <div class="region">
-                    <div class="img" style="background-image: url({{ $hl->src }})"></div>
+                    <div class="img" style="background-image: url('{{ $hl->src }}')"></div>
                     <div class="title">{{ $hl->title }}</div>
                     <div class="content"> {{ $hl->content }} </div>
                 </div>

@@ -22,13 +22,11 @@ trait WorldEstructureJobs {
         else
         {
             if ($from == 'city') {
-//                dd($id);
+
                 if ($id instanceof City) {
-//                    dd('instancia');
-                $city = $id;
+                    $city = $id;
                 }else{
-//                    dd('id:');
-                $city = City::select('name','id','estates_id')->where('id',$id)->first();
+                    $city = City::select('name','id','estates_id')->where('id',$id)->first();
                 }
 
                 $this->vars['breadcrumb']['city'] = $city;

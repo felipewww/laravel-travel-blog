@@ -18,6 +18,11 @@
         <link rel="stylesheet" type="text/css" href="/Painel/css/icons/font/flaticon.css">
     @endif
 
+    <!-- sweet alert -->
+    <link rel="stylesheet" href="/Painel/js/lib/sweetalert-master/dist/sweetalert.css">
+    <script type="text/javascript" src="/Painel/js/lib/sweetalert-master/dist/sweetalert.min.js"></script>
+    <!-- sweet alert -->
+
     <!-- Scripts -->
     <script type="text/javascript" src="/Painel/js/lib/jquery/jquery.easing.1.3.js"></script>
     <script type="text/javascript" src="{!! asset('/Site/js/Client.js')  !!}"></script>

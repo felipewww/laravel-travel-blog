@@ -51,10 +51,14 @@ Script = {
 
     PostMessage: function ()
     {
-        if ( this.screenJson.PostMessage != undefined )
+        $msg = $('#PostMessage');
+        // alert($msg[0]);
+        // if ( this.screenJson.PostMessage != undefined )
+        if ( $msg[0] )
         {
             var text, title, type;
-            var msg = this.screenJson.PostMessage;
+            // var msg = this.screenJson.PostMessage;
+            var msg = JSON.parse($msg.html());
 
             switch (msg.type)
             {

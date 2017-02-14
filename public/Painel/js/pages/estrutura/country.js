@@ -37,10 +37,6 @@ country = {
         Script.anchorScroll('#cidades');
     },
 
-    createPost: function () {
-
-    },
-
     beforeConfig: function (event, button, attrs, dataTable, regId, allRowData) {
         //alert("ops, esta ciadde não existe");
         swal
@@ -65,6 +61,14 @@ country = {
             }
         );
 
+    },
+
+    createCountryPost: function () {
+        swal({
+            title: '',
+            text: 'Criação de Posts do pais indisponível.',
+            type: 'warning'
+        });
     },
 
     createCountryPage: function ()

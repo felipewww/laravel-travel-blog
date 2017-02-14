@@ -3,7 +3,7 @@
 Editado em 03/02 - Previsão - 13-02
 19/01
 -[ ] Criar tela de config da cidade (headlines, tags). Permitir status ativo para página somente se houver region_content
--[ ] Criar tela de config do POST (headlines, tags).
+-[x] Criar tela de config do POST (headlines, tags).
 -[ ] Criar JS para galeria de fotos junto com contentTools (na view)
 
 22/01 em diante
@@ -25,16 +25,19 @@ ainda não está no banco)</span>
 - [ ] Pensar nas listas. Lista não necessariaente é de cidade ou pais. mas tem que relacionar...
 - [ ] resolver a questão de enviar o POST para a mesma página do registro, se apertar F5, insere de novo.
 DOCUMENTAÇÃO
+- [ ] permitir ativar/inativar posts via PAGINA DA CIDADE nos botoes multaction
 
 - [ ]2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente
 
 - [ ]HOME - muitas coisas pensadas! Agendar exibição de determinada home, pode criar home com 
 diferentes layouts, para isso, é necessário sempre criar uma nova view. + observações na controller
 
+- [ ]Criar uma tela de cadastro de LAYOUT DE HOMEPAGE... isso deverá ficar no item DEVELOPEr do menu... só pode alterar um LAYOUT de uma home desde que a home ativa não esteja usando ele mesmo, dessa forma podemos adicioanr REGIONS a uma home ja existente, ao inves de criar nova.
 ###### Coisas para confirmar quando subir o sistema para produção
 
 -[ ] Verificar se tem permissão total para ler as pastas /public/geonames/* (onde estão todos os dados de WrodlEstructure)
-
+-[ ] Verificar se tem permissão total para ler Store/framework/view para que o Laravel possa dar um clear cache nas views
+-[ ] layoutar página de erro 404
 ###### Propostas
 
 -[ ] É possível fazer uma leitura de qualquer cidade do mundo pela [API do google](https://developers.google.com/places/web-service/) caso
@@ -54,7 +57,7 @@ pode demorar um pouco
 > [este artigo](http://stackoverflow.com/questions/19249159/best-practice-multi-language-website) é bem interessante sobre tradução, inclusive usando laravel. Na terceira resposta, alguem fala sobre Thomas Bley e criação de caches (arquivos PHP estáticos) para evitar consultas no banco e execução de funções a cada acesso
 ###### Frontend
 -[ ] Criar coloração diferente para validação de checkboxes...apenas input e select configurados em _Forms.js
-
+- [ ] Cadastrar editorias no banco - Arte e cultura, comer e beber, estilo de vida, roteiro, pra voce^(info), [pra viajar indica LISTA], [VIDEOS]
 #### WorldEstructure 
 
 - [x] <span style="color: green">Ao criar uma tabela listando ESTADOS ou CIDADES, é feita 

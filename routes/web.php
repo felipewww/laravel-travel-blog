@@ -22,9 +22,14 @@ Route::get('pais/{nome}/{id}', ['uses' => 'Site\World\CountryController@index'])
 Route::get('estado/{nome}/{id}', ['uses' => 'Site\World\EstateController@index']);
 Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@fromDB']);
 
+//Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
+//    $c = new App\Http\Controllers\Site\Blog\PostController();
+//    return $c->city($id);
+//});
+
 Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
     $c = new App\Http\Controllers\Site\Blog\PostController();
-    return $c->city($id);
+    return $c->readCityPost($id);
 });
 
 Route::post('upload-image', 'Site\IndexController@uploadImage');
@@ -57,18 +62,13 @@ Route::group(['middleware' => 'auth'], function (){
 
     Route::group(['prefix' => 'painel'], function (){
 
+        Route::post('createOrUpdateHeadline', function (\Illuminate\Http\Request $request){
+            return \App\Library\Headlines::defineAndCreateHeadline($request);
+        });
+
         Route::group(['middleware' => 'api'], function (){
 
             Route::group(['prefix' => '/api/headline'], function (){
-//                Route::post('city/deleteHeadline', function (\Illuminate\Http\Request $request){
-//                    $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
-//                    $c->deleteHeadlineApi($request);
-//                });
-//
-//                Route::post('post/deleteHeadline', function (\Illuminate\Http\Request $request){
-//                    $c = new \App\Http\Controllers\Painel\World\PostController($cityId);
-//                    $c->deleteHeadlineApi($request);
-//                });
 
                 Route::post('deleteHeadline', function (\Illuminate\Http\Request $request){
                     $c = new \App\Http\Controllers\Painel\HeadlineController();
@@ -81,7 +81,9 @@ Route::group(['middleware' => 'auth'], function (){
             });
 
             Route::post('/api/home/updateHeadlines', function (\Illuminate\Http\Request $request){
-                return \App\Http\Controllers\Site\IndexController::updateHeadlinesApi($request);
+                $c = new \App\Http\Controllers\Site\IndexController();
+//                return \App\Http\Controllers\Site\IndexController::updateHeadlinesApi($request);
+                return $c->updateHeadlinesApi($request);
             });
 
             Route::get('/api/mundo/pais/{action}', ['uses' => 'Painel\World\CountryController@apiAction']);
@@ -111,6 +113,12 @@ Route::group(['middleware' => 'auth'], function (){
         });
 
         Route::group(['prefix' => 'blog'], function (){
+            Route::get('novo-post/cidade/{id}', function ($id){
+                $c = new App\Http\Controllers\Site\Blog\PostController();
+                return $c->city($id);
+            });
+
+            //novo post para cidade não existente
             Route::post('post/cidade', function (\Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Site\Blog\PostController();
                 return $c->city($request);
@@ -118,7 +126,7 @@ Route::group(['middleware' => 'auth'], function (){
 
             Route::get('post/cidade/{id}', function ($id){
                 $c = new App\Http\Controllers\Site\Blog\PostController();
-                return $c->editPostCity($id);
+                return $c->readCityPost($id);
             });
 
             Route::get('posts', ['uses' => 'Painel\Blog\PostsController@view']);
@@ -154,14 +162,12 @@ Route::group(['middleware' => 'auth'], function (){
                 });
 
                 Route::post('{id}', function ($id, \Illuminate\Http\Request $request){
-//                    dd($request->all());
-//                    dd($request->file('hl_img'));
-                    $c = new \App\Http\Controllers\Painel\World\CityController($id);
-
-                    if ( isset($request->createHeadlines) ) {
-                        //return $c->createHeadline($request);
-                        return $c->createOrUpdateHeadline($request);
-                    }
+//                    $c = new \App\Http\Controllers\Painel\World\CityController($id);
+//
+//                    if ( isset($request->createHeadlines) ) {
+//                        //return $c->createHeadline($request);
+//                        return $c->createOrUpdateHeadline($request);
+//                    }
                 });
             });
 
