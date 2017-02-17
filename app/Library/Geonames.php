@@ -18,7 +18,7 @@ class Geonames {
         $updateFile     = (isset($paramns['updateFile'])) ? (bool)$paramns['updateFile'] : false;
 
         $path       = base_path().'/public/Geonames/';
-        $fileName   = strtolower($this->toAscii($placeName)).'_gnid'.$id.'.txt';
+        $fileName   = strtolower($this->_toAscii($placeName)).'_gnid'.$id.'.txt';
 
         switch ($type)
         {

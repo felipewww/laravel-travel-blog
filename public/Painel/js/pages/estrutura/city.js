@@ -27,19 +27,19 @@ city = {
             });
         },
 
-        tags: function () {
-            Script.AjaxForm('tags', 'updateTags', function (status, data) {
-                console.log(data);
-                swal('','Tags de pesquisa Atualizadas!','success');
-            });
-        },
+        // tags: function () {
+        //     Script.AjaxForm('tags', 'updateTags', function (status, data) {
+        //         console.log(data);
+        //         swal('','Tags de pesquisa Atualizadas!','success');
+        //     });
+        // },
 
         verifyAuthorAndActivePost: function (post_id, author_id) {
             var obj;
             if (author_id == '') {
                 obj = {
                     title: 'Ops!',
-                    text: 'Este post não pode ser ativado pois ainda não possui as configurações básicas. Clique em "editar post"',
+                    text: 'Este post não pode ser ativado pois ainda não possui as configurações básicas. Vá para "Configurações"',
                     type: "warning",
                     // showCancelButton: true,
                     confirmButtonColor: '#a5dc86',
@@ -73,85 +73,12 @@ city = {
                 confirmButtonText: 'Entendi',
                 closeOnConfirm: true
             });
-        }
+        },
 
-        // headlines: function () {
-        //     Script.AjaxForm('headlines', 'updateHeadline', function (status, data) {
-        //         console.log(data);
-        //         swal('','Headlines Atualizados!','success');
-        //     });
-        //     // Script.sendFormData('headlines');
-        // },
-        //
-        // addHeadLine: function () {
-        //     var form    = document.forms.headlines;
-        //     var name    = 'hl_new['+city.painel.newHeadlinesCount+']';
-        //     var id      = 'hl_new_'+city.painel.newHeadlinesCount;
-        //
-        //     var container = Script.createElement('div', '', {
-        //         class: 'w-50',
-        //         id: id
-        //     });
-        //
-        //     var divActions = Script.createElement('div', { class: 'actions' });
-        //         var actDelete = Script.createElement('span', 'excluir',
-        //             {
-        //                 onclick: function () {
-        //                     var child = document.getElementById(id);
-        //                     child.parentNode.removeChild(child);
-        //                 }
-        //             });
-        //
-        //     divActions.appendChild(actDelete);
-        //
-        //     //Create Image field
-        //     var labelImgField = Script.createElement('label', '');
-        //         var titleImgLabel = Script.createElement('span', 'Headline Img', {});
-        //         var inputImgLabel = Script.createElement('input', '', { type: 'file', name: name+'[img]' });
-        //     labelImgField.appendChild(titleImgLabel);
-        //     labelImgField.appendChild(inputImgLabel);
-        //
-        //     //Create Title field
-        //     var labelTtlField = Script.createElement('label', '');
-        //         var titleTtlLabel = Script.createElement('span', 'Headline Title', {});
-        //         var inputTtlLabel = Script.createElement('input', '', { type: 'text', name: name+'[title]' });
-        //     labelTtlField.appendChild(titleTtlLabel);
-        //     labelTtlField.appendChild(inputTtlLabel);
-        //
-        //     //Create Text field
-        //     var labelTxtField = Script.createElement('label', '');
-        //         var titleTxtLabel = Script.createElement('span', 'Headline Text', {});
-        //         var inputTxtLabel = Script.createElement('input', '', { type: 'text', name: name+'[text]' });
-        //     labelTxtField.appendChild(titleTxtLabel);
-        //     labelTxtField.appendChild(inputTxtLabel);
-        //
-        //     //End make container
-        //     container.appendChild(divActions);
-        //     container.appendChild(labelImgField);
-        //     container.appendChild(labelTtlField);
-        //     container.appendChild(labelTxtField);
-        //
-        //     form.appendChild(container);
-        //
-        //     city.painel.newHeadlinesCount++;
-        // },
-        //
-        // deleteHeadline: function (id) {
-        //     $.ajax({
-        //         url: '/painel/api/mundo/cidade/'+Script.screenJson.city_id,
-        //         method: 'post',
-        //         dataType: 'json',
-        //         data: { action: 'deleteHeadline', id: id, _token: window.Laravel.csrfToken },
-        //         success: function (data) {
-        //             console.log(data);
-        //             // swal('Headline excluído com sucesso!!');
-        //         },
-        //         error: function (error) {
-        //             console.log(error);
-        //             // swal('Erro!');
-        //         }
-        //     });
-        // }
+        activeOrDeactiveCity: function (action)
+        {
+
+        }
     },
 
     /*

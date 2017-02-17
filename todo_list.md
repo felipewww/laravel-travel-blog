@@ -1,38 +1,40 @@
 ##### Todo List | Pra Viajar
+- [x] <span style="color: green">Criar tela de config da cidade (headlines, tags). Permitir status ativo para página somente se houver region_content</span>
+- [x] <span style="color: green">Finalizar tela de INTERESTS. Ok, falta editar o interesse e o globo de cores.</span>
+- [x] <span style="color: green">Criar CRUD do POST</span>
+- [x] <span style="color: green">Testar o conceito usado na criação de place_has_events, mantendo apenas o ID do evento como PK, para permitir que o evento só possa ser relacionado com uma cidade, mesmo em many to many,
+isso ficará tipo um polimorfismo. Afinal event pode se relacionar com PLACE ou CITY. então, ou cria EVENT para city... com o ID de city, ou para place, com o ID de place em outra tabela de many to many. Se isso der certo, criar tambem a tabela para city_has_event</span>
+- [x] <span style="color: green">Remover polimorfismo de HEADLINES e POSTS... o do laravel é ruim!</span>
+- [x] <span style="color: green">Criar CRUD de PLACES</span>
+- [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
+- [ ] Criar JS para galeria de fotos junto com contentTools (na view)
+- [ ] Finalizar HOME, drag and drop de tudo que possue headline. Verificar se esta buscando somente coisas ativas. Ex
+- [ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
 
 Editado em 03/02 - Previsão - 13-02
 19/01
--[ ] Criar tela de config da cidade (headlines, tags). Permitir status ativo para página somente se houver region_content
 -[x] Criar tela de config do POST (headlines, tags).
--[ ] Criar JS para galeria de fotos junto com contentTools (na view)
 
 22/01 em diante
--[x] <span style="color: green">Criar tela de cadastro do autor</span>
--[x] <span style="color: green">Criar tela de POST</span>
--[ ] Finalizar tela de INTERESTS. Ok, falta editar o interesse e o globo de cores.
--[ ] Criar tela de HOME (drag and drop, 3 dias)
--[ ] Criar CRUD de SERVIÇOS (PLACES) (2 dias)
--[ ] Criar tela de exibição de cidades cadastradas
--[ ] Finalizar tela de exibição dos posts cadastrados.
--[ ] Copiar o upload e crecorte de imagem para os uploads
--[ ] Confirmar ao criar POSt para cidade não cadastrada, avisando que possivelmente esse psot não será muito visualizado.
--[ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
--[x] <span style="color: green">Setar mapa conforme LATLONG</span>
--[x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
+- [x] <span style="color: green">Criar tela de cadastro do autor</span>
+- [x] <span style="color: green">Criar tela de POST</span>
+- [x] <span style="color: green">seed de post_Types e places esta identico</span>
+- [ ] Criar tela de exibição de cidades cadastradas
+- [ ] Finalizar tela de exibição dos posts cadastrados.
+- [ ] Tem como fazer pesquisa de headline por ID na home?
+- [x] Copiar o upload e recorte de imagem para os uploads
+- [ ] Confirmar ao criar POSt para cidade não cadastrada, avisando que possivelmente esse psot não será muito visualizado.
+- [x] <span style="color: green">Setar mapa conforme LATLONG</span>
+- [x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
 ainda não está no banco)</span>
-- [ ] seed de post_Types e places esta identico
-- [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
 - [ ] Pensar nas listas. Lista não necessariaente é de cidade ou pais. mas tem que relacionar...
-- [ ] resolver a questão de enviar o POST para a mesma página do registro, se apertar F5, insere de novo.
-DOCUMENTAÇÃO
+- [x] <span style="color: green">resolver a questão de enviar o POST para a mesma página do registro, se apertar F5, insere de novo.
+DOCUMENTAÇÃO</span>
 - [ ] permitir ativar/inativar posts via PAGINA DA CIDADE nos botoes multaction
-
-- [ ]2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente
-
-- [ ]HOME - muitas coisas pensadas! Agendar exibição de determinada home, pode criar home com 
+- [x] <span style="color: green">2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente</span>
+- [ ] HOME - muitas coisas pensadas! Agendar exibição de determinada home, pode criar home com 
 diferentes layouts, para isso, é necessário sempre criar uma nova view. + observações na controller
-
-- [ ]Criar uma tela de cadastro de LAYOUT DE HOMEPAGE... isso deverá ficar no item DEVELOPEr do menu... só pode alterar um LAYOUT de uma home desde que a home ativa não esteja usando ele mesmo, dessa forma podemos adicioanr REGIONS a uma home ja existente, ao inves de criar nova.
+- [ ] Criar uma tela de cadastro de LAYOUT DE HOMEPAGE... isso deverá ficar no item DEVELOPEr do menu... só pode alterar um LAYOUT de uma home desde que a home ativa não esteja usando ele mesmo, dessa forma podemos adicioanr REGIONS a uma home ja existente, ao inves de criar nova.
 ###### Coisas para confirmar quando subir o sistema para produção
 
 -[ ] Verificar se tem permissão total para ler as pastas /public/geonames/* (onde estão todos os dados de WrodlEstructure)

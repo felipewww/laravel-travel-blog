@@ -77,7 +77,7 @@
 
     @if( isset($json_meta) ) <meta name="screen-json" content="{{ $json_meta }}">@endif
     @if (session('PostMessage'))
-        <div id="PostMessage">
+        <div id="PostMessage" class="hidden">
             {{ session('PostMessage') }}
         </div>
     @endif

@@ -5,21 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Headline extends Model
 {
-    public $fillable = ['title', 'content', 'src'];
-//    public function polimorph_from()
-//    {
-//        return $this->morphTo();
-//    }
+    public $fillable = ['title', 'content', 'src', 'polymorphic_from'];
 
-    public function headline_morph()
-    {
-        return $this->morphTo();
-    }
-
-    //Isso é a mesma coisa que headline_morph, apenas para questão de estudos.
-    public function city()
-    {
-        return $this->morphedByMany('App\City', 'headline_morph', 'headlines', 'id');
+    /*
+     * todo - ao invés de morphTo(). Criar uma função nova para substituir o polimorifsmo do laravel.
+     * O mesmo para EVENT e POST
+     * */
+    public function polymorphic_from(){
+        //todo... criar função
     }
 
     public function home()

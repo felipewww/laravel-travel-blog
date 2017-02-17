@@ -204,6 +204,18 @@ Script = {
         }
     },
 
+    unable: function (text) {
+        if (text == undefined) {
+            text = 'Função indisponível. Entre em contato com o administrador.';
+        }
+
+        swal({
+            title: '',
+            text: text,
+            type: 'error'
+        });
+    },
+
     setMasks: function()
     {
         $('.mask-moeda').mask('0000.00', {reverse: true});

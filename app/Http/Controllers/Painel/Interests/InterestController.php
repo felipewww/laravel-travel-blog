@@ -15,9 +15,9 @@ class InterestController extends Controller implements DataTablesInterface
     use Jobs;
     use DataTablesExtensions;
 
-    protected $model;
+//    protected $model;
     public $all;
-    public $all2;
+//    public $all2;
 
     public function __construct()
     {
@@ -56,13 +56,20 @@ class InterestController extends Controller implements DataTablesInterface
                 $i,
                 $reg['id'],
                 $reg['name'],
-                $reg['color'],
+                //$reg['color'],
+                [
+                    'bgColor' => $reg['color']
+                ],
                 [
                     'rowButtons' =>
                     [
                         [
                             'html' => '+ editar',
                             'attributes' => ['data-jslistener-click' => 'ints.edit']
+                        ],
+                        [
+                            'html' => 'excluir',
+                            'attributes' => ['data-jslistener-click' => 'ints.delete']
                         ]
                     ]
                 ],
@@ -78,14 +85,42 @@ class InterestController extends Controller implements DataTablesInterface
             ['title' => 'id', 'width' => '40px'],
             ['title' => 'nome'],
             ['title' => 'cor'],
-            ['title' => 'ações', 'width' => '80px'],
+            ['title' => 'ações', 'width' => '120px'],
         ];
+    }
+
+    public function action(Request $request){
+
+        if (!isset($request->action)) {
+            throw new \Error('Falta action');
+        }
+
+        if ($request->action == 'create') {
+            Interest::create($request->all());
+        }
+        else if ($request->action == 'delete') {
+            $interest = Interest::find($request->id);
+            $interest->delete();
+        }
+        else if ($request->action == 'update') {
+            $interest = Interest::find($request->id);
+            $interest->name = $request->name;
+            $interest->color = $request->color;
+            $interest->save();
+        }
+
+        return redirect('/painel/interesses');
+    }
+
+    public function store(Request $request){
+
+        //Interest::create($request->all());
+        //return redirect('/painel/interesses');
     }
 
     public function display()
     {
         $this->dataTablesInit();
-//        $this->vars['data'] = $this->all;
         return view('Painel.interests.interests', $this->vars);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Library;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 //use Intervention\Image\Image;
 
@@ -29,6 +30,47 @@ trait Jobs {
         return $i->uploadImage($image, $path, $paramns);
     }
 
+    public function createNullReg(){
+        $this->reg = new \stdClass();
+        $columns = DB::getSchemaBuilder()->getColumnListing($this->model->getTable());
+
+        foreach ($columns as $col){
+            $this->reg->$col = null;
+        }
+    }
+
+    public function hasAction($request)
+    {
+        if ($request instanceof Request)
+        {
+            if ( !empty($request->all()) )
+            {
+                return $this->postAction($request);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * @see searchtags_form.blade.php
+     * Função executada no action. Isso porque várias telas possuem Tags.
+     * */
+    private function updateOrCreateTags($request)
+    {
+        $this->reg->search_tags    = $request->system;
+        $this->reg->seo_tags       = $request->seo;
+        $this->reg->save();
+
+        return json_encode(['status' => true]);
+    }
+
     public function postAction(Request $request)
     {
         if (!$request->action) {
@@ -52,7 +94,8 @@ trait Jobs {
         return $this->postAction($request);
     }
 
-    /*
+    /**
+     * @deprecated
      * Converter string para URL Amigável
      * */
     function toAscii($str, $replace=array(), $delimiter='-') {
@@ -64,6 +107,10 @@ trait Jobs {
     }
 
     public static function _toAscii($str, $replace=array(), $delimiter='-') {
+        $what = array( 'ä','ã','à','á','â','ê','ë','è','é','ï','ì','í','ö','õ','ò','ó','ô','ü','ù','ú','û','À','Á','É','Í','Ó','Ú','ñ','Ñ','ç','Ç',' ','-','(',')',',',';',':','|','!','"','#','$','%','&','/','=','?','~','^','>','<','ª','º' );
+        $by   = array( 'a','a','a','a','a','e','e','e','e','i','i','i','o','o','o','o','o','u','u','u','u','A','A','E','I','O','U','n','n','c','C','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_' );
+        $str = str_replace($what, $by, $str);
+
         $str = preg_replace('/[`^~,\'"]/', null, iconv('UTF-8', 'ASCII//TRANSLIT', $str));
         $str = preg_replace('/ /', '_', $str);
         $str = strtr($str, array('(' => '', ')' => ''));

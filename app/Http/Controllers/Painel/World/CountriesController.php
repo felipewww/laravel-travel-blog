@@ -40,7 +40,7 @@ class CountriesController extends Controller implements DataTablesInterface {
 
         foreach ($this->countries as $country)
         {
-            $friendlyName = $ascii = $this->toAscii($country->name);
+            $friendlyName = $ascii = $this->_toAscii($country->name);
             $cInfo = [
                 $i,
                 $country->id,

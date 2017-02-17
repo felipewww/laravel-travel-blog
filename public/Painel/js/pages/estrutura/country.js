@@ -64,20 +64,22 @@ country = {
     },
 
     createCountryPost: function () {
-        swal({
-            title: '',
-            text: 'Criação de Posts do pais indisponível.',
-            type: 'warning'
-        });
+        // swal({
+        //     title: '',
+        //     text: 'Criação de Posts do pais indisponível.',
+        //     type: 'warning'
+        // });
+        Script.unable('Criação de Posts do pais indisponível.');
     },
 
     createCountryPage: function ()
     {
-        swal({
-            title: '',
-            text: 'Criação de páginas do pais indisponível.',
-            type: 'warning'
-        });
+        Script.unable('Criação de páginas do pais indisponível.');
+        // swal({
+        //     title: '',
+        //     text: 'Criação de páginas do pais indisponível.',
+        //     type: 'warning'
+        // });
     },
 
     createCityPage: function (e, paramns)

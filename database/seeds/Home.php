@@ -15,7 +15,8 @@ class Home extends Seeder
         (
             array(
                 [
-                    'description' => 'Homepage 0'
+                    'description' => 'Homepage 0',
+                    'status' => '1'
                 ],
             )
         );

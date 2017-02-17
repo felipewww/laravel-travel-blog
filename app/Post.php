@@ -7,20 +7,39 @@ use Faker;
 
 class Post extends Model
 {
-    protected $fillable = ['content_regions', 'status', 'post_type_id', 'author_id'];
+    protected $fillable = ['content_regions', 'status', 'post_type_id', 'author_id', 'polymorphic_from'];
 
     /*
      * criar headline do post
      * */
-    public function Headline()
-    {
-        return $this->morphMany(Headline::class, 'headline_morph');
+//    public function Headline()
+//    {
+//        return $this->morphMany(Headline::class, 'headline_morph');
+//    }
+
+    /*
+     * Acima temos o polyumorphic do laravel, que não atende a necessidade.
+     * Criar função para ler registros a partir do polimorfismo
+     * o mesmo de HEADLINE e EVENT
+     * */
+    public function polymorphic_from(){
+        //todo
     }
 
-    public function polimorph_from()
+    public function City()
     {
-        return $this->morphTo();
+        return $this->belongsToMany(City::class, 'cities_has_posts', 'post_id', 'city_id');
     }
+
+    public function Headlines()
+    {
+        return $this->belongsToMany(Headline::class, 'posts_has_headlines', 'post_id', 'headline_id');
+    }
+
+//    public function polimorph_from()
+//    {
+//        return $this->morphTo();
+//    }
 
     public function author() { return $this->belongsTo('App\Authors'); }
     public function post_type() { return $this->belongsTo('App\PostType'); }

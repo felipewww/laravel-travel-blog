@@ -146,6 +146,42 @@ DataTablesExtensions = {
         $(e).html(imgTag);
     },
 
+    __objcfg_bgColor: function (tr, obj, idx, dataTable, rowRegId, allRowData)
+    {
+        console.log(allRowData);
+        cfg = obj.bgColor;
+
+        var rgbString = allRowData[idx].bgColor;
+
+        var e = $(tr).find('td')[idx];
+        $(e).html('');
+
+        var divColor = Script.createElement('div', '', {}, {
+            width: '50px',
+            height: '10px',
+            backgroundColor: rgbString,
+            display: 'inline-block',
+            marginRight: '25px',
+            opacity: 0.5,
+            float: 'left'
+        });
+
+        var divText = Script.createElement('div', rgbString,
+            {
+                class: 'colorText',
+            },
+            {
+                float: 'left'
+            }
+        );
+
+        $(e).append(divColor);
+        $(e).append(divText);
+
+        // $(e).css("backgroundColor", rgbString);
+        // $(e).css("opacity", 0.5);
+    },
+
     /*
     * função de exemplo para explicar formas de callBack setados no PHP
     * */

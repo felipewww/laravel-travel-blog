@@ -14,8 +14,6 @@ class CreateHomefixedsTable extends Migration
     public function up()
     {
         Schema::create('homefixeds', function (Blueprint $table) {
-//            $table->increments('id');
-//            $table->integer('region');
             $table->integer('position');
 
             $table->integer('home_id')->unsigned();

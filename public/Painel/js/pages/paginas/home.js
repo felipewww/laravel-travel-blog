@@ -102,12 +102,23 @@ admin = {
             success: function (data) {
                 console.log(data.status);
                 if (data.status) {
-                    // console.log('success!');
-                    // console.log(data);
                     admin.showHeadlines(data.hls, from);
+                }else{
+                    swal({
+                        title: 'Ops.',
+                        text: data.message,
+                        type: 'info',
+                        closeOnConfirm: true
+                    });
                 }
             },
             error:function (e) {
+                swal({
+                    title: 'Ops.',
+                    text: 'Erro inesperado. Tente novamente, se o erro persistir, entre em contato com o administrador.',
+                    type: 'error',
+                    closeOnConfirm: true
+                });
                 console.log(e);
             }
         });

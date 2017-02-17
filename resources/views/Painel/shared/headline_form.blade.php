@@ -13,7 +13,7 @@
         </div>
         <div class="actions">
             <a onclick="Script._dynclick(this, 'submit_headlines')" class="button light-blue font-black waves-effect">salvar</a>
-            <a href="javascript:headlines.addHeadLine();" class="button light-blue font-black waves-effect">novo</a>
+            <a href="javascript:headlines.addHeadLine();" class="button green font-black waves-effect">criar headline</a>
         </div>
         <div class="cleaner"></div>
     </header>
@@ -49,10 +49,10 @@
                 </div>
             @endforeach
 
-            <input type="hidden" name="reg_id" value="{{ $reg['id'] }}">
+            <input type="hidden" name="reg_id" value="{{ $reg->id }}">
             <input type="hidden" name="from" value="{{ $from }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input id="submit_headlines" type="submit" value="enviar">
+            <input class="hidden" id="submit_headlines" type="submit" value="enviar">
         </form>
         <div class="cleaner"></div>
     </section>

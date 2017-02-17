@@ -12,9 +12,10 @@ class Country extends Model
     public $fillable = ['name', 'sigla_2', 'sigla_3'];
     public $sigla_2 = null;
 
-    public function Headline()
+    public function Headlines()
     {
-        return $this->morphMany(Headline::class, 'headline_morph');
+        //Polymorphic_from
+        return $this->belongsToMany(Headline::class, 'cities_has_headlines', 'city_id', 'headline_id');
     }
 
     public function Post()

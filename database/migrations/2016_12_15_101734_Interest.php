@@ -19,7 +19,7 @@ class Interest extends Migration
             $table->string('color');
         });
 
-        Schema::create('city_has_interests', function (Blueprint $table){
+        Schema::create('cities_has_interests', function (Blueprint $table){
             $table->integer('city_id')->unsigned();
             $table->integer('interest_id')->unsigned();
 
@@ -29,7 +29,7 @@ class Interest extends Migration
             $table->foreign('interest_id')->references('id')->on('interests')->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create('place_has_interests', function (Blueprint $table) {
+        Schema::create('places_has_interests', function (Blueprint $table) {
             $table->integer('place_id')->unsigned();
             $table->integer('interest_id')->unsigned();
 
@@ -49,8 +49,8 @@ class Interest extends Migration
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('interests');
-        Schema::dropIfExists('city_has_interests');
-        Schema::dropIfExists('place_has_interests');
+        Schema::dropIfExists('cities_has_interests');
+        Schema::dropIfExists('places_has_interests');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

@@ -37,14 +37,24 @@
                 <span>Informações da Cidade: {{ $reg['name'] }}</span>
             </div>
             <div class="actions">
-                <a href="#" class="button light-blue font-black waves-effect submitter">post</a>
-                <a href="#" class="button light-red waves-effect submitter">inativar post</a>
+                <a href="/painel/mundo/pais/{{$reg->estate->country->id}}" class="button purple waves-effect">voltar para {{ $reg->estate->country->name }}</a>
+                @if($reg->status)
+                    <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button light-red waves-effect">inativar</a>
+                @else
+                    <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button font-black light-blue waves-effect">ativar</a>
+                @endif
+                <form id="activeOrDeactive" class="hidden" method="get">
+                    <input type="hidden" name="action" value="<?= ($reg->status) ? 'deactive' : 'active' ; ?>">
+                    <input type="hidden" name="id" value="{{$reg->id}}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                </form>
             </div>
             <div class="cleaner"></div>
         </header>
 
         <section class="content">
-            @foreach ($reg as $key => $value)
+            @foreach ($reg->getAttributes() as $key => $value)
+{{--                {{ dd($reg->estate->country->name)  }}--}}
                 <div>key: {{ $key  }} => {{ $value }} </div>
                 {{--<div>{{ $key  }} </div>--}}
             @endforeach
@@ -57,6 +67,7 @@
                 <span>Posts</span>
             </div>
             <div class="actions">
+                <a href="/painel/blog/novo-post/cidade/{{$reg->id}}" target="_blank" class="button green font-black waves-effect">criar post</a>
                 {{--<a href="javascript:city.painel.tags();" class="button light-blue font-black waves-effect">salvar</a>--}}
             </div>
             <div class="cleaner"></div>
@@ -97,39 +108,7 @@
         </section>
     </section>
 
-    <section class="block" data-closed="true" id="cidades">
-        <header>
-            <div class="title">
-                <span>Tags de Pesquisa</span>
-            </div>
-            <div class="actions">
-                <a href="javascript:city.painel.tags();" class="button light-blue font-black waves-effect">salvar</a>
-            </div>
-            <div class="cleaner"></div>
-        </header>
-
-        <section class="content">
-            <form name="tags" method="post" action="/painel/api/mundo/cidade/{{$reg['id']}}">
-                <div class="w-50">
-                    <label>
-                        <span>Site</span>
-                        <input maxlength="255" type="text" name="system" placeholder="Tags para pesquisa no site" value="{{ $reg['search_tags']  }}">
-                    </label>
-                </div>
-
-                <div class="w-50">
-                    <label>
-                        <span>SEO</span>
-                        <input maxlength="255" type="text" name="seo" placeholder="Tags para SEO" value="{{ $reg['seo_tags']  }}">
-                    </label>
-                </div>
-                <div class="cleaner"></div>
-
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-            </form>
-        </section>
-    </section>
+    @include('Painel.shared.searchtags_form')
 
     <section class="block" id="cidades">
         <header>
@@ -153,6 +132,32 @@
                 @endforeach
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </form>
+            <div class="cleaner"></div>
+        </section>
+    </section>
+
+    <section class="block" id="places">
+        <header>
+            <div class="title">
+                <span>Lugares/Explore</span>
+            </div>
+            <div class="actions">
+                <a target="_blank" href="/painel/servicos/servico/cidade/{{$reg->id}}" class="button green font-black waves-effect">criar lugar</a>
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+                @foreach($places as $place)
+                    <div class="w-33">
+                        <a target="_blank" href="/painel/servicos/servico/{{$place->id}}">Editar</a>
+                        <img src="/{{$place->main_photo}}">
+                        <div>
+                            <span>Título</span>
+                            <span>{{$place->title}}</span>
+                        </div>
+                    </div>
+                @endforeach
             <div class="cleaner"></div>
         </section>
     </section>

@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Interest extends Model
 {
+    public $fillable = ['name','color'];
+    public $timestamps = false;
     //
 }

@@ -70,7 +70,6 @@ a { text-decoration: none; color: #fff; font-weight: normal; transition: all 0.3
 *:hover { transition: all 0.3s; }
 
 .cleaner { clear: both !important;  float: none !important; width: 0 !important; height: 0 !important; }
-
 /*FORM*/
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
@@ -616,3 +615,5 @@ span.statusflagtable_0 { background-color: #ff54c4; }
 
 .scrollbar-inner > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { left: -12px; }
 .scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -12px; }
+
+.hidden { display: none; }

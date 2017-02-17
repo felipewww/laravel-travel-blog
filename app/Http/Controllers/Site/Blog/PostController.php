@@ -60,7 +60,7 @@ class PostController extends Controller {
         $this->vars['isNew'] = false;
         BlogJobs::manage($post);
         $this->vars['post'] = $post;
-        $this->getEstructureBreadcrumb('city', $post->polimorph_from_id);
+        $this->getEstructureBreadcrumb('city', $post->City->first()->id);
 
 //        $this->vars['isAdmin'] = false;
         if ( $post->status != 'ativo' )

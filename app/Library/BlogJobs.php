@@ -2,6 +2,8 @@
 
 namespace App\Library;
 
+use App\City;
+use App\Country;
 use App\Post;
 
 trait BlogJobs {
@@ -26,7 +28,7 @@ trait BlogJobs {
             $posts = [$posts];
             $isInstance = true;
         }
-//        dd($posts);
+
         /*
          * Manter callbacks default e adicionar os definidos do programador...
          * */
@@ -47,6 +49,7 @@ trait BlogJobs {
                 $postRegions[$name] = $content;
             }
 
+            $post['managed_regions'] = $postRegions;
             /*
              * funções para tratar os dados a serem exibidos
              * */
@@ -64,7 +67,6 @@ trait BlogJobs {
                 }
             }
 
-            $post['managed_regions'] = $postRegions;
         }
 
         if ($isInstance) {
@@ -107,11 +109,59 @@ trait BlogJobs {
      * função que pode ser chamada com callback = [title => true]
      * */
     public static function title($post){
-//        dd($post->content_regions);
         $regions = json_decode($post->content_regions);
-//        $post->content_regions->article_title;
-//        dd($post->content_regions);
-//        dd();
         $post->title = $regions->article_title->content;
+    }
+
+    public static function getPolimorphInfo($post)
+    {
+        $data = [];
+        $post->polyinfo = new \stdClass();
+
+        $titleAscii = Jobs::_toAscii($post->managed_regions['article_title']['content']);
+
+//        if ($post->polimorph_from_type == City::class)
+//        {
+//            $city       = $post->polimorph_from;
+//            $country    = $city->estate->country;
+//            $data['city'] = $city->name;
+//            $data['country'] = $country->name;
+//
+//            $post->urlGoback = '/painel/mundo/cidade/'.$city->id;
+//            $post->nameGoback = $city->name;
+//            $post->siteUrl = '/blog/c/'.$titleAscii.'/'.$post->id;
+//        }
+//        else if($post->polimorph_from_type == Country::class)
+//        {
+//            $country       = $post->polimorph_from;
+//            $data['country'] = $country->name;
+//            $post->urlGoback = '/painel/mundo/pais/'.$country->id;
+//            $post->nameGoback = $country->name;
+//            $post->siteUrl = '/blog/p/'.$titleAscii.'/'.$post->id;
+//        }
+
+        if ($post->polymorphic_from == City::class)
+        {
+//            dd($post->City->first());
+//            $city       = $post->polymorph_from;
+            $city       = $post->City->first();
+            $country    = $city->estate->country;
+            $data['city'] = $city->name;
+            $data['country'] = $country->name;
+
+            $post->urlGoback = '/painel/mundo/cidade/'.$city->id;
+            $post->nameGoback = $city->name;
+            $post->siteUrl = '/blog/c/'.$titleAscii.'/'.$post->id;
+        }
+        else if($post->polymorphic_from == Country::class)
+        {
+            $country       = $post->polimorph_from;
+            $data['country'] = $country->name;
+            $post->urlGoback = '/painel/mundo/pais/'.$country->id;
+            $post->nameGoback = $country->name;
+            $post->siteUrl = '/blog/p/'.$titleAscii.'/'.$post->id;
+        }
+
+        $post->polyinfo->breadcrumb = $data;
     }
 }

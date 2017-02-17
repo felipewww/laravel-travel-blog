@@ -42,10 +42,13 @@ class CountryController extends Controller implements DataTablesInterface{
         $this->geonames = new Geonames();
     }
 
-    public function display($id)
+    /*
+     * todo - aqui não precisa passar Id como parametro, sem passar antes pelo constructor para pegar o país.
+     * */
+    public function display()
     {
-        $this->Headlines(Country::class, $id);
-//        $this->reg = $this->model->find($id)->getAttributes();
+        $this->hasAction(Request::capture());
+        $this->Headlines(Country::class);
 
         $this->vars['modulo'] = 'País';
         $this->vars['pageDesc'] = 'Configurações do País: '.$this->reg['name'];
@@ -58,7 +61,7 @@ class CountryController extends Controller implements DataTablesInterface{
          * o datatable
          * */
         $estatesModel = new Estate();
-        $this->estates_db = $estatesModel->where('countries_id', $id)->get();
+        $this->estates_db = $estatesModel->where('countries_id', $this->reg->id)->get();
         foreach ($this->estates_db as $estate)
         {
             array_push($this->ids_db, $estate->id);
@@ -74,6 +77,16 @@ class CountryController extends Controller implements DataTablesInterface{
         return view('Painel.world.country', $this->vars);
     }
 
+    public function deactive(){
+        $this->reg->status = false;
+        $this->reg->save();
+    }
+
+    public function active(){
+        $this->reg->status = true;
+        $this->reg->save();
+    }
+
     function dataTablesConfig()
     {
         $data = [];
@@ -82,7 +95,7 @@ class CountryController extends Controller implements DataTablesInterface{
         foreach ($this->estates as $estate)
         {
             $regId = $estate['geonameId'];
-            $friendlyName = $this->toAscii($estate['name']);
+            $friendlyName = $this->_toAscii($estate['name']);
 
             $s = array_search($regId, $this->ids_db);
             if ($s !== false){
@@ -181,7 +194,7 @@ class CountryController extends Controller implements DataTablesInterface{
             $regId = $city['geonameId'];
 
             $s = array_search($regId, $cities_ids_db);
-            $friendlyName = $this->toAscii($city['name']);
+            $friendlyName = $this->_toAscii($city['name']);
 
             if ( $s !== false ) {
                 $pagePostButton = [

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Painel\World;
 
-use App\Headline;
-use App\Home;
 use \App\Http\Controllers\Controller;
 use App\Http\Controllers\Painel\Blog\PostController;
 use App\Interest;
 use App\Library\BlogJobs;
 use App\Library\Headlines;
 use App\Library\Jobs;
+use App\Library\photoGallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\City;
@@ -18,8 +17,13 @@ use App\Estate;
 class CityController extends Controller {
 
     use Jobs;
+
     use Headlines{
         Headlines::__construct as Headlines;
+    }
+
+    use photoGallery {
+        photoGallery::__construct as photoGallery;
     }
 
 //    public $model;
@@ -31,6 +35,7 @@ class CityController extends Controller {
 
     public function __construct($cityId)
     {
+
         $this->json_meta(['city_id' => $cityId]);
 
         $arr = [
@@ -51,8 +56,6 @@ class CityController extends Controller {
         $this->model    = new City();
         $this->cityId   = $cityId;
         $this->reg = $this->model->select($arr)->where('id', $cityId)->first();
-//        $this->city     = $this->model->select($arr)->where('id', $cityId)->first();
-//        $this->cityModel = $this->model->find($cityId);
     }
 
     /*
@@ -67,18 +70,30 @@ class CityController extends Controller {
         //Aqui podem vir outros tratamentos além do default...
     }
 
-    public function display()
+    public function deactive(){
+        $this->reg->status = false;
+        $this->reg->save();
+    }
+
+    public function active(){
+        $this->reg->status = true;
+        $this->reg->save();
+    }
+
+    public function display($request = '')
     {
+        $this->hasAction($request);
+
         $this->Headlines(City::class);
         if ( empty($this->reg) ) {
             trigger_error('Cidade não encontrada no Banco de dados. Favor gerar via Painel Administrativo um "Blog/Post" ou criar a "Página da Cidade" para depois editar suas configurações', E_USER_ERROR);
         }
 
-//        $this->vars['headlines'] = $this->reg->Headline;
+        $this->vars['places'] = $this->reg->Places;
 
         $this->vars['posts'] =
             PostController::manage(
-                $this->reg->Post,
+                $this->reg->Posts,
                 [
                     'author_id' => function($post, $author_id){
                         $this->nullAuthor($post, $author_id);
@@ -92,8 +107,13 @@ class CityController extends Controller {
          * */
         $this->json_meta(['isPainel' => true]);
 
-        $this->interests();
-        $this->vars['reg'] = $this->reg->getAttributes();
+//        dd($this->reg->interests);
+//        $this->interests();
+        $this->vars['interests'] = $this->interests;
+        $this->vars['allInterests'] = Interest::all();
+
+        $this->vars['reg'] = $this->reg;
+//        $this->vars['reg'] = $this->reg->getAttributes();
         $this->vars['modulo'] = 'Cidade';
         $this->vars['pageDesc'] = 'Configurações da cidade: '.$this->reg->name;
 
@@ -188,78 +208,17 @@ class CityController extends Controller {
         return $this->model->save();
     }
 
-//    public function createOrUpdateHeadline(Request $request){
-//        $text = false;
-//        if ( isset($request->hl_new) ) {
-//            foreach ($request->hl_new as $hl){
-//                $img = $this->uploadHeadlineImage($hl['img']);
-//
-//                echo $img->fullpath.'<br>';
-//                $data = [
-//                    'title' => $hl['title'],
-//                    'content' => $hl['text'],
-//                    'src' => $img->fullpath
-//                ];
-//
-//                $this->reg->Headline()->create($data);
-//            }
-//            $text   = 'Headlines criados com sucesso.';
-//        }
-//
-//        if ( isset($request->hl) ) {
-//            foreach ($request->hl as $id => $hl){
-//                $hl_reg = Headline::where('id', $id)->first();
-//                $data = [];
-//
-//                if ( !empty($hl['title']) ) { $hl_reg->title = $hl['title']; }
-//                if ( !empty($hl['text']) ) { $hl_reg->content = $hl['text']; }
-//
-//                //Deletar imagem antiga
-//                if ( isset($hl['img']) ) {
-//                    $imgToUnlink = public_path($hl_reg->src);
-//                    unlink($imgToUnlink);
-//
-//                    $img = $this->uploadHeadlineImage($hl['img']);
-//                    $hl_reg->src = $img->fullpath;
-//                }
-//
-//                if ( !empty($data) ) {
-////                    dd('here');
-//                    $this->reg->Headline()->create($data);
-//                }
-//                    $hl_reg->save();
-//            }
-//
-//            $text = ( $text ) ? 'Headlines criados e alterados com sucesso.': 'Headlines alterados com sucesso.';
-//        }
-//
-//        $type = 'success';
-//        $title  = 'Feito!';
-////        elseif ( isset($request->hl) ){
-////            dd($request->hl);
-////        }
-////        else{
-////            $type   = 'info';
-////            $title  = 'Nenhuma alteração.';
-////            $text   = 'Nenhum erro, nem alteração!';
-////        }
-//
-//        $this->json_meta([
-//            'PostMessage' => ['type' => $type, 'title' => $title, 'text' => $text ]
-//        ]);
-//
-//        return $this->display();
+    /**
+     * Exemplo de sobreposição de método para cropar a imagem de form diferente da Default.
+     */
+//    protected function uploadHeadlineImage($img, $name = ''){
+//        return $img = Jobs::uploadImage($img, 'Site/media/images/cidades/headlines',
+//            [
+//                'shape' => 'square',
+//                'max-width' => 600,
+//            ]
+//        );
 //    }
-
-    protected function uploadHeadlineImage($img, $name = ''){
-        return $img = Jobs::uploadImage($img, 'Site/media/images/cidades/headlines',
-            [
-                'shape' => 'square',
-                'max-width' => 400,
-                //'filename' => $name
-            ]
-        );
-    }
 
     public function createAjaxAction($request)
     {
@@ -309,7 +268,7 @@ class CityController extends Controller {
 
         $res = [
             'status' => true,
-            'ascii_name' => $this->toAscii($city->name)
+            'ascii_name' => $this->_toAscii($city->name)
         ];
 
         return json_encode($res);
@@ -341,15 +300,5 @@ class CityController extends Controller {
         $this->reg->save();
 
         return json_encode(['status' => true]);
-    }
-
-    public function updateHeadlineAjaxAction($request){
-        dd($request->files());
-        dd($request->hasFile('hl_img'));
-        return json_encode([0=>'here']);
-    }
-
-    public function deleteHeadlineApi($request){
-        dd($request->id);
     }
 }

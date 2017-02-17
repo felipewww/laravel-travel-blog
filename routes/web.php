@@ -95,8 +95,8 @@ Route::group(['middleware' => 'auth'], function (){
 
             Route::post('/api/blog/post/cidade', function (\Illuminate\Http\Request $request){
 //                $id = $request->screen_json['post_id'] ?? $request->screen_json['request']['city']['geonameId'];
+//dd($request->screen_json);
                 $id = $request->screen_json['post_id'] ?? 0;
-
                 $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
                 return $c->apiAction($request);
             });
@@ -109,6 +109,24 @@ Route::group(['middleware' => 'auth'], function (){
             Route::post('/api/usuarios', function (\Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Painel\Blog\AuthorController();
                 return $c->apiAction($request);
+            });
+        });
+
+        Route::group(['prefix' => 'servicos'], function (){
+            Route::any('', function ($id){
+//                $c = new App\Http\Controllers\Site\Blog\PostController();
+//                return $c->city($id);
+            });
+
+            Route::any('servico/{id?}', function ($id = null){
+                $c = new \App\Http\Controllers\Painel\Places\PlaceController($id);
+                return $c->view(\Illuminate\Http\Request::capture());
+            });
+
+            Route::any('servico/cidade/{id}', function ($id = null){
+                $c = new \App\Http\Controllers\Painel\Places\PlaceController(0);
+//                return $c->view(\Illuminate\Http\Request::capture());
+                return $c->newFromCity($id);
             });
         });
 
@@ -130,9 +148,9 @@ Route::group(['middleware' => 'auth'], function (){
             });
 
             Route::get('posts', ['uses' => 'Painel\Blog\PostsController@view']);
-            Route::get('post/{id}', function ($id){
+            Route::any('post/{id}', function ($id, \Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
-                return $c->view();
+                return $c->view($request);
             });
 
             Route::get('autores', ['uses' => 'Painel\Blog\AuthorController@view']);
@@ -144,30 +162,22 @@ Route::group(['middleware' => 'auth'], function (){
             Route::get('paises', 'Painel\World\CountriesController@display');
 
             Route::group(['prefix' => 'pais'], function(){
-                Route::get('{id}', ['uses' => 'Painel\World\CountryController@display']);
+                Route::any('{id}', function ($id){
+                    $c = new \App\Http\Controllers\Painel\World\CountryController($id);
+                    return $c->display($id);
+                });
             });
 
             Route::group(['prefix' => 'cidade'], function(){
                 Route::post('single', 'Site\World\CityController@forCreate');
-//                Route::get('single/{id}', ['uses' => 'Site\World\CityController@fromDB']);
                 Route::get('single/{id}', function ($id, \Illuminate\Http\Request $request){
                     $c = new \App\Http\Controllers\Site\World\CityController();
                     return $c->fromDB($id, $request);
                 });
 
-                Route::get('{id}', function ($id, \Illuminate\Http\Request $request){
-//                    dd($request->all());
+                Route::any('{id}', function ($id, \Illuminate\Http\Request $request){
                     $c = new \App\Http\Controllers\Painel\World\CityController($id);
-                    return $c->display();
-                });
-
-                Route::post('{id}', function ($id, \Illuminate\Http\Request $request){
-//                    $c = new \App\Http\Controllers\Painel\World\CityController($id);
-//
-//                    if ( isset($request->createHeadlines) ) {
-//                        //return $c->createHeadline($request);
-//                        return $c->createOrUpdateHeadline($request);
-//                    }
+                    return $c->display($request);
                 });
             });
 
@@ -175,6 +185,10 @@ Route::group(['middleware' => 'auth'], function (){
 
         Route::group(['prefix' => 'interesses'], function (){
             Route::get('', 'Painel\Interests\InterestController@display');
+            Route::post('', function (\Illuminate\Http\Request $request){
+                $c = new \App\Http\Controllers\Painel\Interests\InterestController();
+                return $c->action($request);
+            });
         });
 
         Route::group(['prefix' => 'paginas'], function (){

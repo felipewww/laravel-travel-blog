@@ -13,13 +13,23 @@
                 <span>Informações do País: {{ $country->name }}</span>
             </div>
             <div class="actions">
+                @if($reg->status)
+                    <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button light-red waves-effect">inativar</a>
+                @else
+                    <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button font-black light-blue waves-effect">ativar</a>
+                @endif
+                <form id="activeOrDeactive" class="hidden" method="post">
+                    <input type="hidden" name="action" value="<?= ($reg->status) ? 'deactive' : 'active' ; ?>">
+                    <input type="hidden" name="id" value="{{$reg->id}}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                </form>
             </div>
             <div class="cleaner"></div>
         </header>
 
         <section class="content">
-            @foreach ($country as $key => $value)
-                <div>key: {{ $key }} =>  </div>
+            @foreach ($country->getAttributes() as $key => $value)
+                <div>key: {{ $key }} => {{ $value }}  </div>
             @endforeach
         </section>
     </section>

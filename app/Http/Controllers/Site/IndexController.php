@@ -49,7 +49,6 @@ class IndexController extends Controller {
 
         $this->json_meta(['home_id' => $home->id]);
         $this->json_meta(['home_layout' => $home->layout]);
-
         $headlines = $home->headline; //ok tbm
         $fixeds = HomeFixeds::where('home_id', $home->id)
             ->with('headline')
@@ -69,17 +68,18 @@ class IndexController extends Controller {
 //        $post = Post::find(2);
 //        dd(Post::has('Headline')->get());
 
-        $this->vars['cities'] = City::where('status',1)->has('Headline')->get();
-        $this->vars['countries'] = Country::where('status',1)->has('Headline')->get();
+        $this->vars['cities'] = City::where('status',1)->has('Headlines')->get();
+        $this->vars['countries'] = Country::where('status',1)->has('Headlines')->get();
+//        dd('here');
 
-        $t = Post::where('status',1)->has('Headline')->get();
+        $t = Post::where('status',1)->has('Headlines')->get();
+//        dd($t);
         $this->vars['posts']    = BlogJobs::manage($t, [
             'title' => true
         ]);
 
         $this->vars['isAdmin'] = Auth::check();
         $this->makeRegions($fixeds, $this->currLayout['regions']);
-
         return view($this->currLayout['view'], $this->vars);
     }
 
@@ -249,22 +249,39 @@ class IndexController extends Controller {
 
         if ($request->from == 'cities') {
             $city = City::find($request->id);
-            $hls = $city->Headline;
-            $res['status'] = true;
+            if ( isset($city->Headlines) ) {
+                $hls = $city->Headlines;
+                $res['status'] = true;
+            }else{
+                $res['status'] = false;
+                $res['message'] = 'Nenhum headline cadastrado para CIDADES';
+            }
 
         }
         else if($request->from == 'countries')
         {
             //$res['message'] = 'Pesquisa de headlines de países não está configurada';
             $country = Country::find($request->id);
-            $hls = $country->Headline;
-            $res['status'] = true;
+            if ( isset($country->Headlines) ) {
+                $hls = $country->Headlines;
+                $res['status'] = true;
+            }else{
+                $res['status'] = false;
+                $res['message'] = 'Nenhum headline cadastrado para PAÍSES';
+            }
         }
         else if($request->from == 'posts')
         {
             $post = Post::find($request->id);
-            $hls = $post->Headline;
-            $res['status'] = true;
+            if ( isset($post->Headlines) ) {
+                $hls = $post->Headlines;
+                $res['status'] = true;
+            }else{
+                $res['status'] = false;
+                $res['message'] = 'Nenhum headline cadastrado para POSTS';
+            }
+//                $hls = $post->Headline;
+//                $res['status'] = true;
         }
         else
         {
@@ -272,22 +289,23 @@ class IndexController extends Controller {
             $res['message'] = 'Parametro $from inválido. Entre em contato com o administrador.';
         }
 
-        $hls_info = [];
+        if ( isset($hls) ) {
+            $hls_info = [];
+            foreach ($hls as $hl)
+            {
+                $info = [
+                    'id'        => $hl->id,
+                    'src'       => $hl->src,
+                    'title'     => $hl->title,
+                    'content'   => $hl->content,
+                ];
 
-        foreach ($hls as $hl)
-        {
-            $info = [
-                'id'        => $hl->id,
-                'src'       => $hl->src,
-                'title'     => $hl->title,
-                'content'   => $hl->content,
-            ];
+                array_push($hls_info, $info);
+            }
 
-            array_push($hls_info, $info);
+            $res['status'] = true;
+            $res['hls'] = $hls_info;
         }
-
-        $res['status'] = true;
-        $res['hls'] = $hls_info;
 
         return json_encode($res);
     }
