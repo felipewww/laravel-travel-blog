@@ -13,6 +13,8 @@ class Geonames {
 
     public function children($type, $placeName, $id, $paramns = [])
     {
+//        dd($paramns);
+        $isTest         = (isset($paramns['isTest'])) ? $paramns['isTest'] : true;
         $generateFile   = (isset($paramns['generateFile'])) ? (bool)$paramns['generateFile'] : true;
         $addComment     = (isset($paramns['addComment'])) ? $paramns['addComment'] : false;
         $updateFile     = (isset($paramns['updateFile'])) ? (bool)$paramns['updateFile'] : false;
@@ -38,7 +40,15 @@ class Geonames {
         /*Inserir mais registros no arquivo*/
         if( $updateFile )
         {
-            $json = $this->getChildren($paramns['getChildrenFromThisId']);
+            $json = $this->getChildren($paramns['getChildrenFromThisId'], $paramns);
+
+            //Obrigatorio enviar esse parametro para fazer a atualização de arquivo. Então, por padrão, qualquer consulta de
+            //de cidades a mais de uma localidade, sempre será apenas uma consulta pra ver se esta retornando certo.
+            if ($isTest != 'false') {
+                echo 'Para salvar o resultado no arquivo, altere countryInfo.isTest para FALSE e rode o script novamente.<br>';
+                echo 'Resultado encontrado: ';
+                dd( json_decode($json, true) );
+            }
 
             //Adicionar comentários [coluna comment no banco] caso esta cidade tenha sido gerada de forma indireta ou manual
             if( $addComment ){
@@ -81,19 +91,44 @@ class Geonames {
         return $json;
     }
 
-    protected function getChildren($id)
+    protected function getChildren($id, $paramns = [])
     {
+        $paramns['method'] = $paramns['method'] ?? 'children';
         //Geonames Children REST
-        $service_url = "http://api.geonames.org/childrenJSON?geonameId=$id&username=$this->username&style=full&lang=pt&maxRows=20000";
-        $curl = curl_init();
+        if ( $paramns['method'] == 'children' )
+        {
+            $service_url = "http://api.geonames.org/childrenJSON?geonameId=$id&username=$this->username&style=full&lang=pt&maxRows=20000";
+            $curl = curl_init();
 
-        curl_setopt($curl, CURLOPT_URL, $service_url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
-        $curl_response = curl_exec($curl);
-        curl_close($curl);
+            $curl_response = curl_exec($curl);
+            curl_close($curl);
 
-        return $curl_response;
+            return $curl_response;
+        }
+        else if( $paramns['method'] == 'search' )
+        {
+            $countyName     = $paramns['force']['countyName'];
+            $countryCode    = $paramns['force']['countryCode'];
+
+            $service_url = "http://api.geonames.org/searchJSON?q=$countyName&country=$countryCode&featureCode=PPL&maxRows=1000&style=long&lang=pt&orderBy=population&inclBbox=true&username=$this->username";
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+            $curl_response = curl_exec($curl);
+            curl_close($curl);
+
+            return $curl_response;
+        }
+        else
+        {
+            throw new \Error('Não existe "Method" [search || children]');
+//            return false;
+        }
     }
 
     protected function createFile($json_string, $path)

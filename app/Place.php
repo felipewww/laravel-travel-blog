@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Place extends Model
 {
-    public $fillable = ['title','content','cities_id','editorials_id','search_tags','seo_tags'];
+    public $fillable = ['title','content','cities_id','editorials_id','search_tags','seo_tags','main_photo'];
 
     public function Interests()
     {

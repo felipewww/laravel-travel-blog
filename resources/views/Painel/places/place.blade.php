@@ -34,14 +34,14 @@
 
         <section class="content">
             <form name="place" method="post" enctype="multipart/form-data">
-                <div class="w-33">
+                <div class="w-25">
                     <label>
                         <span>Nome do Serviço</span>
                         <input required="required" maxlength="255" type="text" name="title" placeholder="Titulo" value="{{$reg->title}}">
                     </label>
                 </div>
 
-                <div class="w-33">
+                <div class="w-25">
                     <label>
                         <span>Editoria/Explore</span>
                         <select required="required" name="editorials_id">
@@ -53,8 +53,8 @@
                         </select>
                     </label>
                 </div>
-{{--{{dd($reg)}}--}}
-                <div class="w-33">
+
+                <div class="w-25">
                     <label>
                         <span>Cidade</span>
                         <select <?php if( isset($disableSelectCity) ){ echo 'disabled="disabled"'; }; ?> required="required" name="cities_id">
@@ -63,6 +63,16 @@
                                 <?php $selected = ($reg->cities_id == $city->id) ? 'selected="selected"' : ''; ?>
                                 <option {{$selected}} value="{{$city->id}}">{{$city->name}}</option>
                             @endforeach
+                        </select>
+                    </label>
+                </div>
+
+                <div class="w-25">
+                    <label>
+                        <span>Status</span>
+                        <select <?php if( isset($disableSelectCity) ){ echo 'disabled="disabled"'; }; ?> required="required" name="status">
+                            <option value="1">Ativo</option>
+                            <option <?= (!$reg->status) ? 'selected="selected"': ''; ?> value="0">Inativo</option>
                         </select>
                     </label>
                 </div>

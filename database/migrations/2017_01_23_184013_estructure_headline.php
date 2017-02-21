@@ -70,6 +70,7 @@ class EstructureHeadline extends Migration
         Schema::dropIfExists('cities_has_headlines');
         Schema::dropIfExists('countries_has_headlines');
         Schema::dropIfExists('posts_has_headlines');
+        Schema::dropIfExists('places_has_headlines');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

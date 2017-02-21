@@ -22,11 +22,6 @@ Route::get('pais/{nome}/{id}', ['uses' => 'Site\World\CountryController@index'])
 Route::get('estado/{nome}/{id}', ['uses' => 'Site\World\EstateController@index']);
 Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@fromDB']);
 
-//Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
-//    $c = new App\Http\Controllers\Site\Blog\PostController();
-//    return $c->city($id);
-//});
-
 Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
     $c = new App\Http\Controllers\Site\Blog\PostController();
     return $c->readCityPost($id);
@@ -86,7 +81,18 @@ Route::group(['middleware' => 'auth'], function (){
                 return $c->updateHeadlinesApi($request);
             });
 
-            Route::get('/api/mundo/pais/{action}', ['uses' => 'Painel\World\CountryController@apiAction']);
+            //funções via Js AdminFuncs
+            Route::group(['prefix' => '/api/mundo/pais'], function (){
+                Route::get('readCities', function (\Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Painel\World\CountryController(0);
+                    return $c->readCitiesApi($request);
+                });
+
+                Route::get('readCountyCities', function (\Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Painel\World\CountryController(0);
+                    return $c->readCountyCitiesApi($request);
+                });
+            });
 
             Route::post('/api/blog/cidade/save/{id}', function (\Illuminate\Http\Request $request, $cityId){
                 $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
@@ -94,8 +100,6 @@ Route::group(['middleware' => 'auth'], function (){
             });
 
             Route::post('/api/blog/post/cidade', function (\Illuminate\Http\Request $request){
-//                $id = $request->screen_json['post_id'] ?? $request->screen_json['request']['city']['geonameId'];
-//dd($request->screen_json);
                 $id = $request->screen_json['post_id'] ?? 0;
                 $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
                 return $c->apiAction($request);
@@ -113,11 +117,6 @@ Route::group(['middleware' => 'auth'], function (){
         });
 
         Route::group(['prefix' => 'servicos'], function (){
-            Route::any('', function ($id){
-//                $c = new App\Http\Controllers\Site\Blog\PostController();
-//                return $c->city($id);
-            });
-
             Route::any('servico/{id?}', function ($id = null){
                 $c = new \App\Http\Controllers\Painel\Places\PlaceController($id);
                 return $c->view(\Illuminate\Http\Request::capture());
@@ -125,7 +124,6 @@ Route::group(['middleware' => 'auth'], function (){
 
             Route::any('servico/cidade/{id}', function ($id = null){
                 $c = new \App\Http\Controllers\Painel\Places\PlaceController(0);
-//                return $c->view(\Illuminate\Http\Request::capture());
                 return $c->newFromCity($id);
             });
         });

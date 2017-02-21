@@ -137,7 +137,7 @@ class CountryController extends Controller implements DataTablesInterface{
         ];
     }
 
-    protected function readCitiesAjaxAction($request)
+    public function readCitiesApi($request)
     {
         $cities = $this->geonames->children('cities', $request->name, $request->id)['geonames'];
         $json = json_encode($this->makeButtons($cities, $request->all()));
@@ -154,10 +154,9 @@ class CountryController extends Controller implements DataTablesInterface{
      * Como no mundo existem muitas cidades assim, esse trabalho deve ser feito conforme a necessidade
      * via JS "master.countryInfo.readCityFromCounty()"
      * */
-    protected function readCountyCitiesAjaxAction($request)
+    public function readCountyCitiesApi($request)
     {
-        //$paramns = $request->paramns;
-
+//        dd($request->all());
         $paramns = [];
 
         $paramns['generateFile'] = false;
@@ -169,9 +168,14 @@ class CountryController extends Controller implements DataTablesInterface{
             'message' => 'Está é uma cidade de um Condado criado manualmente por "master.countryInfo.readCityFromCounty()" .'
         ];
 
+        $paramns['force'] = $request->force;
+        $paramns['isTest'] = $request->isTest;
+
+        $paramns['method'] = ( $request->force == 'false' ) ? 'children' : 'search';
+
         $cities = $this->geonames->children('cities', $request->estate, $request->id, $paramns);
         $json = json_encode($this->makeButtons($cities['geonames'], $request->all()));
-
+//        dd($json);
         return ['dataSource' => $json, 'cols' => $this->cities_cols];
     }
 

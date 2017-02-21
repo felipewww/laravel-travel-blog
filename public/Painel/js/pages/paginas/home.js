@@ -6,25 +6,44 @@ admin = {
     buttons:{},
 
     init: function () {
+        this.form = $('form[name="getheadlines"]');
+        this.buttonsForSelect = $('#from_opts').find('> div');
+        console.log(this.buttonsForSelect);
+
+        this.setupSearchBoxes();
         this.editButton();
         this.saveButton();
         this.cfgBox();
+        this.dd();
+    },
 
-        this.form = $('form[name="getheadlines"]');
-
+    setupSearchBoxes: function () {
         var boxes = $(this.form).find('.searchBox');
-        $(boxes).each(function () {
+        $(boxes).each(function (i) {
+            var refButton = admin.buttonsForSelect[i];
+            cfgRefButton(boxes, admin.buttonsForSelect[i], $(this));
+
             var select  = $(this).find('select');
             $(select).chosen();
 
             var searchBtn = $(this).find('.searchBtn');
             $(searchBtn).on('click', function () {
                 admin.search($(select));
-            })
+            });
 
+            $(this).hide();
         });
 
-        this.dd();
+        function cfgRefButton(all, button, select) {
+            button.onclick = function () {
+                $(all).each(function () {
+                    $(this).hide();
+                });
+
+                $('#searchResults').html('');
+                $(select).show();
+            }
+        }
     },
 
     //setup drag and drop
@@ -126,7 +145,7 @@ admin = {
 
     showHeadlines: function (headlines, from) {
         // console.log(headlines);
-        var idx, hl, img, container, textContainer, title, content, mainDiv, status, currentStatus, draggable;
+        var idx, hl, img, container, textContainer, title, content, strip_content, mainDiv, status, currentStatus, draggable;
 
         mainDiv = document.getElementById('searchResults');
         mainDiv.innerHTML = '';
@@ -147,43 +166,54 @@ admin = {
 
             textContainer = Script.createElement('div', { class: 'fullContent' });
             title = Script.createElement('div', hl.title, { class: 'title' });
+
+            strip_content = Script.createElement('div', hl.content.substring(0,50)+'...', { class: 'strip_content' });
             content = Script.createElement('div', hl.content, { class: 'content' });
+
             status = Script.createElement('div', { class: 'status '+currentStatus });
 
             textContainer.appendChild(title);
             textContainer.appendChild(content);
+            textContainer.appendChild(strip_content);
             textContainer.appendChild(status);
 
             container.appendChild(img);
             container.appendChild(textContainer);
 
             mainDiv.appendChild(container);
-            mainDiv.appendChild(Script.createElement('div', { class: 'cleaner' }));
+            container.appendChild(Script.createElement('div', { class: 'cleaner' }));
         }
 
         this.dd();
     },
 
     cfgBox: function () {
+        admin.buttons.save.css('display','none');
+
         this.box = $('#cfgbox');
         this.arrowBox = $(this.box).find('.arrow');
 
         this.arrowBox.on('click', function () {
             if ($(this).hasClass('closed')) {
+                // admin.buttons.save.style.display="block";
+
                 $(admin.box).animate({right: 0});
                 $(this).removeClass('closed');
             }else{
+                // admin.buttons.save.style.display="none";
                 $(admin.box).animate({right: -300});
                 $(this).addClass('closed');
             }
         });
 
-        // $(this.box).hide();
+        $(this.box).hide();
     },
 
     editButton: function () {
         this.buttons.edit = $('#edit');
         $(this.buttons.edit).on('click', function () {
+            $(this).css('display','none');
+            admin.buttons.save.css('display','block');
             // alert('click');
             $(admin.box).show();
             $(admin.arrowBox).click();
@@ -213,9 +243,13 @@ admin = {
                 method: 'post',
                 success: function (data) {
                     admin.showMessage(data);
+                    admin.buttons.save.css('display','none');
+                    admin.buttons.edit.css('display','block');
+                    $(admin.arrowBox).click();
+                    $(admin.box).hide();
                 },
                 error: function (error) {
-                    return false;
+                    //return false;
                     swal({
                         title: 'Ops!',
                         text: 'Houve um erro. Tente novamente, se o erro persistir, entre em contato com o administrador.',

@@ -1,24 +1,13 @@
 $(document).ready(function () {
     headlines.init();
-    console.log(headlines);
-    // alert("here");
 });
 
 headlines = {
     addedCount: 0,
 
     init: function () {
-        console.log(Script.screenJson);
         this.cfg = Script.screenJson.headline_morph;
     },
-
-    // headlines: function () {
-    //     Script.AjaxForm('headlines', 'updateHeadline', function (status, data) {
-    //         console.log(data);
-    //         swal('','Headlines Atualizados!','success');
-    //     });
-    //     // Script.sendFormData('headlines');
-    // },
 
     addHeadLine: function () {
         var form    = document.forms.headlines_form;
@@ -75,8 +64,6 @@ headlines = {
 
     deleteHeadline: function (element, id) {
         $.ajax({
-            // url: '/painel/api/mundo/'+headlines.cfg.path+'/'+Script.screenJson.city_id,
-            // url: '/painel/api/headline/'+headlines.cfg.path+'/deleteHeadline',
             url: '/painel/api/headline/deleteHeadline',
             method: 'post',
             dataType: 'json',
@@ -91,6 +78,7 @@ headlines = {
                 }
             },
             error: function (error) {
+                console.log(error);
                 headlines.swal('bug');
             }
         });

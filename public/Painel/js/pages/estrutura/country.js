@@ -27,6 +27,7 @@ country = {
         $(blockCities).find('div.title span:first-child').html('CIDADES DE '+estateName);
 
         var info = JSON.parse(data.dataSource);
+        console.log(info);
         var table = document.createElement('table');
         var where = document.getElementById('dynamic_table');
         where.innerHTML = '';

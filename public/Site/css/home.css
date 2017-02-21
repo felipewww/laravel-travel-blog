@@ -23,16 +23,49 @@ form[name="getheadlines"] select{  width: 100%;  }
 .searchBtn {  display: inline-block;  padding: 5px 10px;  background: #6a9e15;  font-size: 12px;  font-family: 'montserrat', sans-serif;  color: #fff;  margin: 20px 0px 0px 20px;  border-radius: 5px;  }
 div.searchBox{  margin-top: 30px;  }
 
-div#searchResults{  margin-top: 30px;  height: 59%; overflow: auto;  }
-div#searchResults div.result{  padding: 10px;  }
-div#searchResults div.result .status{  padding: 10px; background: greenyellow; }
+div#searchResults{  margin-top: 30px;  height: 74%; overflow: auto;  }
+div#searchResults div.result{
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    transition: all 0.4s;
+}
+div#searchResults div.result:hover {
+    background-color: rgba(229, 255, 168, 0.14);
+}
+div#searchResults div.result.used:hover {
+    background-color: rgba(255, 168, 168, 0.14);
+}
+div#searchResults div.result .status{  padding: 0px; background: greenyellow; }
 div#searchResults div.result .status.used{  background: pink;  }
-div#searchResults div.result .img{  width: 75px;  height: 75px;  float: left;     background-size: 100%; }
+div#searchResults div.result .img{
+    width: 75px;
+    height: 75px;
+    background-size: 100%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border-radius: 100px;
+    border: 5px solid #fff;
+}
 div#searchResults div.result div.fullContent{  float: left;  }
 
-div#searchResults div.result.used {
-    opacity: 0.3;
+div#searchResults div.result div.fullContent .title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #83d5ff;
+}
+
+div#searchResults div.content {
+    display: none;
+}
+
+div#searchResults div.result.used{
     cursor: no-drop;
+}
+div#searchResults div.result.used div.img{
+    opacity: 0.3;
 }
 div#searchResults div.result.draggable {
     /*cursor: hand;*/

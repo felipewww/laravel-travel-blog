@@ -26,6 +26,7 @@ class PlaceController extends Controller {
     }
 
     public $action;
+    public $fromSpecificCity = false;
 
     public function __construct($id)
     {
@@ -46,10 +47,25 @@ class PlaceController extends Controller {
     }
 
     public function newFromCity($city_id){
+
+//        $itens = ;
+//        $itens['cities_id'] = $city_id;
+//        dd($itens);
+        $this->fromSpecificCity = $city_id;
+        $act = $this->hasAction(Request::capture());
+
         $this->vars['reg']->cities_id = $city_id;
         $this->vars['disableSelectCity'] = true;
 
-        return $this->display();
+        if ($act != false) {
+            $PostMessage =  [
+                'type' => 'success', 'title' => 'Feito!', 'text' => 'Item de Explore cadastrado com sucesso'
+            ];
+
+            return redirect('/painel/mundo/cidade/'.$city_id)->with('PostMessage',json_encode($PostMessage));
+        }else{
+            return $this->display();
+        }
     }
 
     public function view(Request $request)
@@ -72,9 +88,15 @@ class PlaceController extends Controller {
                 'max-width' => 400,
             ]
         );
-        $this->reg->main_photo = $photo->fullpath;
 
-        $new = $this->model->create($request->all());
+        $this->reg = $request->all();
+        $this->reg['main_photo'] = $photo->fullpath;
+
+        if ($this->fromSpecificCity) {
+            $this->reg['cities_id'] = $this->fromSpecificCity;
+        }
+
+        $new = $this->model->create($this->reg);
 
         $PostMessage =  [
             'type' => 'success', 'title' => 'Feito!', 'text' => $new->title.' cadastrado com sucesso!'

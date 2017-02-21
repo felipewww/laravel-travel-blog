@@ -6,10 +6,15 @@
 isso ficará tipo um polimorfismo. Afinal event pode se relacionar com PLACE ou CITY. então, ou cria EVENT para city... com o ID de city, ou para place, com o ID de place em outra tabela de many to many. Se isso der certo, criar tambem a tabela para city_has_event</span>
 - [x] <span style="color: green">Remover polimorfismo de HEADLINES e POSTS... o do laravel é ruim!</span>
 - [x] <span style="color: green">Criar CRUD de PLACES</span>
-- [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
+- [x] <span style="color: green">Criar status para Places.</span> 
 - [ ] Criar JS para galeria de fotos junto com contentTools (na view)
-- [ ] Finalizar HOME, drag and drop de tudo que possue headline. Verificar se esta buscando somente coisas ativas. Ex
+- [ ] Criar POSTS do tipo LIST para PAISES e CIDADES. Lista será post sim!
+- [x] <span style="color: green">Finalizar HOME, drag and drop de tudo que possue headline. Verificar se esta buscando somente coisas ativas. Ex</span>
 - [ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
+
+#### DEFINIR PRIORIDADE
+- [ ] Cadastro e agendamento de HOMES
+- [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
 
 Editado em 03/02 - Previsão - 13-02
 19/01
@@ -27,13 +32,10 @@ Editado em 03/02 - Previsão - 13-02
 - [x] <span style="color: green">Setar mapa conforme LATLONG</span>
 - [x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
 ainda não está no banco)</span>
-- [ ] Pensar nas listas. Lista não necessariaente é de cidade ou pais. mas tem que relacionar...
 - [x] <span style="color: green">resolver a questão de enviar o POST para a mesma página do registro, se apertar F5, insere de novo.
 DOCUMENTAÇÃO</span>
 - [ ] permitir ativar/inativar posts via PAGINA DA CIDADE nos botoes multaction
 - [x] <span style="color: green">2 formas de CRIAR uma cidade. via painel adm no botão "criar página" ou "criar post". No caso de criar post, se a cidade for inexsistente</span>
-- [ ] HOME - muitas coisas pensadas! Agendar exibição de determinada home, pode criar home com 
-diferentes layouts, para isso, é necessário sempre criar uma nova view. + observações na controller
 - [ ] Criar uma tela de cadastro de LAYOUT DE HOMEPAGE... isso deverá ficar no item DEVELOPEr do menu... só pode alterar um LAYOUT de uma home desde que a home ativa não esteja usando ele mesmo, dessa forma podemos adicioanr REGIONS a uma home ja existente, ao inves de criar nova.
 ###### Coisas para confirmar quando subir o sistema para produção
 
@@ -51,15 +53,15 @@ não tenhamos nenhum post sobre determinado local. Ou seja, podemos trazer fotos
 -[ ] Criar um seeder com nomes dos paises que deseja inserir... dessa forma, o sistema tentar ler todos os arquivos de estados e cidades daquele pais e ja registra no banco. Esse seeder pode inclusive ser outro arquivo TXT dos paises com posts ja criados em produção. penser nisso.
 -[x] <span style="color: green">Criar tags para pesquisa e SEO (ex: Nova 
 Iorque = new iorque, new york...)</span>
--[ ] Será necessário criar um submitAll() para enviar todos os forms de cada bloco da tela via AJAX. Atualmente cada botão submit pertence apenas a seu bloco
+-[ ] [CANCELADO] Será necessário criar um submitAll() para enviar todos os forms de cada bloco da tela via AJAX. Atualmente cada botão submit pertence apenas a seu bloco
 -[ ] Criar validação de forms no backend, inclusive para requisições ajax
 -[ ] [Criar estrutura multilanguage com app->locale](http://stackoverflow.com/questions/25082154/how-to-create-multilingual-translated-routes-in-laravel)
 - [ ] Criar uma tela de LOADING para ações via ajax. Principalmente GEONAMES que 
 pode demorar um pouco
 > [este artigo](http://stackoverflow.com/questions/19249159/best-practice-multi-language-website) é bem interessante sobre tradução, inclusive usando laravel. Na terceira resposta, alguem fala sobre Thomas Bley e criação de caches (arquivos PHP estáticos) para evitar consultas no banco e execução de funções a cada acesso
 ###### Frontend
--[ ] Criar coloração diferente para validação de checkboxes...apenas input e select configurados em _Forms.js
-- [ ] Cadastrar editorias no banco - Arte e cultura, comer e beber, estilo de vida, roteiro, pra voce^(info), [pra viajar indica LISTA], [VIDEOS]
+- [ ] Criar coloração diferente para validação de checkboxes...apenas input e select configurados em _Forms.js
+- [x] <span style="color: green">Cadastrar editorias no banco - Arte e cultura, comer e beber, estilo de vida, roteiro, pra voce^(info), [pra viajar indica LISTA], [VIDEOS]</span>
 #### WorldEstructure 
 
 - [x] <span style="color: green">Ao criar uma tabela listando ESTADOS ou CIDADES, é feita 

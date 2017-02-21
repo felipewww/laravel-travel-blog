@@ -17,6 +17,7 @@ use App\HomeFixeds;
 use App\Http\Controllers\Controller;
 use App\Library\BlogJobs;
 use App\Library\Jobs;
+use App\Place;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,7 +56,7 @@ class IndexController extends Controller {
             ->orderBy('position','ASC')
             ->get();
 
-        /*
+        /**
          * Este foreach funciona perfeitamente, mantido apenas para estuod de caso.
          * */
 //        foreach ($headlines as $hl){
@@ -65,15 +66,12 @@ class IndexController extends Controller {
 //            $hl->headline_morph;
 //        }
 
-//        $post = Post::find(2);
-//        dd(Post::has('Headline')->get());
-
         $this->vars['cities'] = City::where('status',1)->has('Headlines')->get();
         $this->vars['countries'] = Country::where('status',1)->has('Headlines')->get();
-//        dd('here');
+        $this->vars['places'] = Place::where('status',1)->has('Headlines')->get();
 
         $t = Post::where('status',1)->has('Headlines')->get();
-//        dd($t);
+
         $this->vars['posts']    = BlogJobs::manage($t, [
             'title' => true
         ]);
@@ -169,7 +167,8 @@ class IndexController extends Controller {
     {
 //        if ( isset($data->headline_morph_type) )
 //        {
-            switch ($data->headline_morph_type)
+//        dd($data);
+            switch ($data->polymorphic_from)
             {
                 case City::class:
                     $data->final_id = 'inside_hl_cities_'.$data->id;
@@ -183,6 +182,10 @@ class IndexController extends Controller {
                     $data->final_id = 'inside_hl_posts_'.$data->id;
                     break;
 
+                case Place::class:
+                    $data->final_id = 'inside_hl_place_'.$data->id;
+                    break;
+
                 /*TODO*/
                 case 'App\Lista':
                     $data->final_id = 'inside_hl_lists_'.$data->id;
@@ -191,6 +194,10 @@ class IndexController extends Controller {
                 /*TODO*/
                 case 'App\Videos':
                     $data->final_id = 'inside_hl_videos_'.$data->id;
+                    break;
+
+                default:
+                    $data->final_id = 'nothing';
                     break;
             }
 //        }
@@ -280,8 +287,22 @@ class IndexController extends Controller {
                 $res['status'] = false;
                 $res['message'] = 'Nenhum headline cadastrado para POSTS';
             }
-//                $hls = $post->Headline;
-//                $res['status'] = true;
+        }
+        else if($request->from == 'place')
+        {
+            $place = Place::find($request->id);
+//            dd($place);
+            if ( isset($place->Headlines) ) {
+                $hls = $place->Headlines;
+
+//                $t = $place->Headlines()->select('id','title','src','polymorphic_from',"substr(content, 1, 100) as trim_content")->get();
+//                $t = $place->Headlines()->select('substr(content, 1, 100) as trim_content')->get();
+//                dd($t);
+                $res['status'] = true;
+            }else{
+                $res['status'] = false;
+                $res['message'] = 'Nenhum headline cadastrado para POSTS';
+            }
         }
         else
         {

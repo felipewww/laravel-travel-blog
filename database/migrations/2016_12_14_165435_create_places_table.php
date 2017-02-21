@@ -21,8 +21,8 @@ class CreatePlacesTable extends Migration
 
             $table->boolean('status')->default(0);
 
-            $table->text('search_tags');
-            $table->text('seo_tags');
+            $table->text('search_tags')->nullable();
+            $table->text('seo_tags')->nullable();
             $table->text('main_photo');
 
             $table->integer('cities_id')->unsigned();
