@@ -10,14 +10,6 @@ class Post extends Model
     protected $fillable = ['content_regions', 'status', 'post_type_id', 'author_id', 'polymorphic_from'];
 
     /*
-     * criar headline do post
-     * */
-//    public function Headline()
-//    {
-//        return $this->morphMany(Headline::class, 'headline_morph');
-//    }
-
-    /*
      * Acima temos o polyumorphic do laravel, que não atende a necessidade.
      * Criar função para ler registros a partir do polimorfismo
      * o mesmo de HEADLINE e EVENT
@@ -36,19 +28,13 @@ class Post extends Model
         return $this->belongsToMany(Headline::class, 'posts_has_headlines', 'post_id', 'headline_id');
     }
 
-//    public function polimorph_from()
-//    {
-//        return $this->morphTo();
-//    }
+    public function Photos()
+    {
+        return $this->hasMany(PostPhotos::class);
+    }
 
     public function author() { return $this->belongsTo('App\Authors'); }
-    public function post_type() { return $this->belongsTo('App\PostType'); }
-
-    /*Polimorphics*/
-//    public function polimorph_from(){
-//
-//    }
-    /*Polimorphics*/
+    public function PostType() { return $this->belongsTo('App\PostType'); }
 
     /*
      * examples:

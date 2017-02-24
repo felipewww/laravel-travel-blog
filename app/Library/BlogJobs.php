@@ -8,6 +8,8 @@ use App\Post;
 
 trait BlogJobs {
 
+    public $postButtons;
+//    public static $caller;
     /*
      * Tratamento defualt de dados para exibição
      * */
@@ -17,6 +19,38 @@ trait BlogJobs {
         'created_at' => true,
     ];
 
+    public function __construct()
+    {
+        if ( !isset($this->model) ) {
+            throw new \Error('Obrigatório "$this->model" para ler BlogJobs');
+        }
+
+        $this->vars['postButtons'] = $this->createPostButtons();
+    }
+
+    protected function createPostButtons()
+    {
+        $actButtons = new \stdClass();
+        switch ($this->caller)
+        {
+            case City::class:
+                $url = 'cidade';
+                break;
+
+            case Country::class:
+                $url = 'pais';
+                break;
+
+            default:
+                throw new \Error('$this->caller não identificado');
+            break;
+        }
+
+        $actButtons->createPostButton = "/painel/blog/novo-post/$url/".$this->reg->id;
+        $actButtons->editPostButton = "/painel/blog/post/$url/";
+
+        return $actButtons;
+    }
     /*
      * Gerencia um objeto de posts
      * */
@@ -71,11 +105,9 @@ trait BlogJobs {
 
         if ($isInstance) {
             $posts = $posts[0];
-            //return $posts[0];
-        }else{
-//            return $posts;
         }
-            return $posts;
+
+        return $posts;
     }
 
     public static function status($post, $status)
@@ -120,30 +152,8 @@ trait BlogJobs {
 
         $titleAscii = Jobs::_toAscii($post->managed_regions['article_title']['content']);
 
-//        if ($post->polimorph_from_type == City::class)
-//        {
-//            $city       = $post->polimorph_from;
-//            $country    = $city->estate->country;
-//            $data['city'] = $city->name;
-//            $data['country'] = $country->name;
-//
-//            $post->urlGoback = '/painel/mundo/cidade/'.$city->id;
-//            $post->nameGoback = $city->name;
-//            $post->siteUrl = '/blog/c/'.$titleAscii.'/'.$post->id;
-//        }
-//        else if($post->polimorph_from_type == Country::class)
-//        {
-//            $country       = $post->polimorph_from;
-//            $data['country'] = $country->name;
-//            $post->urlGoback = '/painel/mundo/pais/'.$country->id;
-//            $post->nameGoback = $country->name;
-//            $post->siteUrl = '/blog/p/'.$titleAscii.'/'.$post->id;
-//        }
-
         if ($post->polymorphic_from == City::class)
         {
-//            dd($post->City->first());
-//            $city       = $post->polymorph_from;
             $city       = $post->City->first();
             $country    = $city->estate->country;
             $data['city'] = $city->name;

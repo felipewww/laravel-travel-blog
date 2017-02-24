@@ -53,6 +53,7 @@ class Posts extends Migration
 
         Schema::create('post_photos', function (Blueprint $table){
             $table->increments('id')->unsigned();
+            $table->integer('position');
             $table->string('path');
             $table->string('description');
 

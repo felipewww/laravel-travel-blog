@@ -3,6 +3,7 @@
 @section('header')
     <script type="text/javascript" src="{{ asset('Painel/js/pages/estrutura/country.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/Headlines.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('Painel/js/client/PainelPosts.js') }}"></script>
 @endsection
 
 @section('content')
@@ -18,6 +19,7 @@
                 @else
                     <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button font-black light-blue waves-effect">ativar</a>
                 @endif
+                <a href="/painel/mundo/pais/single/{{ $country->id }}" target="_blank" class="button font-black light-blue waves-effect">Editar Página</a>
                 <form id="activeOrDeactive" class="hidden" method="post">
                     <input type="hidden" name="action" value="<?= ($reg->status) ? 'deactive' : 'active' ; ?>">
                     <input type="hidden" name="id" value="{{$reg->id}}">
@@ -33,6 +35,8 @@
             @endforeach
         </section>
     </section>
+
+    {{--@include('Painel.shared.posts_block')--}}
 
     @include('Painel.shared.headline_form')
 

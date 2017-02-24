@@ -25,6 +25,9 @@ class CreatePlacesTable extends Migration
             $table->text('seo_tags')->nullable();
             $table->text('main_photo');
 
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('lng', 10, 7)->nullable();
+
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
 
@@ -32,12 +35,14 @@ class CreatePlacesTable extends Migration
             $table->foreign('editorials_id')->references('id')->on('editorials')->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create('places_photos', function (Blueprint $table) {
+        Schema::create('place_photos', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+            $table->increments('position');
             $table->string('path');
+            $table->string('description');
 
-            $table->integer('places_id')->unsigned();
-            $table->foreign('places_id')->references('id')->on('places')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('place_id')->unsigned();
+            $table->foreign('place_id')->references('id')->on('places')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -49,9 +54,8 @@ class CreatePlacesTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-//        Schema::dropIfExists('places_categories');
         Schema::dropIfExists('places');
-        Schema::dropIfExists('places_photos');
+        Schema::dropIfExists('place_photos');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

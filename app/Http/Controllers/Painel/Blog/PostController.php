@@ -8,6 +8,8 @@ use App\Country;
 use App\Http\Controllers\Painel\World\CityController;
 use App\Library\BlogJobs;
 use App\Library\Headlines;
+use App\Library\photoGallery;
+use App\PostType;
 use Illuminate\Http\Request;
 use \App\Http\Controllers\Controller;
 use App\Library\Jobs;
@@ -21,18 +23,15 @@ class PostController extends Controller
         Headlines::__construct as Headlines;
     }
 
-//    protected $model;
-//    public $reg;
+    use photoGallery{
+        photoGallery::__construct as PhotoGallery;
+    }
 
     public function __construct($id)
     {
         if ($id) {
             $this->getReg(Post::class, $id);
-            $this->Headlines(Post::class);
-            $this->vars['headlines'] = $this->reg->Headlines;
         }
-
-        $this->vars['authors'] = Authors::all();
 
         $this->vars['modulo'] = 'Blog';
         $this->vars['pageDesc'] = 'Informações do Post';
@@ -45,51 +44,44 @@ class PostController extends Controller
 
     public function view($request = ''){
         //Verifica se existe $_POST e executa actin
-        $this->hasAction($request);
+        $act = $this->hasAction($request);
 
-//        $f = $this->reg->polimorph_from;
-//        dd($f);
-//        $this->vars['parentUrl'] = $this->reg
+        if ( isset($act['message']) ) {
+            $PostMessage =  $act['message'];
+            return redirect('/painel/blog/post/'.$this->reg->id)->with('PostMessage', json_encode($PostMessage));
+        }
+
+        $this->vars['authors'] = Authors::all();
+        $this->Headlines(Post::class);
+        $this->PhotoGallery(Post::class);
+        $this->vars['headlines'] = $this->reg->Headlines;
+        $this->vars['postTypes'] = PostType::all();
 
         BlogJobs::manage($this->reg, ['getPolimorphInfo' => true]);
-
         return view('Painel.blog.post', $this->vars);
     }
 
-    public function deactive(){
-//        dd("here1");
-        $this->reg->status = 0;
-        $this->reg->save();
-    }
-
-    public function active(){
-//        dd("here2");
-
-        if (!$this->reg->author_id) {
+    public function update($request)
+    {
+        if ($request->status && !$request->author_id) {
             $PostMessage =  [
                 'type' => 'error', 'title' => 'Ops!', 'text' => 'Não é possível ativar um post sem autor'
             ];
             return redirect('/painel/blog/post/'.$this->reg->id)->with('PostMessage', json_encode($PostMessage));
-//            return false;
-//            dd("sem autor");
-//            return false;
         }
 
-        $this->reg->status = 1;
-        $this->reg->save();
-    }
-
-    public function updateAuthor($request){
-//        dd($request->author);
-        if ( empty($request->author) ){
-            $PostMessage =  [
-                'type' => 'error', 'title' => 'Selecione um Autor!', 'text' => ''
-            ];
-            return redirect('/painel/blog/post/'.$this->reg->id)->with('PostMessage', json_encode($PostMessage));
+        $data = $request->all();
+        if (!$data['author_id']) {
+            unset($data['author_id']);
         }
 
-        $this->reg->author_id = $request->author;
-        $this->reg->save();
+        $this->reg->update($data);
+
+        $PostMessage =  [
+            'type' => 'success', 'title' => 'Feito!', 'text' => 'Post atualizado com sucesso!'
+        ];
+
+        return redirect('/painel/blog/post/'.$this->reg->id)->with('PostMessage', json_encode($PostMessage));
     }
 
     /*
@@ -97,7 +89,6 @@ class PostController extends Controller
      * */
     public function createAjaxAction(Request $request)
     {
-//        dd($request->all());
         $res = [];
         $from = $request->screen_json['from'];
 
@@ -113,12 +104,6 @@ class PostController extends Controller
                 $cityController->create($data['city'], $data['estate'], $data['country'], json_encode(['This city generated from PostController.']));
                 $city = City::where('id', $cityId)->first();
             }
-//            else{
-//                /* 'id' é quando tentar criar post para uma cidade ja existente.
-//                 *  ['request']['city']['geonameId'] é quando criar + de 1 post cadastrando a cidade no primeiro.
-//                */
-//                $cityId = $request->screen_json['id'] ?? $request->screen_json['request']['city']['geonameId'];
-//            }
 
             if (empty($request->regions))
             {
@@ -159,10 +144,8 @@ class PostController extends Controller
         }
 
         if ($edited) {
-//            dd($regions);
             $this->reg->content_regions = json_encode($regions, JSON_UNESCAPED_UNICODE);
-//            dd($this->reg->content_regions);
-            $t = $this->reg->save();
+            $this->reg->save();
         }
 
         $res['edited'] = $edited;

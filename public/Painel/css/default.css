@@ -350,6 +350,10 @@ table tbody tr td a {
     cursor: pointer;
 }
 
+a.sendPost.has {
+    color: #d7a0ff;
+}
+
 table tbody tr td a.disabled {
     color: #4e5a6d;
 }
@@ -617,3 +621,55 @@ span.statusflagtable_0 { background-color: #ff54c4; }
 .scrollbar-inner > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -12px; }
 
 .hidden { display: none; }
+
+/*PhotoGallery*/
+form[name="photoGallery"] div.photo_img{
+    width: 100px;
+    height: 100px;
+    background-size: 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    display: block;
+}
+form[name="photoGallery"] textarea.desc{
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    height: 60px;
+    border-radius: 0px;
+    resize: none;
+}
+/*PhotoGallery*/
+
+/*Headlines*/
+div.headline_img{
+    width: 150px;
+    height: 150px;
+    background-size: 100%;
+    background-position: 50%;
+}
+/*Headlines*/
+
+/*Interests*/
+form[name="interests"] > div {
+    float: left;
+    width: 30%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    margin-right: 3%;
+    box-sizing: border-box;
+    transition: all 0.4s;
+}
+
+form[name="interests"] > div:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+form[name="interests"] > div input {
+    float: right;
+}
+form[name="interests"] > div label {
+    float: left;
+    padding: 0;
+    width: 80%;
+    border: none;
+    border-radius: 0;
+}
+/*Interests*/

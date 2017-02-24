@@ -27,6 +27,9 @@
             </div>
             <div class="actions">
                 {{--<a href="#" class="button light-blue font-black waves-effect submitter">post</a>--}}
+                @if($reg->id)
+                <a href="/painel/mundo/cidade/{{  $reg->City->id }}" class="button purple waves-effect">voltar para {{$reg->City->name}}</a>
+                @endif
                 <a onclick="document.getElementById('place_submit').click()" class="button font-black green waves-effect">salvar</a>
             </div>
             <div class="cleaner"></div>
@@ -102,8 +105,9 @@
     </section>
 
     @if($reg->id)
-        {{--@include('Painel.shared.photogallery_form')--}}
+        @include('Painel.shared.photogallery_form')
         @include('Painel.shared.searchtags_form')
+        @include('Painel.shared.interests_form')
         @include('Painel.shared.headline_form')
     @endif
 

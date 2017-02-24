@@ -50,8 +50,14 @@ trait WorldEstructureJobs {
                     \App\Continent::select('id', 'name')
                         ->where('id', $this->vars['breadcrumb']['country']['continents_id'])
                         ->first()->getAttributes();
+            }else if($from == 'country'){
+                $this->vars['breadcrumb']['country'] = $this->reg;
+
+                $this->vars['breadcrumb']['continent'] =
+                    Continent::select('id', 'name')
+                        ->where('id', $this->vars['breadcrumb']['country']['continents_id'])
+                        ->first()->getAttributes();
             }
-            //todo $from 'country'
         }
     }
 

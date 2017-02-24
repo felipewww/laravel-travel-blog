@@ -6,6 +6,7 @@ use App\City;
 use App\Editorial;
 use \App\Http\Controllers\Controller;
 use App\Library\Headlines;
+use App\Library\Interests;
 use App\Library\Jobs;
 use App\Library\photoGallery;
 use App\Place;
@@ -22,7 +23,11 @@ class PlaceController extends Controller {
     }
 
     use photoGallery {
-        photoGallery::__construct as photoGallery;
+        photoGallery::__construct as PhotoGallery;
+    }
+
+    use Interests {
+        Interests::__construct as Interests;
     }
 
     public $action;
@@ -46,11 +51,8 @@ class PlaceController extends Controller {
         $this->vars['cities'] = City::all();
     }
 
-    public function newFromCity($city_id){
-
-//        $itens = ;
-//        $itens['cities_id'] = $city_id;
-//        dd($itens);
+    public function newFromCity($city_id)
+    {
         $this->fromSpecificCity = $city_id;
         $act = $this->hasAction(Request::capture());
 
@@ -70,11 +72,17 @@ class PlaceController extends Controller {
 
     public function view(Request $request)
     {
+        $this->PhotoGallery(Place::class);
         $act = $this->hasAction($request);
+
+        if ( isset($act['message']) ) {
+            $PostMessage =  $act['message'];
+            return redirect('painel/servicos/servico/'.$this->reg->id)->with('PostMessage', json_encode($PostMessage));
+        }
 
         if ($this->action == 'update') {
             $this->Headlines(Place::class);
-            $this->photoGallery(Place::class);
+            $this->Interests();
         }
 
         return $this->display($act);
@@ -137,19 +145,10 @@ class PlaceController extends Controller {
     }
 
     public function display($act = false){
-//        dd($act);
         if ($this->action == 'create' && $act) {
-//            dd("here");
             return $act;
         }else{
-//            dd('here2');
             return view('Painel.places.place', $this->vars);
         }
     }
-
-//    public function createNullReg()
-//    {
-//        $this->createNullReg();
-//
-//    }
 }

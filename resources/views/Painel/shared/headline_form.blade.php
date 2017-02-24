@@ -1,11 +1,3 @@
-<style>
-    div.headline_img{
-        width: 150px;
-        height: 150px;
-        background-size: 100%;
-        background-position: 50%;
-    }
-</style>
 <section class="block" id="headlines_box">
     <header>
         <div class="title">

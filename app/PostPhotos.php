@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PlacePhotos extends Model
+class PostPhotos extends Model
 {
-    public $fillable = ['path','places_id', 'position'];
+    public $fillable = ['path','places_id','position'];
     public $timestamps = false;
 }

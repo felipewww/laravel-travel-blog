@@ -5,10 +5,52 @@
 @endsection
 
 @section('content')
-    <section class="block">
+    <section class="block" data-closed="true">
         <header>
             <div class="title">
-                <span>Listagem Países</span>
+                <span>Países Ativos</span>
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            <table class="setDataTables" id="active_cities">
+                <tbody>
+                {{--The HTML into this TR represents the setup info where JS get and configure this datatables.--}}
+                <tr>
+                    <td class="columns">{!! json_encode($activeCountries['data_cols']) !!}</td>
+                    <td class="info">{!! json_encode($activeCountries['data_info']) !!}</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+
+    <section class="block" data-closed="true">
+        <header>
+            <div class="title">
+                <span>Cidades Ativas</span>
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            <table class="setDataTables" id="active_cities">
+                <tbody>
+                {{--The HTML into this TR represents the setup info where JS get and configure this datatables.--}}
+                <tr>
+                    <td class="columns">{!! json_encode($activeCities['data_cols']) !!}</td>
+                    <td class="info">{!! json_encode($activeCities['data_info']) !!}</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </section>
+
+    <section class="block" data-closed="true">
+        <header>
+            <div class="title">
+                <span>Todos os Países</span>
             </div>
             <div class="cleaner"></div>
         </header>
@@ -25,5 +67,4 @@
             </table>
         </section>
     </section>
-
 @endsection

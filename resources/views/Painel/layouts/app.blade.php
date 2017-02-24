@@ -81,6 +81,7 @@
             {{ session('PostMessage') }}
         </div>
     @endif
+    <script type="text/javascript" src="/Painel/js/endScript.js"></script>
 </head>
 <body>
     <!-- JS tootlip -->

@@ -105,10 +105,10 @@ Route::group(['middleware' => 'auth'], function (){
                 return $c->apiAction($request);
             });
 
-            Route::post('/api/mundo/cidade/{id}', function (\Illuminate\Http\Request $request, $cityId){
-                $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
-                return $c->apiAction($request);
-            });
+//            Route::post('/api/mundo/cidade/{id}', function (\Illuminate\Http\Request $request, $cityId){
+//                $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
+//                return $c->apiAction($request);
+//            });
 
             Route::post('/api/usuarios', function (\Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Painel\Blog\AuthorController();
@@ -163,6 +163,11 @@ Route::group(['middleware' => 'auth'], function (){
                 Route::any('{id}', function ($id){
                     $c = new \App\Http\Controllers\Painel\World\CountryController($id);
                     return $c->display($id);
+                });
+
+                Route::any('single/{id}', function ($id){
+                    $c = new \App\Http\Controllers\Painel\World\CountryController($id);
+                    return $c->siteView();
                 });
             });
 

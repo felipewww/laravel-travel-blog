@@ -4,26 +4,21 @@ $(document).ready(function () {
 
 PhotoGallery = {
 
+    addedCount: 100,
     init: function () {
-        // console.log(Script.screenJson);
-        // this.cfg = Script.screenJson.headline_morph;
+        $(function() {
+            $("#sortable").sortable();
+        });
     },
-
-    // headlines: function () {
-    //     Script.AjaxForm('headlines', 'updateHeadline', function (status, data) {
-    //         console.log(data);
-    //         swal('','Headlines Atualizados!','success');
-    //     });
-    //     // Script.sendFormData('headlines');
-    // },
 
     addPhoto: function () {
         var form    = document.forms.photoGallery;
-        var name    = 'photo_new['+this.addedCount+']';
+
+        var name    = 'photo['+this.addedCount+']';
         var id      = 'photo_new_'+this.addedCount;
 
         var container = Script.createElement('div', '', {
-            class: 'w-50',
+            class: 'w-25',
             id: id
         });
 
@@ -37,33 +32,18 @@ PhotoGallery = {
             });
 
         divActions.appendChild(actDelete);
+        var miniature = Script.createElement('div', '', { class: 'photo_img' }, { backgroundImg: 'url(asd.jpg)' });
 
         //Create Image field
-        var labelImgField = Script.createElement('label', '');
-        var titleImgLabel = Script.createElement('span', 'Photo Img', {});
         var inputImgLabel = Script.createElement('input', '', { type: 'file', name: name+'[img]', required: 'required' });
-        labelImgField.appendChild(titleImgLabel);
-        labelImgField.appendChild(inputImgLabel);
+        var textarea = Script.createElement('textarea', '', { class: 'desc', type: 'text', placeholder: 'Descrição da foto', name: name+'[description]', required: 'required' });
 
-        //Create Title field
-        // var labelTtlField = Script.createElement('label', '');
-        // var titleTtlLabel = Script.createElement('span', 'Headline Title', {});
-        // var inputTtlLabel = Script.createElement('input', '', { type: 'text', name: name+'[title]', required: 'required' });
-        // labelTtlField.appendChild(titleTtlLabel);
-        // labelTtlField.appendChild(inputTtlLabel);
-
-        //Create Text field
-        // var labelTxtField = Script.createElement('label', '');
-        // var titleTxtLabel = Script.createElement('span', 'Headline Text', {});
-        // var inputTxtLabel = Script.createElement('input', '', { type: 'text', name: name+'[text]', required: 'required' });
-        // labelTxtField.appendChild(titleTxtLabel);
-        // labelTxtField.appendChild(inputTxtLabel);
 
         //End make container
         container.appendChild(divActions);
-        container.appendChild(labelImgField);
-        // container.appendChild(labelTtlField);
-        // container.appendChild(labelTxtField);
+        container.appendChild(miniature);
+        container.appendChild(inputImgLabel);
+        container.appendChild(textarea);
 
         form.appendChild(container);
 

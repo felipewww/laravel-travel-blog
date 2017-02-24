@@ -7,10 +7,17 @@ isso ficará tipo um polimorfismo. Afinal event pode se relacionar com PLACE ou 
 - [x] <span style="color: green">Remover polimorfismo de HEADLINES e POSTS... o do laravel é ruim!</span>
 - [x] <span style="color: green">Criar CRUD de PLACES</span>
 - [x] <span style="color: green">Criar status para Places.</span> 
-- [ ] Criar JS para galeria de fotos junto com contentTools (na view)
-- [ ] Criar POSTS do tipo LIST para PAISES e CIDADES. Lista será post sim!
+- [x] <span style="color: green">Criar galeria de fotos</span>
+- [x] <span style="color: green">Criar POSTS do tipo LIST para PAISES e CIDADES. Lista será post sim!</span>
 - [x] <span style="color: green">Finalizar HOME, drag and drop de tudo que possue headline. Verificar se esta buscando somente coisas ativas. Ex</span>
+- [x] <span style="color: green">OK, mas não haverá post para paises. Padronizar POST (e criação de páginas, se der) igual Interests, PhotoGallery e etc. para poder usar Post/Páginas também em Países</span>
+- [x] <span style="color: green">[CANCELADO]Cadastrar galeria de fotos para paises (interests não! virá da média de cidades)</span>
+- [x] <span style="color: green">Cadastrar headlines para países</span>
+- [ ] Galeria de fotos para cidade
+- [ ] LatLong e mapa para PLACE
 - [ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
+
+- [x] <span style="color: green">Exibir listagem de cidades e países cadastrados no banco (qtde de posts, status, qtde de headlines)</span>
 
 #### DEFINIR PRIORIDADE
 - [ ] Cadastro e agendamento de HOMES
@@ -24,7 +31,6 @@ Editado em 03/02 - Previsão - 13-02
 - [x] <span style="color: green">Criar tela de cadastro do autor</span>
 - [x] <span style="color: green">Criar tela de POST</span>
 - [x] <span style="color: green">seed de post_Types e places esta identico</span>
-- [ ] Criar tela de exibição de cidades cadastradas
 - [ ] Finalizar tela de exibição dos posts cadastrados.
 - [ ] Tem como fazer pesquisa de headline por ID na home?
 - [x] Copiar o upload e recorte de imagem para os uploads

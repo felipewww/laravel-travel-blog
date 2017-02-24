@@ -14,7 +14,6 @@ class AuthorController extends Controller implements DataTablesInterface
     use Jobs;
     use DataTablesExtensions;
 
-    protected $model;
     public $all;
 
     public function __construct()

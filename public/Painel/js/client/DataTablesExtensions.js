@@ -35,10 +35,34 @@ DataTablesExtensions = {
             select: true,
             language: DataTablesExtensions.__dataTablesLanguage(),
             dom: 'lftip',
-            rowCallback: function (TRHtmlCollection, jsArray, i) {
+            rowCallback: function (TRHtmlCollection, jsArray, i, x) {
+                // console.log(i);
+                // console.log(jsArray);
+
+                for(idx in cols)
+                {
+                    // console.log(idx);
+                    if (cols[idx]['rowCallback']) {
+                        callbackFromColumn(TRHtmlCollection, jsArray, jsArray[colIdPosition], cols[idx]['rowCallback'], idx);
+                    }
+                }
+
+
+                // if ( cols[i]['rowCallback'] != undefined ) {
+                    // alert("callback!");
+                    // callbackFromColumn(TRHtmlCollection, jsArray, jsArray[colIdPosition], cols[i]['rowCallback']);
+                // }
                 isConfigObject(TRHtmlCollection, jsArray, jsArray[colIdPosition]);
-            }
+            },
         });
+
+        function callbackFromColumn(tr, array, rowRegId, callbackInfo, idx)
+        {
+            // console.log(callbackInfo);
+            var func = callbackInfo['func'];
+            var paramns = ( callbackInfo['paramns'] ) ? callbackInfo['paramns'] : null ;
+            eval(func+'(tr, array, rowRegId, idx);');
+        }
 
         //Encontrar a posição da coluna que representa o ID do registro
         function findColId(cols) {

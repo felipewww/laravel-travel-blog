@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Redirect;
 trait Headlines {
     public function __construct($from, $id = null)
     {
-        $this->vars['from'] = $from;
+        if ( !isset($this->vars['from']) ) {
+            $this->vars['from'] = $from;
+        }
 
         if ( isset($this->reg) && !empty($this->reg) )
         {

@@ -118,9 +118,9 @@ _Forms = {
 
             var content = block.getElementsByClassName('content')[0];
 
-            if ( block.getAttribute('data-closed') ) {
-                $(content).hide(); //title.click();
-            }
+            // if ( block.getAttribute('data-closed') ) {
+            //     $(content).hide(); //title.click();
+            // }
 
             title.onclick = function () {
                 $(content).slideToggle(300);

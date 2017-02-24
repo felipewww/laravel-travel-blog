@@ -1,4 +1,35 @@
 country = {
+    regions: {
+        article_content: { required: true }
+    },
+
+    /**
+     * mudar o status de 0,1 para "ativo, inativo" quando lê cidades cadastradas no banco
+     */
+    changeRegisteredCityStatus: function (tr, array, rowRegId, idx) {
+        var td = tr.getElementsByTagName('td')[idx];
+        var status;
+        // console.log(td);
+        switch (td.innerHTML)
+        {
+            case '1':
+                status = 'ativo';
+                break;
+
+            case '0':
+                status = 'inativo';
+                break;
+
+            /*
+            * Quando tentar ordenar a tabela, ele recarrega tudo, inclusive esta função de rowCallback.
+            * */
+            default:
+                status = td.innerHTML;
+                break;
+        }
+
+        td.innerHTML = status;
+    },
     /**
      * @see DataTablesExtensions.js
     * função de "rowCallback" executada via EVAL() na montagem do dataTables
@@ -65,23 +96,39 @@ country = {
     },
 
     createCountryPost: function () {
-        // swal({
-        //     title: '',
-        //     text: 'Criação de Posts do pais indisponível.',
-        //     type: 'warning'
-        // });
         Script.unable('Criação de Posts do pais indisponível.');
     },
 
     createCountryPage: function ()
     {
         Script.unable('Criação de páginas do pais indisponível.');
-        // swal({
-        //     title: '',
-        //     text: 'Criação de páginas do pais indisponível.',
-        //     type: 'warning'
-        // });
     },
+
+    /*
+     * Funções executada no ONSAVE do ContentTools dinamicamente para salvar a PÁGINA da cidade.
+     * */
+    createOrUpdateCountryPage: function (ev)
+    {
+        ContentToolsExtensions.mountRegions(ev.detail().regions, country.regions);
+        if (!ContentToolsExtensions.validateRegions(country.regions)) {
+            return false;
+        }
+
+        $.ajax({
+            method: 'post',
+            data: { content_regions: country.regions, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: 'createOrUpdateCountryPage' },
+            dataType: 'json',
+            success: function (data) {
+                // if (action == 'activate') { window.location.href = '/cidade/'+data.ascii_name+'/'+Script.screenJson.city.geonameId; }
+                // city.confirm(action, data);
+            },
+            error: function (e) {
+                // console.log(e);
+                // city.confirm('error', e);
+            }
+        });
+    },
+    // update: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('update'); },
 
     createCityPage: function (e, paramns)
     {
@@ -118,8 +165,4 @@ country = {
             }
         );
     },
-
-    verifyAuthorAndActive: function () {
-
-    }
 };

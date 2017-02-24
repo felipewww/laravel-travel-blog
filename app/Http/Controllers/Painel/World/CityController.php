@@ -4,17 +4,23 @@ namespace App\Http\Controllers\Painel\World;
 
 use \App\Http\Controllers\Controller;
 use App\Http\Controllers\Painel\Blog\PostController;
-use App\Interest;
 use App\Library\BlogJobs;
 use App\Library\Headlines;
+use App\Library\Interests;
 use App\Library\Jobs;
 use App\Library\photoGallery;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\City;
 use App\Estate;
+use Illuminate\Http\Request;
 
 class CityController extends Controller {
+
+    public static $cities_cols = [
+        ['title' => 'n', 'width' => '10px'],
+        ['title' => 'id', 'width' => '70px'],
+        ['title' => 'nome'],
+        ['title' => 'ações', 'width' => '200px'],
+    ];
 
     use Jobs;
 
@@ -26,19 +32,20 @@ class CityController extends Controller {
         photoGallery::__construct as photoGallery;
     }
 
-//    public $model;
-//    public $city;
-    public $cityId;
-    public $interests;
-    public $allInterests;
-    public $cityModel;
+    use Interests {
+        Interests::__construct as Interests;
+    }
+
+    use BlogJobs {
+        BlogJobs::__construct as BlogJobsConstructor;
+    }
+
+//    public $cityId;
+//    public $cityModel;
 
     public function __construct($cityId)
     {
-
-        $this->json_meta(['city_id' => $cityId]);
-
-        $arr = [
+        $this->selectColumns = [
             'id',
             'name',
             'estates_id',
@@ -53,9 +60,13 @@ class CityController extends Controller {
             'lng',
         ];
 
-        $this->model    = new City();
-        $this->cityId   = $cityId;
-        $this->reg = $this->model->select($arr)->where('id', $cityId)->first();
+        $this->getReg(City::class, $cityId);
+        $this->json_meta(['city_id' => $cityId]);
+
+
+//        $this->model    = new City();
+//        $this->cityId   = $cityId;
+//        $this->reg = $this->model->select($arr)->where('id', $cityId)->first();
     }
 
     /*
@@ -82,17 +93,26 @@ class CityController extends Controller {
 
     public function display($request = '')
     {
-        $this->hasAction($request);
+        $act = $this->hasAction($request);
 
-        $this->Headlines(City::class);
+        if ($act != false) {
+            $PostMessage =  $act['message'];
+            return redirect('/painel/mundo/cidade/'.$this->reg->id)->with('PostMessage',json_encode($PostMessage));
+        }
+
+
         if ( empty($this->reg) ) {
             trigger_error('Cidade não encontrada no Banco de dados. Favor gerar via Painel Administrativo um "Blog/Post" ou criar a "Página da Cidade" para depois editar suas configurações', E_USER_ERROR);
         }
 
+        $this->Headlines(City::class);
+        $this->Interests();
+        $this->BlogJobsConstructor();
+
         $this->vars['places'] = $this->reg->Places;
 
         $this->vars['posts'] =
-            PostController::manage(
+            BlogJobs::manage(
                 $this->reg->Posts,
                 [
                     'author_id' => function($post, $author_id){
@@ -107,42 +127,11 @@ class CityController extends Controller {
          * */
         $this->json_meta(['isPainel' => true]);
 
-//        dd($this->reg->interests);
-//        $this->interests();
-        $this->vars['interests'] = $this->interests;
-        $this->vars['allInterests'] = Interest::all();
-
         $this->vars['reg'] = $this->reg;
-//        $this->vars['reg'] = $this->reg->getAttributes();
         $this->vars['modulo'] = 'Cidade';
         $this->vars['pageDesc'] = 'Configurações da cidade: '.$this->reg->name;
 
         return view('Painel.world.city', $this->vars);
-    }
-
-    public function interests()
-    {
-        $this->interests = DB::table('city_has_interests as many')
-            ->select('it.color', 'many.interest_id', 'it.name')
-            ->join('interests as it', 'it.id', 'many.interest_id')
-            ->where('many.city_id', $this->reg->id)
-            ->get()
-        ;
-
-        $selecteds = [];
-        foreach ($this->interests as $selected)
-        {
-            array_push($selecteds, $selected->interest_id);
-        }
-
-        $this->allInterests = Interest::all();
-        foreach ($this->allInterests as &$all)
-        {
-            $all['checked'] = (array_search($all->id, $selecteds) !== false) ? 'checked="checked"' : '';
-        }
-
-        $this->vars['interests'] = $this->interests;
-        $this->vars['allInterests'] = $this->allInterests;
     }
 
     /**
@@ -210,7 +199,6 @@ class CityController extends Controller {
 
     /**
      * Exemplo de sobreposição de método para cropar a imagem de form diferente da Default.
-     */
 //    protected function uploadHeadlineImage($img, $name = ''){
 //        return $img = Jobs::uploadImage($img, 'Site/media/images/cidades/headlines',
 //            [
@@ -219,6 +207,7 @@ class CityController extends Controller {
 //            ]
 //        );
 //    }
+     */
 
     public function createAjaxAction($request)
     {
@@ -274,25 +263,6 @@ class CityController extends Controller {
         return json_encode($res);
     }
 
-    public function updateInterestsAjaxAction($request)
-    {
-        $table = 'city_has_interests';
-        $interests = $request->ints;
-
-        DB::table($table)->where('city_id', $this->cityId)->delete();
-
-        foreach ($interests as $in){
-            DB::table($table)->insert(
-                [
-                    'city_id' => $this->cityId,
-                    'interest_id' => $in,
-                ]
-            );
-        }
-
-        return json_encode(['status' => true]);
-    }
-
     public function updateTagsAjaxAction($request)
     {
         $this->reg->search_tags    = $request->system;
@@ -300,5 +270,124 @@ class CityController extends Controller {
         $this->reg->save();
 
         return json_encode(['status' => true]);
+    }
+
+    public static function dataTables($cities, $request = null)
+    {
+        $json = [];
+
+        //Isso server para criar um json apenas das cidade ja cadastradas no banco que ja forma lidas anteriormente.
+        $cities_ids_db = [];
+        if ($request == 'onlyRegistered') {
+            $cities_db = $cities;
+        }else{
+            //Cidades deste ESTADO que ja estão cadastradas no banco
+            $cities_db = City::where('estates_id', $request['id'])->get();
+        }
+
+        foreach ($cities_db as $city)
+        {
+            array_push($cities_ids_db, $city->id);
+        }
+
+        $i = 1;
+        foreach ($cities as $city)
+        {
+            $data = [];
+
+            if ( $request == 'onlyRegistered' ) {
+                $regId = $city->id;
+            }else{
+                $regId = $city['geonameId'];
+            }
+
+            $exists = array_search($regId, $cities_ids_db);
+
+            if ( $exists !== false ) {
+                $pagePostButton = [
+                    'html' => 'editar página',
+                    'attributes' => [
+                        'class' => 'hasPost',
+                        'href' => "/painel/mundo/cidade/single/$regId",
+                        'target' => '_blank'
+                    ]
+                ];
+
+                $blogPostButton = [
+                    'html' => '+ post',
+                    'attributes' => [
+                        'href' => '/painel/blog/novo-post/cidade/'.$regId,
+                    ]
+                ];
+
+                $configButton = [
+                    'html' => '+ config',
+                    'attributes' => [
+                        'href' => '/painel/mundo/cidade/'.$regId
+                    ]
+                ];
+            }else{
+                $jsonData = ['estate_id' => $request['id'], 'city' => $city];
+                $pagePostButton = [
+                    'html' => 'criar página',
+                    'attributes' => [
+                        'class' => 'createPage',
+                        'data-action' => '/painel/mundo/cidade/single',
+                        'data-post' => json_encode($jsonData),
+                        'onclick' => 'country.createCityPage(this)',
+                        'target' => '_self'
+                    ]
+                ];
+                $blogPostButton = [
+                    'html' => '+ post',
+                    'attributes' => [
+                        'data-action' => '/painel/blog/post/cidade',
+                        'data-post' => json_encode($jsonData),
+                        'onclick' => 'country.createCityPage(this)',
+                    ]
+                ];
+                $configButton = [
+                    'html' => '+ config',
+                    'attributes' => [
+                        'class' => 'disabled',
+                        'href' => 'javascript:;',
+                        'data-jslistener-click' => 'country.beforeConfig'
+                    ]
+                ];
+
+            }
+
+            array_push($data, $i); //coluna "N"
+
+            if ($request == 'onlyRegistered')
+            {
+                /* Quando estiver lendo somente cidades ja cadastradas no banco,
+                 * Criar colunas da table conforme as colunas lidas no banco.
+                 */
+                foreach ($city->getAttributes() as $attr => $val)
+                {
+                    array_push($data, $val);
+                }
+            }
+            else
+            {
+                array_push($data, $regId);
+                array_push($data, $city['name']);
+            }
+
+            array_push($data, [
+                'rowButtons' =>
+                    [
+                        $configButton,
+                        $pagePostButton,
+                        $blogPostButton,
+                    ]
+            ]);
+
+            array_push($json, $data);
+            $i++;
+        }
+
+        return $json;
     }
 }

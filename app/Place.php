@@ -11,12 +11,13 @@ class Place extends Model
 
     public function Interests()
     {
-        return $this->belongsToMany(Interest::class, 'place_has_interests', 'place_id', 'interest_id');
+//        return $this->belongsToMany(Interest::class, 'place_has_interests', 'place_id', 'interest_id');
+        return $this->belongsToMany(Interest::class, 'places_has_interests');
     }
 
     public function Photos()
     {
-        return $this->belongsTo(PlacePhotos::class, 'estates_id');
+        return $this->hasMany(PlacePhotos::class);
     }
 
     public function Events()

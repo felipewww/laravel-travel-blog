@@ -15,12 +15,12 @@ class Country extends Model
     public function Headlines()
     {
         //Polymorphic_from
-        return $this->belongsToMany(Headline::class, 'cities_has_headlines', 'city_id', 'headline_id');
+        return $this->belongsToMany(Headline::class, 'countries_has_headlines', 'country_id', 'headline_id');
     }
 
-    public function Post()
+    public function Posts()
     {
-        return $this->morphMany(Post::class, 'polimorph_from');
+        return $this->belongsToMany(Post::class, 'countries_has_posts', 'country_id', 'post_id');
     }
 
     public function generateFakePost($city_id = false, $quantity = 1)

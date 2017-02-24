@@ -19,10 +19,22 @@ trait Jobs {
     public $vars = [];
     public $model;
     public $reg;
+    public $caller;
+    public $selectColumns = '*';
 
     public function getReg($from, $id){
-        $this->model    = new $from();
-        $this->reg      = $this->model->where('id',$id)->first();
+
+        if (empty($this->model)) {
+            $this->model = new $from();
+        }
+
+        if (empty($this->reg)) {
+            $this->reg = $this->model->select($this->selectColumns)->where('id', $id)->first();
+        }
+
+        if (empty($this->caller)) {
+            $this->caller = get_class($this->model);
+        }
     }
 
     public static function uploadImage($image, $path, $paramns = []){

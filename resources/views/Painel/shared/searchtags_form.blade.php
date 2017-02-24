@@ -11,7 +11,7 @@
     </header>
 
     <section class="content">
-        {{--<form name="tags" method="post" action="/painel/api/mundo/cidade/{{$reg['id']}}">--}}
+
         <form name="tags" method="post">
             <div class="w-50">
                 <label>
