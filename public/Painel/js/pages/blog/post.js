@@ -47,6 +47,7 @@ post = {
 
     action: function (action, ev)
     {
+        // alert("here");
         if (action == 'create') {
             if (!ContentToolsExtensions.validateRegions(post.regions)) {
                 return false;
@@ -58,7 +59,7 @@ post = {
         }else{
             $.ajax({
                 method: 'post',
-                url: '/painel/api/blog/post/cidade',
+                // url: '/painel/api/blog/post/cidade',
                 data: { regions: post.regions, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: action },
                 dataType: 'json',
                 success: function (data) {

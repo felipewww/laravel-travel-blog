@@ -37,9 +37,9 @@ class CreatePlacesTable extends Migration
 
         Schema::create('place_photos', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->increments('position');
+            $table->integer('position');
             $table->string('path');
-            $table->string('description');
+            $table->string('description', 255);
 
             $table->integer('place_id')->unsigned();
             $table->foreign('place_id')->references('id')->on('places')->onUpdate('cascade')->onDelete('cascade');

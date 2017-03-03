@@ -11,9 +11,6 @@ use App\PostPhotos;
 
 trait photoGallery {
 
-//    public $galleryTable;
-//    public static $caller;
-
     function __construct($from)
     {
         $this->caller = new $from();
@@ -29,8 +26,6 @@ trait photoGallery {
         if ( !isset($this->model) ) {
             throw new \Error('Obrigatório "$this->model" para ler photoGallery');
         }
-
-
         $this->vars['photoGallery'] = $this->reg->Photos()->orderBy('position')->get();
     }
 
@@ -53,6 +48,11 @@ trait photoGallery {
 
     public function updatePhotoGallery($pos, $photo)
     {
+//        dd($this->caller);
+        if (gettype($this->caller) == 'string') {
+            $this->caller = new $this->caller();
+        }
+
         $reg = $this->caller->Photos()->getRelated()->where('id', $photo['id'])->first();
 
         if ( isset($photo['img']) )
@@ -75,6 +75,10 @@ trait photoGallery {
 
     public function createPhotoGallery($pos, $photo, $fk_id)
     {
+        if (gettype($this->caller) == 'string') {
+            $this->caller = new $this->caller();
+        }
+
         $fk = $this->caller->Photos()->getForeignKey();
 
         $reg = $this->caller->Photos()->getRelated();
@@ -92,6 +96,11 @@ trait photoGallery {
 
     public function getFolder()
     {
+        if (!isset($this->vars['from'])) {
+            $this->vars['from'] = get_class($this->caller);
+        }
+//        dd(get_class($this->caller));
+
         switch ($this->vars['from'])
         {
             case Post::class:

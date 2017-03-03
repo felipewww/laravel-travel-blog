@@ -61,40 +61,23 @@ class WorldEstructure extends Migration
             $table->timestamps();
         });
 
-        Schema::create('estates', function (Blueprint $table){
-            $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('uf',45)->nullable();
-
-            $table->decimal('ll_north', 10, 7)->nullable();
-            $table->decimal('ll_south', 10, 7)->nullable();
-            $table->decimal('ll_east', 10, 7)->nullable();
-            $table->decimal('ll_west', 10, 7)->nullable();
-
-            $table->decimal('lat', 10, 7)->nullable();
-            $table->decimal('lng', 10, 7)->nullable();
-
-            $table->integer('countries_id')->unsigned();
-            $table->foreign('countries_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
-
-            $table->timestamps();
-        });
-
         Schema::create('cities', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('name');
 
-            $table->integer('estates_id')->unsigned();
+//            $table->integer('estates_id')->unsigned();
+            $table->integer('country_id')->unsigned();
 
-            $table->decimal('ll_north', 10, 7)->nullable();
-            $table->decimal('ll_south', 10, 7)->nullable();
-            $table->decimal('ll_east', 10, 7)->nullable();
-            $table->decimal('ll_west', 10, 7)->nullable();
+            $table->decimal('ll_north', 10, 7);
+            $table->decimal('ll_south', 10, 7);
+            $table->decimal('ll_east', 10, 7);
+            $table->decimal('ll_west', 10, 7);
 
-            $table->decimal('lat', 10, 7)->nullable();
-            $table->decimal('lng', 10, 7)->nullable();
+            $table->decimal('lat', 10, 7);
+            $table->decimal('lng', 10, 7);
 
-            $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
+//            $table->foreign('estates_id')->references('id')->on('estates')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('restrict')->onDelete('restrict');
 
             $table->text('content_regions')->nullable();
             $table->boolean('status')->default(0);
@@ -102,13 +85,16 @@ class WorldEstructure extends Migration
             $table->text('comments')->nullable();
             $table->text('search_tags')->nullable();
             $table->text('seo_tags')->nullable();
+            $table->text('geoadmins')->nullable(); //admin1 and admin2 - hierarchy
 
             $table->timestamps();
         });
 
-        Schema::create('cities_photos', function (Blueprint $table){
+        Schema::create('city_photos', function (Blueprint $table){
             $table->increments('id')->unsigned();
             $table->string('path');
+            $table->string('description', 255);
+            $table->int('position');
 
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
@@ -129,7 +115,6 @@ class WorldEstructure extends Migration
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('cities');
-        Schema::dropIfExists('estates');
         Schema::dropIfExists('countries');
         Schema::dropIfExists('continents');
         Schema::dropIfExists('cities_photos');

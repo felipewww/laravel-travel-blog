@@ -30,6 +30,9 @@ trait Jobs {
 
         if (empty($this->reg)) {
             $this->reg = $this->model->select($this->selectColumns)->where('id', $id)->first();
+            if ( !isset($this->vars['reg']) ) {
+                $this->vars['reg'] = $this->reg;
+            }
         }
 
         if (empty($this->caller)) {
@@ -80,7 +83,13 @@ trait Jobs {
         $this->reg->seo_tags       = $request->seo;
         $this->reg->save();
 
-        return json_encode(['status' => true]);
+        return [
+            'status' => true,
+            'message' => [
+                'text' => 'Tags atualizadas com sucesso!',
+                'type' => 'success'
+            ]
+        ];
     }
 
     public function postAction(Request $request)

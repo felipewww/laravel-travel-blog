@@ -1,6 +1,7 @@
 @extends('Painel.layouts.app')
 
 @section('header')
+    <script type="text/javascript" src="{{ asset('Painel/js/client/PhotoGallery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/Headlines.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/PainelPosts.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/pages/estrutura/city.js') }}"></script>
@@ -13,7 +14,8 @@
                 <span>Informações da Cidade: {{ $reg['name'] }}</span>
             </div>
             <div class="actions">
-                <a href="/painel/mundo/pais/{{$reg->estate->country->id}}" class="button purple waves-effect">voltar para {{ $reg->estate->country->name }}</a>
+                {{--{{dd($reg->country)}}--}}
+                <a href="/painel/mundo/pais/{{$reg->Country->id}}" class="button purple waves-effect">voltar para {{ $reg->Country->name }}</a>
                 <a target="_blank" href="/painel/mundo/cidade/single/{{$reg->id}}" class="button font-black light-blue waves-effect">Editar página da cidade</a>
                 @if($reg->status)
                     <a href="#" onclick="document.forms['activeOrDeactive'].submit()" class="button light-red waves-effect">inativar</a>
@@ -37,6 +39,8 @@
             @endforeach
         </section>
     </section>
+
+    @include('Painel.shared.photogallery_form')
 
     @include('Painel.shared.posts_block')
 

@@ -54,6 +54,6 @@ class CountryController extends Controller {
 
     public function pageView()
     {
-        return view('Site.world.country2', $this->vars);
+        return view('Site.world.country', $this->vars);
     }
 }

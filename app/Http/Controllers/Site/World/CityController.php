@@ -15,42 +15,33 @@ use App\Estate;
 class CityController extends Controller {
     use Jobs;
     use WorldEstructureJobs;
-
-    /*
-     * Read city from JSON
-     * Apenas quando esta criando cidade via painel administrativo
-     * */
-    function forCreate(Request $request){
-        $this->json_meta($request->all());
-        $this->json_meta(['contentToolsOnSave' => 'city.create']);
-
-        $this->vars['isAdmin'] = Auth::check();
-        $this->vars['isNew'] = true;
-
-        $this->getEstructureBreadcrumb('city', $request);
-        $this->vars['city'] = $request['city'];
-
-        return $this->cityPageView();
+    function __construct($id)
+    {
+        $this->getReg(City::class, $id);
     }
 
     /*
      * Read City from DB
      * Para edição da página de cidade via painel ou exibição do Site
      * */
-    function fromDB($id, Request $request){
+    function readCity(Request $request){
+        if ( $act = $this->hasAction($request) ) {
+            return $act;
+        }
+
         $isAdmin = Auth::check();
         $this->vars['isAdmin'] = $isAdmin;
 
         $city = City::where('id', $request->id)->first();
 
-        $this->getEstructureBreadcrumb('city', $city);
+//        $this->getEstructureBreadcrumb('city', $city);
 
         $this->vars['isNew'] = false;
 
         $this->json_meta(['contentToolsOnSave' => 'city.update', 'city_id' => $request->id]);
-        $city->content_regions = json_decode($city->content_regions, true);
+        $this->reg->content_regions = json_decode($this->reg->content_regions, true);
 
-        $this->vars['city'] = $city;
+//        $this->vars['city'] = $city;
 
         if ( !isset($city->content_regions['article_content']) )
         {
@@ -67,6 +58,14 @@ class CityController extends Controller {
         {
                 return $this->cityPageView();
         }
+    }
+
+    /*
+     * Update city page
+     * */
+    protected function update($request){
+        $controller = new \App\Http\Controllers\Painel\World\CityController($this->reg);
+        return $controller->updatePage($request);
     }
 
     protected function cityPageView(){

@@ -53,6 +53,18 @@ class InterventionImageExtensions {
         return $this->image;
     }
 
+    /**
+     * Exemplo de sobreposição de método para cropar a imagem de form diferente da Default.
+    //    protected function uploadHeadlineImage($img, $name = ''){
+    //        return $img = Jobs::uploadImage($img, 'Site/media/images/cidades/headlines',
+    //            [
+    //                'shape' => 'square',
+    //                'max-width' => 600,
+    //            ]
+    //        );
+    //    }
+     */
+
     private function imageShape()
     {
         $shape = $this->paramns['shape'];

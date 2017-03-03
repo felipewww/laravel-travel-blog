@@ -20,7 +20,7 @@ Route::get('/', 'Site\IndexController@index');
 */
 Route::get('pais/{nome}/{id}', ['uses' => 'Site\World\CountryController@index']);
 Route::get('estado/{nome}/{id}', ['uses' => 'Site\World\EstateController@index']);
-Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@fromDB']);
+Route::get('cidade/{nome}/{id}', ['uses' => 'Site\World\CityController@readCity']);
 
 Route::get('/blog/c/{titulo}/{id}', function ($titulo, $id){
     $c = new App\Http\Controllers\Site\Blog\PostController();
@@ -77,38 +77,19 @@ Route::group(['middleware' => 'auth'], function (){
 
             Route::post('/api/home/updateHeadlines', function (\Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Site\IndexController();
-//                return \App\Http\Controllers\Site\IndexController::updateHeadlinesApi($request);
                 return $c->updateHeadlinesApi($request);
             });
 
             //funções via Js AdminFuncs
             Route::group(['prefix' => '/api/mundo/pais'], function (){
-                Route::get('readCities', function (\Illuminate\Http\Request $request){
+
+                Route::get('findACity', function (\Illuminate\Http\Request $request){
                     $c = new \App\Http\Controllers\Painel\World\CountryController(0);
-                    return $c->readCitiesApi($request);
+                    return $c->findACityApi($request->cityName, $request->countryCode);
                 });
 
-                Route::get('readCountyCities', function (\Illuminate\Http\Request $request){
-                    $c = new \App\Http\Controllers\Painel\World\CountryController(0);
-                    return $c->readCountyCitiesApi($request);
-                });
             });
 
-            Route::post('/api/blog/cidade/save/{id}', function (\Illuminate\Http\Request $request, $cityId){
-                $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
-                return $c->apiAction($request);
-            });
-
-            Route::post('/api/blog/post/cidade', function (\Illuminate\Http\Request $request){
-                $id = $request->screen_json['post_id'] ?? 0;
-                $c = new \App\Http\Controllers\Painel\Blog\PostController($id);
-                return $c->apiAction($request);
-            });
-
-//            Route::post('/api/mundo/cidade/{id}', function (\Illuminate\Http\Request $request, $cityId){
-//                $c = new \App\Http\Controllers\Painel\World\CityController($cityId);
-//                return $c->apiAction($request);
-//            });
 
             Route::post('/api/usuarios', function (\Illuminate\Http\Request $request){
                 $c = new \App\Http\Controllers\Painel\Blog\AuthorController();
@@ -129,15 +110,16 @@ Route::group(['middleware' => 'auth'], function (){
         });
 
         Route::group(['prefix' => 'blog'], function (){
-            Route::get('novo-post/cidade/{id}', function ($id){
+            Route::any('novo-post/cidade/{id}', function ($id){
                 $c = new App\Http\Controllers\Site\Blog\PostController();
                 return $c->city($id);
             });
 
-            //novo post para cidade não existente
-            Route::post('post/cidade', function (\Illuminate\Http\Request $request){
-                $c = new \App\Http\Controllers\Site\Blog\PostController();
-                return $c->city($request);
+            Route::any('edit-post/cidade/{id}', function ($id){
+                $c = new App\Http\Controllers\Site\Blog\PostController();
+//                dd(\Illuminate\Http\Request::capture()->all());
+//                return $c->city($id);
+                return $c->readCityPost($id);
             });
 
             Route::get('post/cidade/{id}', function ($id){
@@ -172,10 +154,14 @@ Route::group(['middleware' => 'auth'], function (){
             });
 
             Route::group(['prefix' => 'cidade'], function(){
-                Route::post('single', 'Site\World\CityController@forCreate');
-                Route::get('single/{id}', function ($id, \Illuminate\Http\Request $request){
-                    $c = new \App\Http\Controllers\Site\World\CityController();
-                    return $c->fromDB($id, $request);
+                Route::post('create', function (\Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Painel\World\CityController(0);
+                    return $c->_create($request);
+                });
+
+                Route::any('single/{id}', function ($id, \Illuminate\Http\Request $request){
+                    $c = new \App\Http\Controllers\Site\World\CityController($id);
+                    return $c->readCity($request);
                 });
 
                 Route::any('{id}', function ($id, \Illuminate\Http\Request $request){
@@ -205,8 +191,6 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('', 'Painel\IndexController@index');
         Route::any('logout', 'Auth\LoginController@logout');
 
-//        Route::get('register', 'Auth\RegisterController@view');
-//        Route::post('register', 'Auth\RegisterController@register');
 
         Route::get('usuarios', 'Painel\system\users\RegisterController@view');
 //        Route::post('usuarios/update', 'Painel\system\users\RegisterController@createorupdate');

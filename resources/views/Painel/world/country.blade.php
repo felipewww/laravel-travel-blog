@@ -4,10 +4,48 @@
     <script type="text/javascript" src="{{ asset('Painel/js/pages/estrutura/country.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/Headlines.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/PainelPosts.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZv5NhWhIUfc6EvvgzNqQAehqCMzV3UVw&callback=initMap" async defer></script>
 @endsection
 
 @section('content')
 {{--    {{dd($country)}}--}}
+    <section class="block">
+        <header>
+            <div class="title">
+                <span>Pesquisar cidade</span>
+            </div>
+            <div class="actions">
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            <div class="w-100">
+                <form name="findACityForm">
+                    <div class="w-50">
+                        <label>
+                            <span>Nome da Cidade</span>
+                            <input type="text" name="cityname">
+                        </label>
+                    </div>
+                    <input type="button" value="pesquisar" onclick="country.findACity()">
+                </form>
+            </div>
+
+            <div class="w-100">
+                <section class="content" id="cities-table">
+                    Selecione um estado acima para carregar as cidades.
+                </section>
+            </div>
+
+            <div class="w-100" id="newMap" >
+
+            </div>
+
+            <div class="cleaner"></div>
+        </section>
+    </section>
+
     <section class="block">
         <header>
             <div class="title">
@@ -36,34 +74,9 @@
         </section>
     </section>
 
-    {{--@include('Painel.shared.posts_block')--}}
-
     @include('Painel.shared.headline_form')
 
     <section class="block">
-        <header>
-            <div class="title">
-                <span>Estados</span>
-            </div>
-            <div class="actions">
-            </div>
-            <div class="cleaner"></div>
-        </header>
-
-        <section class="content">
-            <table class="setDataTables" id="countries">
-                <tbody>
-                {{--The HTML into this TR represents the setup info where JS get and configure this datatables.--}}
-                <tr>
-                    <td class="columns">{!! $dataTables_columns !!}</td>
-                    <td class="info">{!! $dataTables_info !!}</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </section>
-
-    <section class="block" id="cidades">
         <header>
             <div class="title">
                 <span>Cidades</span>
@@ -73,8 +86,15 @@
             <div class="cleaner"></div>
         </header>
 
-        <section class="content" id="dynamic_table">
-            Selecione um estado acima para carregar as cidades.
+        <section class="content">
+            <table class="setDataTables" id="cidades">
+                <tbody>
+                <tr>
+                    <td class="columns">{!! $cities['cols'] !!}</td>
+                    <td class="info">{!! $cities['data'] !!}</td>
+                </tr>
+                </tbody>
+            </table>
         </section>
     </section>
 @endsection

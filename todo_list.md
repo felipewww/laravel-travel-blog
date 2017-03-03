@@ -13,12 +13,13 @@ isso ficará tipo um polimorfismo. Afinal event pode se relacionar com PLACE ou 
 - [x] <span style="color: green">OK, mas não haverá post para paises. Padronizar POST (e criação de páginas, se der) igual Interests, PhotoGallery e etc. para poder usar Post/Páginas também em Países</span>
 - [x] <span style="color: green">[CANCELADO]Cadastrar galeria de fotos para paises (interests não! virá da média de cidades)</span>
 - [x] <span style="color: green">Cadastrar headlines para países</span>
-- [ ] Galeria de fotos para cidade
+- [x] Galeria de fotos para cidade
 - [ ] LatLong e mapa para PLACE
 - [ ] Ao final... Criar campo de pesquisa por palavra, tags, places, cidades, interesses...
 
 - [x] <span style="color: green">Exibir listagem de cidades e países cadastrados no banco (qtde de posts, status, qtde de headlines)</span>
 
+- [ ] Ao ler países ativos. Tentar arrumar outra forma de ler content_regions, para evitar requisição sem necessidade no banco, afinal, o botão "editar página" é definido se há ou nao content_regions na págna. Ver CountriesController
 #### DEFINIR PRIORIDADE
 - [ ] Cadastro e agendamento de HOMES
 - [ ] Cadastrar eventos (PLACES ou EVENTOS? EVENTOS!) com inicio e fim de exibição. Não é um subserviço, é um evento da cidade que pode ser relacionado a um PLACE
@@ -34,7 +35,6 @@ Editado em 03/02 - Previsão - 13-02
 - [ ] Finalizar tela de exibição dos posts cadastrados.
 - [ ] Tem como fazer pesquisa de headline por ID na home?
 - [x] Copiar o upload e recorte de imagem para os uploads
-- [ ] Confirmar ao criar POSt para cidade não cadastrada, avisando que possivelmente esse psot não será muito visualizado.
 - [x] <span style="color: green">Setar mapa conforme LATLONG</span>
 - [x] <span style="color: green">Personalizar TRIGGER_ERRORS (ex: Ao tentar ler config de uma cidade que
 ainda não está no banco)</span>
@@ -56,14 +56,12 @@ não tenhamos nenhum post sobre determinado local. Ou seja, podemos trazer fotos
 ###### Backend
 
 -[ ] JSContentTools (CoffeScript) muito ruim com imageupload. Criar forma melhor com HandleFileSelect()
--[ ] Criar um seeder com nomes dos paises que deseja inserir... dessa forma, o sistema tentar ler todos os arquivos de estados e cidades daquele pais e ja registra no banco. Esse seeder pode inclusive ser outro arquivo TXT dos paises com posts ja criados em produção. penser nisso.
 -[x] <span style="color: green">Criar tags para pesquisa e SEO (ex: Nova 
 Iorque = new iorque, new york...)</span>
--[ ] [CANCELADO] Será necessário criar um submitAll() para enviar todos os forms de cada bloco da tela via AJAX. Atualmente cada botão submit pertence apenas a seu bloco
 -[ ] Criar validação de forms no backend, inclusive para requisições ajax
 -[ ] [Criar estrutura multilanguage com app->locale](http://stackoverflow.com/questions/25082154/how-to-create-multilingual-translated-routes-in-laravel)
-- [ ] Criar uma tela de LOADING para ações via ajax. Principalmente GEONAMES que 
-pode demorar um pouco
+- [x] <span style="color: green">Criar uma tela de LOADING para ações via ajax. Principalmente GEONAMES que 
+pode demorar um pouco</span>
 > [este artigo](http://stackoverflow.com/questions/19249159/best-practice-multi-language-website) é bem interessante sobre tradução, inclusive usando laravel. Na terceira resposta, alguem fala sobre Thomas Bley e criação de caches (arquivos PHP estáticos) para evitar consultas no banco e execução de funções a cada acesso
 ###### Frontend
 - [ ] Criar coloração diferente para validação de checkboxes...apenas input e select configurados em _Forms.js
@@ -108,7 +106,6 @@ e tem funções específicas para isso</span>
 -[ ] Adicionar uma tabela de views, para controlar data e horário de cada view do local para futura exibição em gráfico
 
 ###### Dúvidas Laravel
--[ ] Qual a melhor forma de enviar o POST da controller para model com FKs. Esta certo o que fiz em \Painel\Country();?
 -[ ] Como funciona a Facade Redirect::class? Escreve um js na tela? exemplo em PDOExceptions
 
 

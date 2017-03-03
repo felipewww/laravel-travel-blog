@@ -34,7 +34,7 @@
             <article class="article" id="the-article">
                 <section class="article__content"  >
                     {{--{{ dd(get_defined_vars()) }}--}}
-                    <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }}</p>
+                    {{--<p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }}</p>--}}
 
                     @if($isNew)
                         <div data-editable data-name="article_content">
@@ -73,17 +73,7 @@
                         <p>{!! $post->managed_regions['teste_2']['content'] !!}</p>
                     </div>
                 @endif
-                {{--<div data-editable>--}}
-                    {{--<p data-name="teste_1">region teste_1</p>--}}
-                    {{--<p data-name="teste_2">region teste_2</p>--}}
-                    {{--<p data-name="teste_3">region teste_3</p>--}}
-                {{--</div>--}}
             </article>
-        {{--@else--}}
-            {{--<div class="article" id="the-article">--}}
-                {{--aqui vem o post para editar...--}}
-            {{--</div>--}}
-        {{--@endif--}}
         <div class="sidebar-right">
 
         </div>

@@ -47,7 +47,7 @@ trait BlogJobs {
         }
 
         $actButtons->createPostButton = "/painel/blog/novo-post/$url/".$this->reg->id;
-        $actButtons->editPostButton = "/painel/blog/post/$url/";
+        $actButtons->editPostButton = "/painel/blog/edit-post/$url/";
 
         return $actButtons;
     }
@@ -155,13 +155,14 @@ trait BlogJobs {
         if ($post->polymorphic_from == City::class)
         {
             $city       = $post->City->first();
-            $country    = $city->estate->country;
+            $country = $city->Country;
             $data['city'] = $city->name;
             $data['country'] = $country->name;
 
             $post->urlGoback = '/painel/mundo/cidade/'.$city->id;
             $post->nameGoback = $city->name;
-            $post->siteUrl = '/blog/c/'.$titleAscii.'/'.$post->id;
+            //$post->siteUrl = '/blog/c/'.$titleAscii.'/'.$post->id;
+            $post->siteUrl = '/painel/blog/edit-post/cidade/'.$post->id;
         }
         else if($post->polymorphic_from == Country::class)
         {
