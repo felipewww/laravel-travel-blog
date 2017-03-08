@@ -37,10 +37,9 @@
         <section class="content">
             <table class="setDataTables" id="active_cities">
                 <tbody>
-                {{--The HTML into this TR represents the setup info where JS get and configure this datatables.--}}
                 <tr>
-                    <td class="columns">{!! json_encode($activeCities['data_cols']) !!}</td>
-                    <td class="info">{!! json_encode($activeCities['data_info']) !!}</td>
+                    <td class="columns">{!! json_encode($activeCities['cols']) !!}</td>
+                    <td class="info">{!! json_encode($activeCities['data']) !!}</td>
                 </tr>
                 </tbody>
             </table>

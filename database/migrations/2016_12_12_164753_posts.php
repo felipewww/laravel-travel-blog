@@ -55,7 +55,7 @@ class Posts extends Migration
             $table->increments('id')->unsigned();
             $table->integer('position');
             $table->string('path');
-            $table->string('description');
+            $table->string('description', 255);
 
             $table->integer('posts_id')->unsigned();
             $table->foreign('posts_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');

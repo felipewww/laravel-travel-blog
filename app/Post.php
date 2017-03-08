@@ -30,7 +30,7 @@ class Post extends Model
 
     public function Photos()
     {
-        return $this->hasMany(PostPhotos::class);
+        return $this->hasMany(PostPhotos::class, 'posts_id');
     }
 
     public function author() { return $this->belongsTo('App\Authors'); }

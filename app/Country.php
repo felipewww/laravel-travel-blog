@@ -11,6 +11,7 @@ class Country extends Model
     public $timestamps = false;
     public $fillable = ['name', 'sigla_2', 'sigla_3'];
     public $sigla_2 = null;
+//    public $table = 'countries';
 
     public function Headlines()
     {
@@ -31,6 +32,11 @@ class Country extends Model
     public function continent()
     {
         return $this->belongsTo(Continent::class, 'continents_id');
+    }
+
+    public function Cities()
+    {
+        return $this->hasMany(City::class, 'country_id');
     }
 
     /**

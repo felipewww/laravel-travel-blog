@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site\Blog;
 
 use App\City;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Painel\World\CityController;
 use App\Library\BlogJobs;
 use App\Library\Jobs;
 use App\Library\WorldEstructureJobs;
@@ -22,35 +23,49 @@ class PostController extends Controller {
     {
         $this->model = new Post();
         $this->json_meta(['contentToolsOnSave' => 'post.create']);
-        $this->vars['isNew'] = true;
         $this->vars['isAdmin'] = Auth::check();
     }
 
     public function city($id)
     {
-        //Se q requisição for request, é criação de post para cidade ainda não existente no banco
-            $this->json_meta(['from' => 'city']);
+        $request = Request::capture()->all();
+        $city = new CityController($id);
 
-        //Para cidades ainda não cadastradas no banco.
-        if ($id instanceof Request)
-        {
-            $this->json_meta(['request' => $id->all()]);
-            $this->getEstructureBreadcrumb('city', $id);
+        if ( isset($request['action']) ) {
+            switch ($request['action'])
+            {
+                case 'create':
+                    $res = $city->createPost($request);
+                    break;
+
+                case 'update':
+                    $res = $city->updatePost($request);
+                    break;
+
+                default:
+                    throw new \Error('Falta action');
+                    break;
+            }
+
+            return $res;
         }
-        //Para cidades já cadastradas.
-        else
-        {
-            $this->json_meta(['id' => $id]); //id da cidade
 
-            $city = City::where('id', $id)->first();
-            $this->getEstructureBreadcrumb('city', $city);
-        }
-
+        $this->vars['isNew'] = true;
+//        $this->getEstructureBreadcrumb('city', $city);
         return view('Site.blog.post_city', $this->vars);
     }
 
     public function readCityPost($post_id){
-        //Caso seja usuário autenticado visitante post no site, também será possível editar.
+
+        $request = Request::capture()->all();
+//        dd($request);
+        if ( isset($request['action']) )
+        {
+            $ctrl = new CityController(0);
+            return $ctrl->updatePost($post_id, $request);
+        }
+
+        //Caso seja usuário autenticado visitando post no site, será possível editar.
         $this->json_meta(['contentToolsOnSave' => 'post.update']);
         $this->json_meta(['from' => 'city']);
         $this->json_meta(['post_id' => $post_id]);
@@ -60,7 +75,7 @@ class PostController extends Controller {
         $this->vars['isNew'] = false;
         BlogJobs::manage($post);
         $this->vars['post'] = $post;
-        $this->getEstructureBreadcrumb('city', $post->City->first()->id);
+//        $this->getEstructureBreadcrumb('city', $post->City->first()->id);
 
 //        $this->vars['isAdmin'] = false;
         if ( $post->status != 'ativo' )

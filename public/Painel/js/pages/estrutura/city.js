@@ -95,7 +95,7 @@ city = {
         //var html = document.getElementById('the-article').innerHTML;
         $.ajax({
             method: 'post',
-            url: '/painel/api/blog/cidade/save/'+id,
+            // url: '/painel/api/blog/cidade/save/'+id,
             data: { content_regions: city.regions, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: action },
             dataType: 'json',
             success: function (data) {

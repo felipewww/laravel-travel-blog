@@ -84,6 +84,18 @@
     <script type="text/javascript" src="/Painel/js/endScript.js"></script>
 </head>
 <body>
+    <div id="loader">
+        <div id="loader-content">
+            <div class="uil-ripple-css" style='transform:scale(0.3);'>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="txt">
+                Carregando... Por favor, aguarde.
+            </div>
+        </div>
+    </div>
     <!-- JS tootlip -->
     <div id="tooltip">
         <div class="arrow"></div>
@@ -91,7 +103,6 @@
     </div>
 
     @include('Painel.shared.menu')
-
     <section id="content">
 
         <!-- Barra do topo -->

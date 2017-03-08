@@ -22,7 +22,7 @@
 @endif
 
 @section('content')
-    {{--{{ dd($city) }}--}}
+    {{--{{ dd($reg) }}--}}
     <div class="container">
     {{--@if($isNew)--}}
             <article class="article" id="the-article">
@@ -30,22 +30,22 @@
 
                     <h1 data-fixture data-name="article_title" class="no-margin">
                         @if($isNew)
-                            {{ $city['name'] }}
+                            {{ $reg['name'] }}
                         @else
-                            @if( isset($city->content_regions['article_title']['content']) )
-                                {{$city->content_regions['article_title']['content']}}
+                            @if( isset($reg->content_regions['article_title']['content']) )
+                                {{$reg->content_regions['article_title']['content']}}
                             @else
-                                {{ $city['name'] }}
+                                {{ $reg['name'] }}
                             @endif
                         @endif
                     </h1>
 
 
-                    @if($isNew)
-                        <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }} </p>
-                    @else
-                        <p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $city->name }} </p>
-                    @endif
+                    {{--@if($isNew)--}}
+                        {{--<p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $breadcrumb['city']['name'] }} </p>--}}
+                    {{--@else--}}
+                        {{--<p class="breadcrumb">{{ $breadcrumb['continent']['name'] }} > {{  $breadcrumb['country']['name'] }} > {{  $breadcrumb['estate']['name'] }} > {{  $reg->name }} </p>--}}
+                    {{--@endif--}}
 
                     @if($isNew)
                         <div data-editable data-name="article_content">
@@ -57,10 +57,10 @@
                             </p>
                         </div>
                     @else
-                        {{--{{dd($city)}}--}}
+                        {{--{{dd($reg)}}--}}
                         <div data-editable data-name="article_content">
-                            @if( isset($city->content_regions['article_content']['content']) )
-                            {!! $city->content_regions['article_content']['content'] !!}
+                            @if( isset($reg->content_regions['article_content']['content']) )
+                            {!! $reg->content_regions['article_content']['content'] !!}
                             @else
                             Cidade sem conteúdo.
                             @endif

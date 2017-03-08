@@ -3,6 +3,7 @@ country = {
         article_content: { required: true }
     },
 
+    selectedCity: { },
     /**
      * mudar o status de 0,1 para "ativo, inativo" quando lê cidades cadastradas no banco
      */
@@ -30,69 +31,156 @@ country = {
 
         td.innerHTML = status;
     },
-    /**
-     * @see DataTablesExtensions.js
-    * função de "rowCallback" executada via EVAL() na montagem do dataTables
-    * */
-    findCities: function (event, button, attrs, dataTable, regId, allRowData)
-    {
-        // $("#dynamic_table").html('');
+
+    findACity: function () {
+        Script.loader('show');
+        var form = document.forms.findACityForm;
+        var cityName = form.cityname.value;
 
         $.ajax({
-            url: '/painel/api/mundo/pais/readCities',
-            data: { id: regId, name: allRowData[2] },
+            url: '/painel/api/mundo/pais/findACity',
+            data: { cityName: cityName, countryCode: Script.screenJson.country.iso_2 },
             dataType: 'json',
             success: function (data) {
-                //render(data);
-                country.renderCities(data, allRowData[2]);
+                country._renderCities(data, cityName);
+                console.log(data);
             },
             error: function (e) {
                 console.log('error!');
+            },
+            complete: function () {
+                Script.loader('hide');
             }
         });
     },
 
-    renderCities: function (data, estateName)
+    _renderCities: function (data, txtFound)
     {
-        var blockCities = $('#cidades');
-        $(blockCities).find('div.title span:first-child').html('CIDADES DE '+estateName);
-
         var info = JSON.parse(data.dataSource);
-        console.log(info);
         var table = document.createElement('table');
-        var where = document.getElementById('dynamic_table');
+        var where = document.getElementById('cities-table');
         where.innerHTML = '';
         where.appendChild(table);
 
         var cols = data.cols;
         DataTablesExtensions.__dataTablesExec(table, info, cols, {});
-        Script.anchorScroll('#cidades');
     },
 
-    beforeConfig: function (event, button, attrs, dataTable, regId, allRowData) {
-        //alert("ops, esta ciadde não existe");
-        swal
-        (
-            {
-                title: 'Ops! Cidade não cadastrada',
-                text: 'Esta cidade ainda não esta cadastrada no banco de dados. Para ver e editar suas configurações é necessário criar uma página da cidade ou post de blog.',
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#F8BE86',
-                confirmButtonText: 'Fechar',
-                cancelButtonText: 'Criar página',
-                closeOnConfirm: true,
-                closeOnCancel: true
-            },
-            function(isConfirm){
-                if (!isConfirm ) {
-                    var parent = button.parentNode;
-                    var createPageButton = parent.getElementsByClassName('createPage')[0];
-                    createPageButton.click();
-                }
-            }
-        );
+    /**
+    * DataTablesExtensions Callback
+    * */
+    loadInMap: function (event, button, attrs, dataTable, regId, allRowData)
+    {
+        // var info = JSON.parse(button.getAttribute('data-info'));
+        var info = JSON.parse( document.getElementById('cityinfo_'+regId).innerHTML );
+        this.selectedCity = info;
+        this.selectedCity.changed = false;
 
+        // console.log(info);
+        var divMap = document.getElementById('newMap');
+        divMap.style.height = '400px';
+
+        var myLatLng = { lat: parseFloat(info.lat), lng: parseFloat(info.lng)};
+
+
+        var map = new google.maps.Map(divMap, {
+            zoom: 4,
+            center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            draggable:true,
+            title: 'Hello World!'
+        });
+
+        google.maps.event.addListener(marker, 'dragend', function(data) {
+            country.selectedCity.lat = data.latLng.lat();
+            country.selectedCity.lng = data.latLng.lng();
+            country.selectedCity.changed = true;
+        })
+    },
+
+    /**
+     * Botão de Ação
+     * Salvar cidade encontrada no banco de dados
+     * */
+    saveSelectedCity: function (event, button, attrs, dataTable, regId, allRowData)
+    {
+        var info = JSON.parse( document.getElementById('cityinfo_'+regId).innerHTML );
+
+        save = function () {
+            Script.loader('show');
+            country.selectedCity._token = window.Laravel.csrfToken;
+            country.selectedCity.country_id = Script.screenJson.country.id;
+
+            $.ajax({
+                url: '/painel/mundo/cidade/create',
+                method: 'post',
+                data: country.selectedCity,
+                dataType: 'json',
+                success: function (data) {
+                    console.log('success');
+                    console.log(data);
+                    if (data.status == false) {
+                        swal({
+                            title: 'Ops!',
+                            text: data.message,
+                            type: 'error'
+                        });
+                    }else{
+                        swal({
+                            title: 'Feito!',
+                            text: 'Cidade cadastrada com sucesso!',
+                            type: 'success'
+                        });
+                    }
+                },
+                error: function (data) {
+                    swal({
+                        title: 'Ops. Houve um erro inesperado.',
+                        text: 'Entre em contato com o administrador do sistema.',
+                        type: 'error'
+                    });
+                },
+                complete: function () {
+                    Script.loader('hide');
+                }
+            });
+        };
+
+
+        if (this.selectedCity.changed) {
+            swal({
+                title: 'LatLong alterada',
+                text: 'Você alterou a latitude e longitude desde cidade. Deseja salvar com estas alterações?',
+                type: 'info',
+                confirmButtonText: 'Confirmar e salvar',
+                cancelButtonText: 'Cancelar e reverter',
+                confirmButtonColor: '#a3b963',
+                cancelButtonColor: '#b94554',
+                showCancelButton: true,
+                closeOnCancel: true,
+                closeOnConfirm: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    //Timeout para poder fechar o SWAL atual e depois abrir o novo, se não da pau!
+                    setTimeout(function () {
+                        save();
+                    },500)
+                }else{
+                    country.selectedCity = info;
+                    country.selectedCity.changed = false;
+                }
+            });
+        }else{
+            if ( country.selectedCity.changed == undefined ) {
+                country.selectedCity = info;
+            }
+
+            save();
+        }
     },
 
     createCountryPost: function () {
@@ -128,41 +216,5 @@ country = {
             }
         });
     },
-    // update: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('update'); },
-
-    createCityPage: function (e, paramns)
-    {
-        if (paramns == undefined) { paramns = {} }
-
-        //Default para criar a página principal da cidade
-        var action = e.getAttribute('data-action');
-
-        var json = JSON.parse(e.getAttribute('data-post'));
-
-        var i = 0;
-        var estates = Script.screenJson.estates;
-
-        while (i < estates.length)
-        {
-            var estate = estates[i];
-
-            if (estate.geonameId == json.estate_id) {
-                var selectedEstate = estate;
-                break;
-            }
-
-            i++;
-        }
-
-        var POST = { estate: selectedEstate, country: Script.screenJson.country, city: json.city };
-
-        Script.sendPost(
-            POST,
-            {
-                target: '_blank',
-                action: action,
-                method: 'post'
-            }
-        );
-    },
+    update: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('update'); },
 };

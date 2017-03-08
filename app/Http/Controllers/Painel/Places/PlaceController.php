@@ -11,6 +11,7 @@ use App\Library\Jobs;
 use App\Library\photoGallery;
 use App\Place;
 use Doctrine\DBAL\Schema\Schema;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,8 +36,9 @@ class PlaceController extends Controller {
 
     public function __construct($id)
     {
-        $this->model = new Place();
-        $this->reg = $this->model->where('id', $id)->first();
+//        $this->model = new Place();
+//        $this->reg = $this->model->where('id', $id)->first();
+        $this->getReg(Place::class, $id);
         $this->action = ( $this->reg ) ? 'update' : 'create' ;
 
         if ($this->action == 'create') {
@@ -72,8 +74,12 @@ class PlaceController extends Controller {
 
     public function view(Request $request)
     {
-        $this->PhotoGallery(Place::class);
+//        dd($request->all());
         $act = $this->hasAction($request);
+//        dd($act);
+        if ($act instanceof RedirectResponse) {
+            return $act;
+        }
 
         if ( isset($act['message']) ) {
             $PostMessage =  $act['message'];
@@ -83,6 +89,7 @@ class PlaceController extends Controller {
         if ($this->action == 'update') {
             $this->Headlines(Place::class);
             $this->Interests();
+            $this->PhotoGallery(Place::class);
         }
 
         return $this->display($act);

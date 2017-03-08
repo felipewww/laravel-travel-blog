@@ -222,15 +222,19 @@ Script = {
         $('.mask-percent').mask('00.00', {reverse: true});
     },
 
-    loadingGif: function(act)
+    loader: function(act)
     {
+        Script.loading = $('#loader');
+
         if (act == 'show')
         {
             $(Script.loading).fadeIn();
         }
-        else
+        else if(act = 'hide')
         {
-            $(Script.loading).fadeOut();
+            setTimeout(function () {
+                $(Script.loading).fadeOut();
+            }, 300);
         }
     },
 

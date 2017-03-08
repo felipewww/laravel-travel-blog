@@ -7,6 +7,8 @@ use App\Country;
 use App\Continent;
 use App\Library\DataTablesInterface;
 use \App\Http\Controllers\Controller;
+
+
 class CountriesController extends Controller implements DataTablesInterface {
 
     use \App\Library\Jobs, \App\Library\DataTablesExtensions;
@@ -21,6 +23,7 @@ class CountriesController extends Controller implements DataTablesInterface {
     public function __construct()
     {
         $this->model = new Country();
+
         $this->continents = Continent::orderBy('name')->get();
         $this->countries = $this->model->all();
 
@@ -30,29 +33,37 @@ class CountriesController extends Controller implements DataTablesInterface {
         $this->vars['pageDesc'] = 'Listagem de Países';
         $this->vars['continents'] = $this->continents;
 
-        $allCities = City::select('id','name', 'status')->get();
-        $citiesCols = CityController::$cities_cols;
+//        $allCities = City::select('id','name', 'status')->get();
+//        $citiesCols = CityController::$cities_cols;
 
         //Adicionar coluna de STATUS. mudar o padrão de leitura de cidade.
-        array_splice($citiesCols, 3, 0, [
-            [
-                'title' => 'status',
-                'rowCallback' => ['func' => 'country.changeRegisteredCityStatus']
-            ]
-        ]);
+//        array_splice($citiesCols, 3, 0, [
+//            [
+//                'title' => 'status',
+//                'rowCallback' => ['func' => 'country.changeRegisteredCityStatus']
+//            ]
+//        ]);
 
-        $activeCities = [
-            'data_info' => CityController::dataTables($allCities, 'onlyRegistered'),
-            'data_cols' => $citiesCols
-        ];
-
-        $this->vars['activeCities'] = $activeCities;
 
         $activeCountries = new \stdClass();
-        $activeCountries->countries = $this->model->select('id','name')->where(['status' => 1])->whereNotNull('content_regions')->get();
+        $activeCountries->countries = $this->model->select('id','name', 'content_regions')->where(['status' => 1])->whereNotNull('content_regions')->get();
 
         $activeCountries = $this->dataTablesConfig($activeCountries);
         $this->vars['activeCountries'] = $activeCountries;
+
+
+//        CityController::
+//        $activeCities = [
+//            'data_info' => CityController::dataTables($allCities, 'onlyRegistered'),
+//            'data_cols' => $citiesCols
+//        ];
+//
+//        $this->vars['activeCities'] = $activeCities;
+
+        //$activeCountries->countries = $this->model->select('id','name', 'content_regions')->where(['status' => 1])->whereNotNull('content_regions')->get();
+//        $activeCities = CityController::activeCitiesDataTables()->asd();
+        $ac = new CityController();
+        $this->vars['activeCities'] = $ac->activeCities()->toTable();
     }
 
     /*
@@ -72,6 +83,7 @@ class CountriesController extends Controller implements DataTablesInterface {
 
         foreach ($countryList as $country)
         {
+//            dd($country);
             if ( !empty($country->content_regions) ) {
                 $pag = 'editar página';
                 $cl = 'has';
