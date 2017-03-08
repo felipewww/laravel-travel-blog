@@ -94,7 +94,7 @@ class WorldEstructure extends Migration
             $table->increments('id')->unsigned();
             $table->string('path');
             $table->string('description', 255);
-            $table->int('position');
+            $table->integer('position');
 
             $table->integer('cities_id')->unsigned();
             $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
@@ -102,7 +102,7 @@ class WorldEstructure extends Migration
 
         Schema::table('cities', function (Blueprint $table){
             $table->integer('cities_photos_id')->unsigned()->nullable();
-            $table->foreign('cities_photos_id')->references('id')->on('cities_photos')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreign('cities_photos_id')->references('id')->on('city_photos')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 
