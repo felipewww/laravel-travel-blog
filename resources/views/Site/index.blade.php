@@ -1,13 +1,13 @@
 @extends('Site.layouts.app')
 
 @section('header')
-    <link rel="stylesheet" type="text/css" href="/Site/css/home.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/Site/css/home.css') }}">
     <script type="text/javascript" src="{{ asset('Site/js/modules/paginas/home.js') }}"></script>
 
     @if($isAdmin)
-        <script type="text/javascript" src="/Painel/js/lib/jquery/chosen/chosen.jquery.js"></script>
+        <script type="text/javascript" src="{{asset('/Painel/js/lib/jquery/chosen/chosen.jquery.js')}}"></script>
         <script type="text/javascript" src="{{ asset('Painel/js/pages/paginas/home.js') }}"></script>
-        <link rel="stylesheet" href="/Painel/js/lib/jquery/chosen/chosen.css">
+        <link rel="stylesheet" href="{{ asset('/Painel/js/lib/jquery/chosen/chosen.css') }}">
     @endif
 
 @endsection

@@ -96,8 +96,8 @@ class WorldEstructure extends Migration
             $table->string('description', 255);
             $table->integer('position');
 
-            $table->integer('cities_id')->unsigned();
-            $table->foreign('cities_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('city_id')->unsigned();
+            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::table('cities', function (Blueprint $table){
@@ -117,7 +117,7 @@ class WorldEstructure extends Migration
         Schema::dropIfExists('cities');
         Schema::dropIfExists('countries');
         Schema::dropIfExists('continents');
-        Schema::dropIfExists('cities_photos');
+        Schema::dropIfExists('city_photos');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

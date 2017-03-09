@@ -88,7 +88,8 @@ users = {
                     closeOnCancel: true
                 },
                 function(isConfirm){
-                    if (isConfirm) { window.location.href = '/painel/blog/autores/'+author.id }
+                    Script.unable('Página do autor indisponível por enquanto. Entre em contato com o administrador');
+                    //if (isConfirm) { window.location.href = '/painel/blog/autores/'+author.id }
                 }
             );
         }
