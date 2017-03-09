@@ -6,4 +6,4 @@
 Homestead.json
 Homestead.yaml
 .env
-/public/Site/media/*.jpg
+/public/Site/media/images/**
