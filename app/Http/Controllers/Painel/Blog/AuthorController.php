@@ -56,7 +56,7 @@ class AuthorController extends Controller implements DataTablesInterface
 
         $newAuthor = $this->model->create([
             'photo' => $user['photo'],
-            'users_id' => $user['id'],
+            'user_id' => $user['id'],
             'description' => 'Aqui vem a descrição do autor',
         ]);
 

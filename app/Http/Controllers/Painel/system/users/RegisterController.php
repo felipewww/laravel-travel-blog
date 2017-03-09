@@ -41,7 +41,7 @@ class RegisterController extends Controller implements DataTablesInterface
     protected $authors;
     protected $authorsIds;
 
-    protected $model;
+//    protected $model;
     protected $all;
 //    protected $vars;
 

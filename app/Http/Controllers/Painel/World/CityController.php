@@ -44,15 +44,14 @@ class CityController extends Controller {
     {
         $this->setDefaults();
 
-        if ($cityId == 0) {
+        if ($cityId instanceof City) {
+            $this->reg = $cityId;
+        }
+        //As vezes, a classe é instanciada somente para usar as configs default como $model e etc.
+        else if ($cityId == 0) {
             return;
         }
 
-        if ($cityId instanceof City) {
-            $this->reg = $cityId;
-//            dd('is instance');
-        }
-//        dd($cityId);
         $this->selectColumns = [
             'id',
             'name',
