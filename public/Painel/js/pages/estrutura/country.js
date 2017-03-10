@@ -134,6 +134,8 @@ country = {
                             title: 'Feito!',
                             text: 'Cidade cadastrada com sucesso!',
                             type: 'success'
+                        }, function (isConfirmed) {
+                            window.location.reload();
                         });
                     }
                 },
@@ -201,7 +203,6 @@ country = {
         if (!ContentToolsExtensions.validateRegions(country.regions)) {
             return false;
         }
-
         $.ajax({
             method: 'post',
             data: { content_regions: country.regions, _token: window.Laravel.csrfToken, screen_json: Script.screenJson, action: 'createOrUpdateCountryPage' },
@@ -209,6 +210,7 @@ country = {
             success: function (data) {
                 // if (action == 'activate') { window.location.href = '/cidade/'+data.ascii_name+'/'+Script.screenJson.city.geonameId; }
                 // city.confirm(action, data);
+                country.done();
             },
             error: function (e) {
                 // console.log(e);
@@ -216,5 +218,14 @@ country = {
             }
         });
     },
+
     update: function (ev)  { ContentToolsExtensions.mountRegions(ev.detail().regions, city.regions); city.action('update'); },
+
+    done: function () {
+        swal({
+            title: 'Feito!',
+            text: 'Página do país atualizada com sucesso!',
+            type: 'success'
+        });
+    }
 };
