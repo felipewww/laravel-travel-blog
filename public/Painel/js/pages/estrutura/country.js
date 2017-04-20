@@ -1,4 +1,17 @@
+$(document).ready(function () {
+    country.init();
+});
+
 country = {
+    init: function () {
+        var cropperOptions = {
+            uploadUrl:'/Site/media/images/parallax-home.jpg',
+            // width: 804,
+            // height: 551
+        };
+        var cropperHeader = new Croppic('jscrop_id', cropperOptions);
+    },
+
     regions: {
         article_content: { required: true }
     },

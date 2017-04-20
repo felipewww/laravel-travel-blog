@@ -5,10 +5,46 @@
     <script type="text/javascript" src="{{ asset('Painel/js/client/Headlines.js') }}"></script>
     <script type="text/javascript" src="{{ asset('Painel/js/client/PainelPosts.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZv5NhWhIUfc6EvvgzNqQAehqCMzV3UVw&callback=initMap" async defer></script>
+    
+    <script>
+        function initMap() {
+            //TODO - existe outra forma de resolver isso ao invés dessa?
+            /* O grande detalhe é que, se não iniciar o script do google antes, o mapa não funciona na hora de
+            * carregar as informações da cidade (+ info). e se não existir essa função, o script do Maps da erro.
+            */
+        }
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('Painel/js/lib/jquery/croppic/croppic.css') }}">
+    <script type="text/javascript" src="{{ asset('Painel/js/lib/jquery/croppic/croppic.js') }}"></script>
+
+
+
 @endsection
 
 @section('content')
-{{--    {{dd($country)}}--}}
+    <style>
+        #jscrop_id {
+            width: 200px;
+            height: 150px;
+            border: 1px solid red;
+            position:relative; /* or fixed or absolute */
+        }
+    </style>
+    <section class="block">
+        <header>
+            <div class="title">
+                <span>Croppic teste</span>
+            </div>
+            <div class="actions">
+            </div>
+            <div class="cleaner"></div>
+        </header>
+
+        <section class="content">
+            <div id="jscrop_id"></div>
+        </section>
+    </section>
+
     <section class="block">
         <header>
             <div class="title">
